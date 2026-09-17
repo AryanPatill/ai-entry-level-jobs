@@ -1,0 +1,21 @@
+# ---- Data: IPUMS terms forbid redistributing microdata ----
+data/
+# IPUMS extract files, in case one is ever saved outside data/ by mistake
+*.dat
+*.dat.gz
+*.csv.gz
+# Parquet files in this project are only ever built from raw microdata
+*.parquet
+
+# ---- Secrets: API keys live here ----
+.env
+
+# ---- Python virtual environments and caches ----
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# ---- Tool caches ----
+.ipynb_checkpoints/
+.pytest_cache/
