@@ -1,5 +1,5 @@
 # ---- Data: IPUMS terms forbid redistributing microdata ----
-data/
+/data/
 # IPUMS extract files, in case one is ever saved outside data/ by mistake
 *.dat
 *.dat.gz
