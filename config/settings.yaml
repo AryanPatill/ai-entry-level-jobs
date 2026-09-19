@@ -1,0 +1,14 @@
+# Project settings. Paths are relative to the repo root.
+# Design parameters (years, age bands, treatment date) are added in later
+# phases, copied exactly from docs/preregistration.md, never invented here.
+
+project:
+  name: ai-entry-level-jobs
+  preregistration_version: "1.0"
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  tables: results/tables
+  figures: results/figures

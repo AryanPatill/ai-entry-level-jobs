@@ -19,3 +19,12 @@ __pycache__/
 # ---- Tool caches ----
 .ipynb_checkpoints/
 .pytest_cache/
+
+# Python / tooling caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+
+!.env.example
