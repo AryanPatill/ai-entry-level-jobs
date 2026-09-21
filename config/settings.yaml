@@ -1,6 +1,5 @@
 # Project settings. Paths are relative to the repo root.
-# Design parameters (years, age bands, treatment date) are added in later
-# phases, copied exactly from docs/preregistration.md, never invented here.
+# Design parameters are copied from docs/preregistration.md, never invented here.
 
 project:
   name: ai-entry-level-jobs
@@ -12,3 +11,29 @@ paths:
   processed: data/processed
   tables: results/tables
   figures: results/figures
+
+design:
+  # Section 3: data window
+  download_start: "2011-01"      # robustness start; one extract covers both starts
+  main_start: "2015-01"
+  excluded_start: "2020-03"      # main-sample exclusion, applied in analysis, not at extract
+  excluded_end: "2021-12"
+
+  # Section 4: age groups
+  age_min: 22                    # youngest age any preregistered group needs
+  age_max: 64                    # oldest (50-64 placebo group, Section 12)
+  treated_ages: [22, 25]
+  secondary_ages: [26, 34]
+  comparison_ages: [35, 49]
+  placebo_ages: [50, 64]
+
+  # Section 5: exposure quintiles
+  quintile_cutoff_ages: [22, 64]
+  quintile_cutoff_window: ["2015-01", "2020-02"]
+
+  # Section 7: treatment timing
+  treatment_month: "2022-12"
+  alternative_treatment_months: ["2023-03", "2024-01"]
+
+  # Section 11: decision rule
+  no_effect_threshold_pct: 5
