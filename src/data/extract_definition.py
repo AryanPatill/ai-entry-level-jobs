@@ -82,13 +82,14 @@ def find_basic_monthly(all_samples: dict[str, str], start: str) -> dict[str, str
         found[key] = sample_id
     return dict(sorted(found.items()))
 
+
 def build_extract(sample_ids: list[str], age_min: int, age_max: int, description: str):
     extract = MicrodataExtract(
         collection="cps",
         samples=sample_ids,
         variables=list(VARIABLES),
         description=description,
-        data_format="fixed_width",                     # DDI codebook keeps value labels
+        data_format="fixed_width",       # keeps IPUMS value labels via the DDI codebook
         data_structure={"rectangular": {"on": "P"}},   # one row per person
     )
     # Person-level case selection. IPUMS defaults caseSelectWho to "individuals",
@@ -118,6 +119,7 @@ def main() -> None:
         f"CPS basic monthly {first} to {last}; ages {age_min}-{age_max}"
     )
     extract = build_extract(list(samples_by_month.values()), age_min, age_max, description)
+    extract.api_version = client.api_version   # else "version": null is saved and IPUMS rejects it
     definition = extract.build()
 
     out_path = REPO_ROOT / "docs" / "extract_definition.json"

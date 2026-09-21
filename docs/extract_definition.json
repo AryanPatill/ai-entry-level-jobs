@@ -1,5 +1,5 @@
 {
-  "built_utc": "2026-09-21 05:12:53",
+  "built_utc": "2026-09-21 05:18:00",
   "preregistration_version": "1.0",
   "first_month": "2011-01",
   "last_month": "2026-08",
@@ -359,6 +359,6 @@
       }
     },
     "collection": "cps",
-    "version": null
+    "version": 2
   }
 }

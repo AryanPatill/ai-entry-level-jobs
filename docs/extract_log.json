@@ -1,0 +1,24 @@
+{
+  "extract_number": 1,
+  "collection": "cps",
+  "submitted_utc": "2026-09-21 05:18:09",
+  "definition_built_utc": "2026-09-21 05:18:00",
+  "definition_sha256": "0d413493c0eabf9fd1a735734211fec6a6ce6c7512eb661d6280e2068d9744e7",
+  "first_month": "2011-01",
+  "last_month": "2026-08",
+  "n_samples": 187,
+  "downloaded_utc": "2026-09-21 05:26:32",
+  "download_dir": "data/raw/cps_extract_00001",
+  "files": [
+    {
+      "name": "cps_00001.dat.gz",
+      "bytes": 272114373,
+      "sha256": "96accd8fbfa369ec44cc646027060b58f63227872c326fdf4cc09aca7f0d41ff"
+    },
+    {
+      "name": "cps_00001.xml",
+      "bytes": 182864,
+      "sha256": "d93d50707fd3257be48bfd9f26e99462bac5443001e2eda5ac1d16f76dcfa083"
+    }
+  ]
+}
