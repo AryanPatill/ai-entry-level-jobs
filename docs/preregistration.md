@@ -35,7 +35,7 @@ overturn it. Otherwise it is reported as descriptive.
 | Source | IPUMS CPS, monthly basic samples |
 | Main start | January 2015 |
 | Robustness start | January 2011 |
-| End | Latest month available at data pull. Recorded here on pull date: ____________ |
+| End | Latest month available at data pull. Recorded here on pull date: 2026-08 (pulled 2026-09-21, IPUMS CPS extract 1) |
 | Excluded months (main) | March 2020 – December 2021 |
 | Microdata | Never committed to git; IPUMS citation included in all outputs |
 
@@ -241,3 +241,4 @@ Same ±5% three-verdict rule.
 | Date | Version | Change |
 |---|---|---|
 | 2026-09-17 | 1.0 | Initial preregistration |
+| 2026-09-21 | 1.0 | Section 3 end month filled on pull date (2026-08), as specified. No design change. |
