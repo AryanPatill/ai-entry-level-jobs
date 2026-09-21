@@ -20,5 +20,9 @@
       "bytes": 182864,
       "sha256": "d93d50707fd3257be48bfd9f26e99462bac5443001e2eda5ac1d16f76dcfa083"
     }
-  ]
+  ],
+  "parquet": {
+    "name": "cps_00001.parquet",
+    "rows": 12080926
+  }
 }
