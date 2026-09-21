@@ -1,0 +1,224 @@
+ind1990,label,n_people,in_2011_2019,in_2020_2026
+0,NIU,2612668,True,True
+10,"Agricultural production, crops",84645,True,True
+11,"Agricultural production, livestock",57162,True,True
+12,Veterinary services,23140,True,True
+20,Landscape and horticultural services,83069,True,True
+31,Forestry,4816,True,True
+32,"Fishing, hunting, and trapping",5089,True,True
+40,Metal mining,4014,True,True
+41,Coal mining,9998,True,True
+42,Oil and gas extraction,50771,True,True
+50,"Nonmetallic mining and quarrying, except fuels",8348,True,True
+60,All construction,691382,True,True
+100,Meat products,36759,True,True
+101,Dairy products,11230,True,True
+102,"Canned, frozen, and preserved fruits and vegetables",10400,True,True
+110,Grain mill products,10894,True,True
+111,Bakery products,12143,True,True
+112,Sugar and confectionery products,5541,True,True
+120,Beverage industries,17024,True,True
+121,Misc. food preparations and kindred products,13729,True,True
+122,"Food industries, n.s.",4178,True,True
+130,Tobacco manufactures,1048,True,True
+132,Knitting mills,1091,True,True
+140,"Dyeing and finishing textiles, except wool and knit goods",981,True,True
+141,Carpets and rugs,3119,True,True
+142,"Yarn, thread, and fabric mills",6287,True,True
+150,Miscellaneous textile mill products,4714,True,True
+151,"Apparel and accessories, except knit",12664,True,True
+160,"Pulp, paper, and paperboard mills",13399,True,True
+161,Miscellaneous paper and pulp products,5805,True,True
+162,Paperboard containers and boxes,5220,True,True
+171,Newspaper publishing and printing,12956,True,True
+172,"Printing, publishing, and allied industries, except newspapers",43127,True,True
+180,"Plastics, synthetics, and resins",33139,True,True
+181,Drugs,34181,True,True
+182,Soaps and cosmetics,8447,True,True
+190,"Paints, varnishes, and related products",3741,True,True
+191,Agricultural chemicals,2600,True,True
+192,Industrial and miscellaneous chemicals,26404,True,True
+200,Petroleum refining,12654,True,True
+201,Miscellaneous petroleum and coal products,1323,True,True
+210,Tires and inner tubes,4101,True,True
+211,"Other rubber products, and plastics footwear and belting",4499,True,True
+220,Leather tanning and finishing,1445,True,True
+221,"Footwear, except rubber and plastic",2053,True,True
+230,Logging,7757,True,True
+231,"Sawmills, planing mills, and millwork",11456,True,True
+232,Wood buildings and mobile homes,2216,True,True
+241,Miscellaneous wood products,13989,True,True
+242,Furniture and fixtures,26101,True,True
+250,Glass and glass products,8817,True,True
+251,"Cement, concrete, gypsum, and plaster products",10425,True,True
+252,Structural clay products,1666,True,True
+261,Pottery and related products,1713,True,True
+262,Misc. nonmetallic mineral and stone products,4922,True,True
+270,"Blast furnaces, steelworks, rolling and finishing mills",17532,True,True
+271,Iron and steel foundries,4584,True,True
+272,Primary aluminum industries,4094,True,True
+280,Other primary metal industries,3310,True,True
+281,"Cutlery, handtools, and general hardware",2830,True,True
+282,Fabricated structural metal products,21234,True,True
+290,Screw machine products,17369,True,True
+291,Metal forgings and stampings,2693,True,True
+292,Ordnance,4149,True,True
+300,Miscellaneous fabricated metal products,22854,True,True
+301,"Metal industries, n.s.",1421,True,True
+310,Engines and turbines,3411,True,True
+311,Farm machinery and equipment,9856,True,True
+312,Construction and material handling machines,11112,True,True
+320,Metalworking machinery,7428,True,True
+322,Computers and related equipment,11650,True,True
+331,"Machinery, except electrical, n.e.c.",43986,True,True
+332,"Machinery, n.s.",4745,True,True
+340,Household appliances,4569,True,True
+341,"Radio, TV, and communication equipment",7061,True,True
+342,"Electrical machinery, equipment, and supplies, n.e.c.",61909,True,True
+351,Motor vehicles and motor vehicle equipment,74778,True,True
+352,Aircraft and parts,43696,True,True
+360,Ship and boat building and repairing,13007,True,True
+361,Railroad locomotives and equipment,1723,True,True
+362,"Guided missiles, space vehicles, and parts",10314,True,True
+370,Cycles and miscellaneous transportation equipment,2397,True,True
+371,Scientific and controlling instruments,12907,True,True
+372,"Medical, dental, and optical instruments and supplies",39004,True,True
+390,"Toys, amusement, and sporting goods",7142,True,True
+391,Miscellaneous manufacturing industries,31108,True,True
+392,"Manufacturing industries, n.s.",17323,True,True
+400,Railroads,18373,True,True
+401,Bus service and urban transit,28121,True,True
+402,Taxicab service,24518,True,True
+410,Trucking service,183041,True,True
+411,Warehousing and storage,37871,True,True
+412,U.S. Postal Service,42853,True,True
+420,Water transportation,4874,True,True
+421,Air transportation,38149,True,True
+422,"Pipe lines, except natural gas",4309,True,True
+432,Services incidental to transportation,71252,True,True
+440,Radio and television broadcasting and cable,40571,True,True
+441,Wired communications,31195,True,True
+442,Telegraph and miscellaneous communications services,26723,True,True
+450,Electric light and power,50564,True,True
+451,Gas and steam supply systems,8902,True,True
+452,"Electric and gas, and other combinations",6880,True,True
+470,Water supply and irrigation,16896,True,True
+471,Sanitary services,40046,True,True
+472,"Utilities, n.s.",1842,True,True
+500,Motor vehicles and equipment,9496,True,True
+501,Furniture and home furnishings,3553,True,True
+502,Lumber and construction materials,10244,True,True
+510,Professional and commercial equipment and supplies,19808,True,True
+511,"Metals and minerals, except petroleum",2840,True,True
+512,Electrical goods,11544,True,True
+521,"Hardware, plumbing and heating supplies",9584,True,True
+530,"Machinery, equipment, and supplies",23646,True,True
+531,Scrap and waste materials,5845,True,True
+532,"Miscellaneous wholesale, durable goods",12879,True,True
+540,Paper and paper products,2947,True,True
+541,"Drugs, chemicals, and allied products",13684,True,True
+542,"Apparel, fabrics, and notions",5300,True,True
+550,Groceries and related products,51003,True,True
+551,Farm-product raw materials,5477,True,True
+552,Petroleum products,8543,True,True
+560,Alcoholic beverages,7931,True,True
+561,Farm supplies,3397,True,True
+562,"Miscellaneous wholesale, nondurable goods",10742,True,True
+580,Lumber and building material retailing,59685,True,True
+581,Hardware stores,12662,True,True
+582,Retail nurseries and garden stores,18572,True,True
+591,Department stores,126929,True,True
+600,Miscellaneous general merchandise stores,21415,True,False
+601,Grocery stores,147095,True,True
+610,Retail bakeries,13773,True,True
+611,"Food stores, n.e.c.",13600,True,True
+612,Motor vehicle dealers,76536,True,True
+620,Auto and home supply stores,30158,True,True
+621,Gasoline service stations,31565,True,True
+622,Miscellaneous vehicle dealers,10282,True,True
+623,"Apparel and accessory stores, except shoe",45669,True,True
+630,Shoe stores,6514,True,True
+631,Furniture and home furnishings stores,30444,True,True
+632,Household appliance stores,3617,True,True
+633,"Radio, TV, and computer stores",28844,True,True
+640,Music stores,2466,True,True
+641,Eating and drinking places,436453,True,True
+642,Drug stores,51899,True,True
+650,Liquor stores,9201,True,True
+651,"Sporting goods, bicycles, and hobby stores",26671,True,True
+652,Book and stationery stores,13283,True,True
+660,Jewelry stores,11002,True,True
+661,"Gift, novelty, and souvenir shops",7584,True,True
+662,"Sewing, needlework, and piece goods stores",3193,True,True
+663,Catalog and mail order houses,26798,True,True
+670,Vending machine operators,2417,True,True
+671,Direct selling establishments,9120,True,True
+672,Fuel dealers,6853,True,True
+681,Retail florists,5907,True,True
+682,Miscellaneous retail stores,67547,True,True
+691,"Retail trade, n.s.",22107,True,True
+700,Banking,133608,True,True
+701,"Savings institutions, including credit unions",18755,True,True
+702,"Credit agencies, n.e.c.",62549,True,True
+710,"Security, commodity brokerage, and investment companies",85487,True,True
+711,Insurance,172159,True,True
+712,"Real estate, including real estate-insurance offices",156109,True,True
+721,Advertising,35367,True,True
+722,Services to dwellings and other buildings,97660,True,True
+731,Personnel supply services,61576,True,True
+732,Computer and data processing services,214469,True,True
+740,Detective and protective services,46523,True,True
+741,"Business services, n.e.c.",129832,True,True
+742,"Automotive rental and leasing, without drivers",9064,True,True
+750,Automobile parking and carwashes,8817,True,True
+751,Automotive repair and related services,78494,True,True
+752,Electrical repair shops,7912,True,True
+760,Miscellaneous repair services,32678,True,True
+761,Private households,39654,True,True
+762,Hotels and motels,89287,True,True
+770,"Lodging places, except hotels and motels",5412,True,True
+771,"Laundry, cleaning, and garment services",16057,True,True
+772,Beauty shops,59755,True,True
+780,Barber shops,6859,True,True
+781,Funeral service and crematories,7254,True,True
+782,Shoe repair shops,35,True,False
+791,Miscellaneous personal services,57477,True,True
+800,Theaters and motion pictures,23011,True,True
+801,Video tape rental,489,True,False
+802,Bowling centers,2217,True,True
+810,Miscellaneous entertainment and recreation services,157178,True,True
+812,Offices and clinics of physicians,96430,True,True
+820,Offices and clinics of dentists,57481,True,True
+821,Offices and clinics of chiropractors,9015,True,True
+822,Offices and clinics of optometrists,9262,True,True
+830,"Offices and clinics of health practitioners, n.e.c.",21120,True,True
+831,Hospitals,459411,True,True
+832,Nursing and personal care facilities,101601,True,True
+840,"Health services, n.e.c.",309789,True,True
+841,Legal services,101118,True,True
+842,Elementary and secondary schools,598732,True,True
+850,Colleges and universities,229262,True,True
+851,Vocational schools,6217,True,True
+852,Libraries,12470,True,True
+860,"Educational services, n.e.c.",47856,True,True
+861,Job training and vocational rehabilitation services,7634,True,True
+862,Child day care services,90529,True,True
+870,"Residential care facilities, without nursing",53801,True,True
+871,"Social services, n.e.c.",111766,True,True
+872,"Museums, art galleries, and zoos",21880,True,True
+873,Labor unions,5166,True,True
+880,Religious organizations,57418,True,True
+881,"Membership organizations, n.e.c.",66261,True,True
+882,"Engineering, architectural, and surveying services",107675,True,True
+890,"Accounting, auditing, and bookkeeping services",68691,True,True
+891,"Research, development, and testing services",44276,True,True
+892,Management and public relations services,105004,True,True
+900,Executive and legislative offices,79106,True,True
+901,"General government, n.e.c.",9059,True,True
+910,"Justice, public order, and safety",179443,True,True
+921,"Public finance, taxation, and monetary policy",23359,True,True
+922,Administration of human resources programs,79376,True,True
+930,Administration of environmental quality and housing programs,24072,True,True
+931,Administration of economic programs,45793,True,True
+932,National security and international affairs,67929,True,True
+952,"Armed Forces, branch not specified",1703,True,True
