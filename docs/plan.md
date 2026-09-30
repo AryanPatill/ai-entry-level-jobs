@@ -5,9 +5,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 3, data acquisition
-- **Last completed step:** 4b, IND1990 mapped to the six preregistered sectors
-- **Next step:** Phase 3, final step: the data dictionary (`data_dictionary.md`)
+- **Current phase:** 4, crosswalks and exposure mapping (not started)
+- **Last completed step:** Phase 3 step 5, data dictionary filled from the DDI codebook
+- **Next step:** Phase 4, blocked on the Eloundou `[verify]` item below (Aryan's decision)
 
 ## Phases
 
@@ -16,7 +16,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 0 | Setup questions | Environment recorded | Done |
 | 1 | Research design | `preregistration.md` v1.0 | Done |
 | 2 | Environment | Repo, venv, git, config | Done |
-| 3 | Data acquisition | Raw Parquet, sector map, data dictionary | In progress |
+| 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
 | 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Not started |
 | 5 | Cleaning and sample construction | Analysis panel | Not started |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
@@ -38,7 +38,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 3 | Fixed-width converted to Parquet; structural checks | Done |
 | 4a | IND1990 codes listed with codebook labels | Done |
 | 4b | Codes mapped to the six sectors (Rule A) | Done |
-| 5 | Data dictionary | Not started |
+| 5 | Data dictionary | Done |
 
 ## Open `[verify]` items carried forward
 

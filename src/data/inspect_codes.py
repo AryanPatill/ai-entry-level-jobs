@@ -72,6 +72,16 @@ def main() -> None:
         cells = "   ".join(f"{shares[year].get(age, float('nan')):7.1%}" for age in range(22, 26))
         print(f"  {year}   {cells}")
 
+    # 5. Universes: the DDI has no <universe> element, so show which EMPSTAT codes get
+    #    an NIU code in each job variable. Shares within EMPSTAT only, all months pooled.
+    print("\nNIU share within each EMPSTAT code (OCC and IND use 0 as NIU):")
+    niu = {"LABFORCE": 0, "CLASSWKR": 0, "OCC2010": 9999, "OCC": 0,
+           "IND1990": 0, "IND": 0, "UHRSWORK1": 999}
+    cols = ", ".join(f"AVG(CASE WHEN {v} = {c} THEN 1.0 ELSE 0.0 END)" for v, c in niu.items())
+    print("  EMPSTAT  " + "".join(f"{v:>10}" for v in niu))
+    for code, *s in con.execute(f"SELECT EMPSTAT, {cols} FROM {src} GROUP BY 1 ORDER BY 1").fetchall():
+        print(f"  {code:>3} {emp.get(int(code), '')[:4]:4s} " + "".join(f"{x:>10.1%}" for x in s))
+
 
 if __name__ == "__main__":
     main()

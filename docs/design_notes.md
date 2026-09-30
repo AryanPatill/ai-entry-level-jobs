@@ -55,3 +55,21 @@ Source: src/data/convert_to_parquet.py and src/data/inspect_codes.py.
 - Effect: post-treatment months have roughly 25-35% fewer records than the 2015 baseline,
   so precision is lowest where the effect would appear. Feeds the minimum detectable
   effect check at the end of Phase 5 (preregistration Section 16).
+
+## 2026-09-30: universes and codes for the data dictionary (code coverage only)
+
+Source: the DDI codebook and src/data/inspect_codes.py section 5.
+
+- The DDI codebook has no `<universe>` element. Universes in `data_dictionary.md` come from
+  the variable description text or from NIU shares within EMPSTAT codes, and each is marked.
+- Section 6 places the unemployed by last occupation. New entrants (EMPSTAT 22) are always
+  OCC2010 NIU, so they drop out of occupation cells, which matches the preregistered
+  "people with no occupation are excluded". 0.3% of experienced unemployed (EMPSTAT 21) also
+  have OCC2010 = 9999 despite a nonzero OCC: a harmonisation gap for the Phase 4 coverage report.
+- About 1-3.5% of people not in the labor force carry an occupation and industry (most recent
+  job). They are outside the Section 4 sample, which is wage and salary employees.
+- IND (raw industry) changes scheme in 2014, 2020 and 2025. The sector map uses IND1990, which
+  is harmonised; any IND cross-check (Section 15) must handle all three breaks.
+- EDUC, CLASSWKR and UHRSWORK1 each need a code rule in Phase 5 (bachelor's-or-higher codes;
+  wage and salary codes; handling of 997 "hours vary" and 000 among the employed). Codes
+  present are listed in `data_dictionary.md`. These rules are Aryan's to set.
