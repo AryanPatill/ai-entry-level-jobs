@@ -6,9 +6,10 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 ## Where the project stands
 
 - **Current phase:** 4, crosswalks and exposure mapping
-- **Last completed step:** Phase 4 step 2a, Census crosswalk downloaded, hash-verified, structure inspected
-- **Next step:** Phase 4 step 2b, build the OCC2010 -> SOC 2018 map; blocked on Aryan's rule
-  for Census aggregate SOC codes (see `design_notes.md`, 2026-09-30 crosswalk structure)
+- **Last completed step:** Phase 4 step 2a, all three source files hash-verified; wage and salary
+  rule set and its CLASSWKR by-year check run
+- **Next step:** Phase 4 step 2b, build the 2010 -> 2018 Census map; blocked on Aryan choosing
+  how to read split and merge rows in the Census crosswalk (row layout is ambiguous)
 
 ## Phases
 
@@ -47,7 +48,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 |---|---|---|
 | 1 | Exposure file downloaded, SHA-256 verified; column and code system set | Done |
 | 2a | Census crosswalk file chosen, downloaded, hash-verified; sheets inspected | Done |
-| 2b | OCC2010 -> SOC 2018 map (aggregate SOC rule: Aryan) | Blocked |
+| 2b | OCC2010 -> SOC 2018 map (aggregate SOC rule set; split/merge row rule: Aryan) | Blocked |
 | 3 | Exposure merged to OCC2010; coverage report: matched share of wage and salary employment ages 22-64, unmatched OCC2010 codes with labels, `n_soc_targets` distribution | Not started |
 | 4 | Exposure quintiles, only after the coverage report is reviewed | Not started |
 

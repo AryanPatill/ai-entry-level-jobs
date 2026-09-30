@@ -14,6 +14,7 @@ from ipumspy import readers
 
 from src.data.convert_to_parquet import locate_files
 from src.data.ipums_extract import load_log
+from src.utils.config import load_settings
 
 
 def labels_for(ddi, name: str) -> dict[int, str]:
@@ -81,6 +82,26 @@ def main() -> None:
     print("  EMPSTAT  " + "".join(f"{v:>10}" for v in niu))
     for code, *s in con.execute(f"SELECT EMPSTAT, {cols} FROM {src} GROUP BY 1 ORDER BY 1").fetchall():
         print(f"  {code:>3} {emp.get(int(code), '')[:4]:4s} " + "".join(f"{x:>10.1%}" for x in s))
+
+    # 6. CLASSWKR codes by year, before the wage-and-salary filter is applied. Any code used
+    #    in some years but not in settings.design.wage_salary_classwkr would be dropped
+    #    silently, especially the aggregate codes (20, 21, 24).
+    cw = labels_for(ddi, "CLASSWKR")
+    keep = set(load_settings()["design"]["wage_salary_classwkr"])
+    counts: dict[int, dict[int, int]] = {}
+    for year, code, n in con.execute(
+        f"SELECT YEAR, CLASSWKR, COUNT(*) FROM {src} GROUP BY 1, 2 ORDER BY 1, 2"
+    ).fetchall():
+        counts.setdefault(int(code), {})[year] = n
+    years = sorted({y for by_year in counts.values() for y in by_year})
+    print(f"\nCLASSWKR records by year (* = in wage_salary_classwkr {sorted(keep)}):")
+    print("  code  label" + " " * 29 + "".join(f"{y:>9}" for y in years))
+    for code in sorted(counts):
+        mark = "*" if code in keep else " "
+        cells = "".join(f"{counts[code].get(y, 0):>9,}" for y in years)
+        print(f" {mark}{code:>3}  {cw.get(code, '(no label)')[:34]:34s}{cells}")
+    absent = sorted(set(cw) - set(counts))
+    print("  labelled in DDI, never used: " + ", ".join(f"{c} {cw[c]}" for c in absent))
 
 
 if __name__ == "__main__":
