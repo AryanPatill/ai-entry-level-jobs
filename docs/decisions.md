@@ -32,3 +32,6 @@ Research design choices are in `preregistration.md`. Facts learned from data are
 | 2026-09-21 | Single zstd Parquet file, written in chunks via a temporary file | Fast column reads; a crash cannot leave a half-written file |
 | 2026-09-21 | Sector Rule A: follow NAICS where it disagrees with the 1990 grouping | Section 15 names sectors in NAICS terms; keeps results comparable to published sector series |
 | 2026-09-21 | Tech and finance (Section 12, threat 1) = sectors 1 and 2 | One definition used for both purposes |
+| 2026-09-30 | Exposure file: `occ_level.csv` from openai/GPTs-are-GPTs (https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv), downloaded 2026-09-30, SHA-256 `40c74f53de40aec91c0017d80690cbba915f83a8bb414bcf2f884692f1749acb`; 923 rows | The paper's own repository; the hash pins the exact version, and the download fails if it differs |
+| 2026-09-30 | Primary exposure column `dv_rating_beta` (GPT-4 rating, E1 + 0.5*E2) | Section 5's "GPT-4 beta"; resolves its `[verify]` |
+| 2026-09-30 | Exposure codes are O*NET-SOC 2019 (8-digit); chain OCC2010 -> 2010 Census occupation -> SOC 2018 -> O*NET-SOC 2019; `dv_rating_beta` averaged (unweighted) across 8-digit variants within each 6-digit SOC before merging to OCC2010 | Matches the file's code system; SOC 2018 is the common key |

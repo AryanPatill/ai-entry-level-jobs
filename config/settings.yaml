@@ -30,6 +30,14 @@ design:
   # Section 5: exposure quintiles
   quintile_cutoff_ages: [22, 64]
   quintile_cutoff_window: ["2015-01", "2020-02"]
+  exposure:                      # primary measure: Eloundou et al., GPT-4 beta (set by Aryan 2026-09-30)
+    url: https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv
+    sha256: 40c74f53de40aec91c0017d80690cbba915f83a8bb414bcf2f884692f1749acb
+    file: eloundou/occ_level.csv   # under paths.raw; never committed
+    code_column: "O*NET-SOC Code"
+    code_system: O*NET-SOC 2019    # 8-digit, e.g. 15-1252.00
+    score_column: dv_rating_beta   # GPT-4 rating, E1 + 0.5*E2
+    soc6_aggregation: unweighted_mean   # across 8-digit variants within each 6-digit SOC
 
   # Section 7: treatment timing
   treatment_month: "2022-12"

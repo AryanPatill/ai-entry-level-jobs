@@ -55,6 +55,19 @@ Full code lists for large variables are in the codebook, not here.
 `CPSIDP` matters later: the CPS follows a household for several months, so the same person
 appears repeatedly. Whether this is used for panel checks is `TBD` in Phase 5.
 
+## Exposure file (Eloundou et al.)
+
+Source, hash and download date in `decisions.md`; settings in `config/settings.yaml`
+(`design.exposure`). 923 rows, one per O*NET-SOC 2019 code (798 distinct 6-digit SOC).
+
+| Column | What it is | Use |
+|---|---|---|
+| `O*NET-SOC Code` | O*NET-SOC 2019, 8-digit (e.g. `15-1252.00`) | Merge key; first 7 characters give the 6-digit SOC |
+| `Title` | O*NET occupation title | Labels only |
+| `dv_rating_beta` | GPT-4 rating, beta = E1 + 0.5*E2 | S.5 primary exposure measure; averaged unweighted within 6-digit SOC |
+| `human_rating_beta` | The same beta construct, rated by human annotators | Candidate robustness measure; not used yet |
+| `dv_rating_alpha`, `dv_rating_gamma`, `human_rating_alpha`, `human_rating_gamma` | Alpha (E1 only) and gamma (E1 + E2) variants | Not used |
+
 ## Derived variables
 
 Added as the analysis is built. Each entry names the module that creates it.

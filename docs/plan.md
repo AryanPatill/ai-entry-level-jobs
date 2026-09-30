@@ -5,9 +5,10 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 4, crosswalks and exposure mapping (not started)
-- **Last completed step:** Phase 3 step 5, data dictionary filled from the DDI codebook
-- **Next step:** Phase 4, blocked on the Eloundou `[verify]` item below (Aryan's decision)
+- **Current phase:** 4, crosswalks and exposure mapping
+- **Last completed step:** Phase 4 step 1, exposure file downloaded and hash-verified
+- **Next step:** Phase 4 step 2, OCC2010 -> SOC 2018 crosswalk; blocked on Aryan choosing
+  the Census-to-SOC crosswalk file
 
 ## Phases
 
@@ -17,7 +18,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 1 | Research design | `preregistration.md` v1.0 | Done |
 | 2 | Environment | Repo, venv, git, config | Done |
 | 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
-| 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Not started |
+| 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | In progress |
 | 5 | Cleaning and sample construction | Analysis panel | Not started |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Not started |
@@ -40,12 +41,20 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 4b | Codes mapped to the six sectors (Rule A) | Done |
 | 5 | Data dictionary | Done |
 
+## Phase 4 steps
+
+| Step | What | Status |
+|---|---|---|
+| 1 | Exposure file downloaded, SHA-256 verified; column and code system set | Done |
+| 2 | OCC2010 -> SOC 2018 crosswalk (file choice: Aryan) | Blocked |
+| 3 | Exposure merged to OCC2010; coverage report (matched employment share, unmatched codes) | Not started |
+| 4 | Exposure quintiles, only after the coverage report is reviewed | Not started |
+
 ## Open `[verify]` items carried forward
 
 - OCC2010 coverage across the 2020 code change: harmonised codes exist; the empirical
   coverage report is due in Phase 4
 - pyfixest Poisson with three-way fixed effects and weights
-- Eloundou exposure file: column names and occupation code system
 - Teleworkability data source
 - HonestDiD availability in Python
 
