@@ -12,6 +12,7 @@ contourpy==1.4.0
 cycler==0.12.1
 debugpy==1.8.22
 duckdb==1.5.5
+et_xmlfile==2.0.0
 executing==2.2.1
 faicons==0.2.2
 fonttools==4.65.0
@@ -45,6 +46,7 @@ nest-asyncio2==1.7.2
 nokap==0.1.0
 numba==0.67.0
 numpy==2.5.3
+openpyxl==3.1.5
 packaging==26.3
 pandas==2.3.3
 parso==0.8.7

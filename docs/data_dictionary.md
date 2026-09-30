@@ -68,6 +68,18 @@ Source, hash and download date in `decisions.md`; settings in `config/settings.y
 | `human_rating_beta` | The same beta construct, rated by human annotators | Candidate robustness measure; not used yet |
 | `dv_rating_alpha`, `dv_rating_gamma`, `human_rating_alpha`, `human_rating_gamma` | Alpha (E1 only) and gamma (E1 + E2) variants | Not used |
 
+## Occupation crosswalk (Census 2018 code list)
+
+Source, hash and download date in `decisions.md`; settings in `config/settings.yaml`
+(`design.occ_crosswalk`). Sheets: `OVERVIEW`, `2018 Census Occ Code List`,
+`Summary of 2018 Changes`, `2010 to 2018 Crosswalk ` (trailing space), `Occ Code Changes`.
+The project uses `2010 to 2018 Crosswalk `; header on row 4.
+
+| Column | Use |
+|---|---|
+| `2010 SOC code`, `2010 Census Code`, `2010 Census Title` | Source side; filled only on the first row of a split |
+| `2018 SOC Code`, `2018 Census Code`, `2018 Census Title` | Target side; continuation rows of a split have the 2010 side blank. Some SOC codes are Census aggregates (see `design_notes.md`) |
+
 ## Derived variables
 
 Added as the analysis is built. Each entry names the module that creates it.

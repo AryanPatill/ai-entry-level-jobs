@@ -50,7 +50,7 @@ ai-entry-level-jobs/
 │   │   ├── ipums_extract.py       submit, status, download, extract log
 │   │   ├── convert_to_parquet.py  fixed-width -> Parquet, structural checks
 │   │   ├── inspect_codes.py       code-level checks (NIU, universes, sample size)
-│   │   ├── download_exposure.py   Eloundou exposure file, SHA-256 verified
+│   │   ├── download_sources.py    Eloundou exposure file, Census occ crosswalk; SHA-256 verified
 │   │   └── list_industry_codes.py dump IND1990 codes with codebook labels
 │   ├── crosswalks/
 │   │   └── industry_sectors.py    IND1990 -> six preregistered sectors
@@ -73,7 +73,7 @@ ai-entry-level-jobs/
 | Submit / check / download | `python -m src.data.ipums_extract submit \| status \| download` |
 | Convert and check | `python -m src.data.convert_to_parquet` (`--force` to rebuild) |
 | Code-level checks | `python -m src.data.inspect_codes` |
-| Exposure file (download + hash check) | `python -m src.data.download_exposure` |
+| Exposure file and occupation crosswalk (download + hash check) | `python -m src.data.download_sources` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

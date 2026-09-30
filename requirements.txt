@@ -7,6 +7,7 @@ numpy>=2.0,<3.0
 pyarrow>=23.0,<24.0
 scipy
 duckdb
+openpyxl          # pandas.read_excel for the Census occupation crosswalk (Phase 4)
 
 # --- Data access ---
 ipumspy==0.8.2

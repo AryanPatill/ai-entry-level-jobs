@@ -73,3 +73,21 @@ Source: the DDI codebook and src/data/inspect_codes.py section 5.
 - EDUC, CLASSWKR and UHRSWORK1 each need a code rule in Phase 5 (bachelor's-or-higher codes;
   wage and salary codes; handling of 997 "hours vary" and 000 among the employed). Codes
   present are listed in `data_dictionary.md`. These rules are Aryan's to set.
+
+## 2026-09-30: Census 2010-to-2018 crosswalk structure (codes only, no scores)
+
+- The Census file does contain a 2010 -> 2018 Census occupation conversion, on sheet
+  `2010 to 2018 Crosswalk ` (1,068 rows including a legend), with SOC 2010 and SOC 2018 on
+  each side. A second file is not needed for 2010 Census -> 2018 Census -> SOC 2018.
+- Split codes use blank-continuation rows: the 2010 code sits on the first row and its 2018
+  targets on the rows below, with the 2010 columns empty. Parsing must forward-fill the 2010 side.
+- 156 of the 568 distinct `2018 SOC Code` values are Census aggregates, not detailed SOC
+  codes, so they match nothing in the Eloundou file. Two forms:
+  - Numeric codes that are not detailed SOC 2018 occupations (118; mostly broad groups ending
+    in 0 such as `11-2030`, plus a few such as `21-1019` and `19-1099`); some list their
+    detailed SOC codes inside the title text, for example "Public Relations Managers (11-2032)".
+  - Residual codes with X (38, for example `15-124X`, `13-20XX`): "all other in this group
+    except codes listed separately".
+- 435 distinct detailed SOC codes appear in parentheses inside `2018 Census Title`.
+- Military codes (55-xxxx) have no O*NET match; Armed Forces are outside the sample anyway.
+- How to expand aggregates to detailed SOC is a design choice and has not been made.

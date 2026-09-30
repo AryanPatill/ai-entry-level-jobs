@@ -6,9 +6,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 ## Where the project stands
 
 - **Current phase:** 4, crosswalks and exposure mapping
-- **Last completed step:** Phase 4 step 1, exposure file downloaded and hash-verified
-- **Next step:** Phase 4 step 2, OCC2010 -> SOC 2018 crosswalk; blocked on Aryan choosing
-  the Census-to-SOC crosswalk file
+- **Last completed step:** Phase 4 step 2a, Census crosswalk downloaded, hash-verified, structure inspected
+- **Next step:** Phase 4 step 2b, build the OCC2010 -> SOC 2018 map; blocked on Aryan's rule
+  for Census aggregate SOC codes (see `design_notes.md`, 2026-09-30 crosswalk structure)
 
 ## Phases
 
@@ -46,9 +46,15 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | Step | What | Status |
 |---|---|---|
 | 1 | Exposure file downloaded, SHA-256 verified; column and code system set | Done |
-| 2 | OCC2010 -> SOC 2018 crosswalk (file choice: Aryan) | Blocked |
-| 3 | Exposure merged to OCC2010; coverage report (matched employment share, unmatched codes) | Not started |
+| 2a | Census crosswalk file chosen, downloaded, hash-verified; sheets inspected | Done |
+| 2b | OCC2010 -> SOC 2018 map (aggregate SOC rule: Aryan) | Blocked |
+| 3 | Exposure merged to OCC2010; coverage report: matched share of wage and salary employment ages 22-64, unmatched OCC2010 codes with labels, `n_soc_targets` distribution | Not started |
 | 4 | Exposure quintiles, only after the coverage report is reviewed | Not started |
+
+## Possible robustness checks (not preregistered, not implemented)
+
+- Employment-weighted aggregation of exposure across O*NET-SOC variants and SOC targets,
+  instead of unweighted means. Would need a deviation entry if adopted.
 
 ## Open `[verify]` items carried forward
 

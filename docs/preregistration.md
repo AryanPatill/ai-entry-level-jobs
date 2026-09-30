@@ -55,7 +55,8 @@ overturn it. Otherwise it is reported as descriptive.
 
 - **Occupation code:** IPUMS harmonized `OCC2010`, consistent across the January 2020 code
   change. Coverage for 2020 onward to be checked in Phase 3 [verify].
-- **Primary exposure measure:** Eloundou et al. (2023/2024), GPT-4 β score [verify exact column name].
+- **Primary exposure measure:** Eloundou et al. (2023/2024), GPT-4 β score: column `dv_rating_beta`
+  (GPT-4 rated, E1 + 0.5*E2), on O*NET-SOC 2019 codes collapsed to 6-digit SOC 2018.
 - **Robustness measures:** Felten et al. AIOE (LLM version if available); Anthropic Economic Index
   (labeled post-treatment, because it is measured after December 2022).
 - **Mapping:** `OCC2010` → SOC → O*NET-SOC, with a coverage report (share of employment matched,
@@ -242,3 +243,4 @@ Same ±5% three-verdict rule.
 |---|---|---|
 | 2026-09-17 | 1.0 | Initial preregistration |
 | 2026-09-21 | 1.0 | Section 3 end month filled on pull date (2026-08), as specified. No design change. |
+| 2026-09-30 | 1.0 | Section 5 `[verify]` on the exposure column resolved: `dv_rating_beta`, O*NET-SOC 2019 collapsed to 6-digit SOC 2018. Resolves a placeholder; no design change. Source details in `decisions.md`. |
