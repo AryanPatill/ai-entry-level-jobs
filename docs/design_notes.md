@@ -91,3 +91,31 @@ Source: the DDI codebook and src/data/inspect_codes.py section 5.
 - 435 distinct detailed SOC codes appear in parentheses inside `2018 Census Title`.
 - Military codes (55-xxxx) have no O*NET match; Armed Forces are outside the sample anyway.
 - How to expand aggregates to detailed SOC is a design choice and has not been made.
+
+## 2026-09-21: industry sector mapping (preregistration Section 15)
+
+Source: src/crosswalks/industry_sectors.py; full code list in docs/industry_sector_map.csv.
+
+### Rule A: follow NAICS where the 1990 grouping disagrees
+- Section 15 names its sectors in NAICS terms, but IND1990 uses the SIC-based 1990 Census
+  scheme. Where the two disagree, codes follow NAICS. Chosen by Aryan, 2026-09-21.
+- Moved by Rule A: 641 eating and drinking places (retail -> all other, NAICS 722);
+  171 newspaper publishing, 800 theaters and motion pictures, 852 libraries, and
+  12 veterinary services (all -> sector 1).
+- Mixed codes that cannot be split stay in their 1990 group: 172 printing and publishing
+  except newspapers stays in manufacturing.
+- Code 0 (NIU) gets no sector. Code 952 (Armed Forces, branch not specified; 1,703
+  civilians, likely last job military) goes to all other.
+
+### Tech and finance for the threat-1 test (Section 12)
+- Section 12 says "drop tech and finance industries" without defining them.
+  Interpretation: tech and finance = sectors 1 and 2 from this mapping, so both uses
+  share one definition.
+- Sector 1 includes some industries that are not "tech" in the everyday sense
+  (veterinary services, cinemas, libraries; about 9% of sector 1). Accepted as the cost
+  of a consistent, NAICS-based rule.
+
+### 2020 industry code change
+- Only 3 IND1990 codes appear before 2020 but not after (600, 782, 801); none appear only
+  after. Each stays in the same sector across the break, so sector-level series are not
+  affected by the harmonisation.
