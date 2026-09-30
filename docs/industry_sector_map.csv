@@ -1,0 +1,224 @@
+ind1990,label,sector,sector_name,n_people
+0,NIU,,No industry (NIU),2612668
+10,"Agricultural production, crops",6,All other,84645
+11,"Agricultural production, livestock",6,All other,57162
+12,Veterinary services,1,Information and professional/technical services,23140
+20,Landscape and horticultural services,6,All other,83069
+31,Forestry,6,All other,4816
+32,"Fishing, hunting, and trapping",6,All other,5089
+40,Metal mining,6,All other,4014
+41,Coal mining,6,All other,9998
+42,Oil and gas extraction,6,All other,50771
+50,"Nonmetallic mining and quarrying, except fuels",6,All other,8348
+60,All construction,6,All other,691382
+100,Meat products,3,Manufacturing,36759
+101,Dairy products,3,Manufacturing,11230
+102,"Canned, frozen, and preserved fruits and vegetables",3,Manufacturing,10400
+110,Grain mill products,3,Manufacturing,10894
+111,Bakery products,3,Manufacturing,12143
+112,Sugar and confectionery products,3,Manufacturing,5541
+120,Beverage industries,3,Manufacturing,17024
+121,Misc. food preparations and kindred products,3,Manufacturing,13729
+122,"Food industries, n.s.",3,Manufacturing,4178
+130,Tobacco manufactures,3,Manufacturing,1048
+132,Knitting mills,3,Manufacturing,1091
+140,"Dyeing and finishing textiles, except wool and knit goods",3,Manufacturing,981
+141,Carpets and rugs,3,Manufacturing,3119
+142,"Yarn, thread, and fabric mills",3,Manufacturing,6287
+150,Miscellaneous textile mill products,3,Manufacturing,4714
+151,"Apparel and accessories, except knit",3,Manufacturing,12664
+160,"Pulp, paper, and paperboard mills",3,Manufacturing,13399
+161,Miscellaneous paper and pulp products,3,Manufacturing,5805
+162,Paperboard containers and boxes,3,Manufacturing,5220
+171,Newspaper publishing and printing,1,Information and professional/technical services,12956
+172,"Printing, publishing, and allied industries, except newspapers",3,Manufacturing,43127
+180,"Plastics, synthetics, and resins",3,Manufacturing,33139
+181,Drugs,3,Manufacturing,34181
+182,Soaps and cosmetics,3,Manufacturing,8447
+190,"Paints, varnishes, and related products",3,Manufacturing,3741
+191,Agricultural chemicals,3,Manufacturing,2600
+192,Industrial and miscellaneous chemicals,3,Manufacturing,26404
+200,Petroleum refining,3,Manufacturing,12654
+201,Miscellaneous petroleum and coal products,3,Manufacturing,1323
+210,Tires and inner tubes,3,Manufacturing,4101
+211,"Other rubber products, and plastics footwear and belting",3,Manufacturing,4499
+220,Leather tanning and finishing,3,Manufacturing,1445
+221,"Footwear, except rubber and plastic",3,Manufacturing,2053
+230,Logging,3,Manufacturing,7757
+231,"Sawmills, planing mills, and millwork",3,Manufacturing,11456
+232,Wood buildings and mobile homes,3,Manufacturing,2216
+241,Miscellaneous wood products,3,Manufacturing,13989
+242,Furniture and fixtures,3,Manufacturing,26101
+250,Glass and glass products,3,Manufacturing,8817
+251,"Cement, concrete, gypsum, and plaster products",3,Manufacturing,10425
+252,Structural clay products,3,Manufacturing,1666
+261,Pottery and related products,3,Manufacturing,1713
+262,Misc. nonmetallic mineral and stone products,3,Manufacturing,4922
+270,"Blast furnaces, steelworks, rolling and finishing mills",3,Manufacturing,17532
+271,Iron and steel foundries,3,Manufacturing,4584
+272,Primary aluminum industries,3,Manufacturing,4094
+280,Other primary metal industries,3,Manufacturing,3310
+281,"Cutlery, handtools, and general hardware",3,Manufacturing,2830
+282,Fabricated structural metal products,3,Manufacturing,21234
+290,Screw machine products,3,Manufacturing,17369
+291,Metal forgings and stampings,3,Manufacturing,2693
+292,Ordnance,3,Manufacturing,4149
+300,Miscellaneous fabricated metal products,3,Manufacturing,22854
+301,"Metal industries, n.s.",3,Manufacturing,1421
+310,Engines and turbines,3,Manufacturing,3411
+311,Farm machinery and equipment,3,Manufacturing,9856
+312,Construction and material handling machines,3,Manufacturing,11112
+320,Metalworking machinery,3,Manufacturing,7428
+322,Computers and related equipment,3,Manufacturing,11650
+331,"Machinery, except electrical, n.e.c.",3,Manufacturing,43986
+332,"Machinery, n.s.",3,Manufacturing,4745
+340,Household appliances,3,Manufacturing,4569
+341,"Radio, TV, and communication equipment",3,Manufacturing,7061
+342,"Electrical machinery, equipment, and supplies, n.e.c.",3,Manufacturing,61909
+351,Motor vehicles and motor vehicle equipment,3,Manufacturing,74778
+352,Aircraft and parts,3,Manufacturing,43696
+360,Ship and boat building and repairing,3,Manufacturing,13007
+361,Railroad locomotives and equipment,3,Manufacturing,1723
+362,"Guided missiles, space vehicles, and parts",3,Manufacturing,10314
+370,Cycles and miscellaneous transportation equipment,3,Manufacturing,2397
+371,Scientific and controlling instruments,3,Manufacturing,12907
+372,"Medical, dental, and optical instruments and supplies",3,Manufacturing,39004
+390,"Toys, amusement, and sporting goods",3,Manufacturing,7142
+391,Miscellaneous manufacturing industries,3,Manufacturing,31108
+392,"Manufacturing industries, n.s.",3,Manufacturing,17323
+400,Railroads,6,All other,18373
+401,Bus service and urban transit,6,All other,28121
+402,Taxicab service,6,All other,24518
+410,Trucking service,6,All other,183041
+411,Warehousing and storage,6,All other,37871
+412,U.S. Postal Service,6,All other,42853
+420,Water transportation,6,All other,4874
+421,Air transportation,6,All other,38149
+422,"Pipe lines, except natural gas",6,All other,4309
+432,Services incidental to transportation,6,All other,71252
+440,Radio and television broadcasting and cable,1,Information and professional/technical services,40571
+441,Wired communications,1,Information and professional/technical services,31195
+442,Telegraph and miscellaneous communications services,1,Information and professional/technical services,26723
+450,Electric light and power,6,All other,50564
+451,Gas and steam supply systems,6,All other,8902
+452,"Electric and gas, and other combinations",6,All other,6880
+470,Water supply and irrigation,6,All other,16896
+471,Sanitary services,6,All other,40046
+472,"Utilities, n.s.",6,All other,1842
+500,Motor vehicles and equipment,4,Wholesale and retail trade,9496
+501,Furniture and home furnishings,4,Wholesale and retail trade,3553
+502,Lumber and construction materials,4,Wholesale and retail trade,10244
+510,Professional and commercial equipment and supplies,4,Wholesale and retail trade,19808
+511,"Metals and minerals, except petroleum",4,Wholesale and retail trade,2840
+512,Electrical goods,4,Wholesale and retail trade,11544
+521,"Hardware, plumbing and heating supplies",4,Wholesale and retail trade,9584
+530,"Machinery, equipment, and supplies",4,Wholesale and retail trade,23646
+531,Scrap and waste materials,4,Wholesale and retail trade,5845
+532,"Miscellaneous wholesale, durable goods",4,Wholesale and retail trade,12879
+540,Paper and paper products,4,Wholesale and retail trade,2947
+541,"Drugs, chemicals, and allied products",4,Wholesale and retail trade,13684
+542,"Apparel, fabrics, and notions",4,Wholesale and retail trade,5300
+550,Groceries and related products,4,Wholesale and retail trade,51003
+551,Farm-product raw materials,4,Wholesale and retail trade,5477
+552,Petroleum products,4,Wholesale and retail trade,8543
+560,Alcoholic beverages,4,Wholesale and retail trade,7931
+561,Farm supplies,4,Wholesale and retail trade,3397
+562,"Miscellaneous wholesale, nondurable goods",4,Wholesale and retail trade,10742
+580,Lumber and building material retailing,4,Wholesale and retail trade,59685
+581,Hardware stores,4,Wholesale and retail trade,12662
+582,Retail nurseries and garden stores,4,Wholesale and retail trade,18572
+591,Department stores,4,Wholesale and retail trade,126929
+600,Miscellaneous general merchandise stores,4,Wholesale and retail trade,21415
+601,Grocery stores,4,Wholesale and retail trade,147095
+610,Retail bakeries,4,Wholesale and retail trade,13773
+611,"Food stores, n.e.c.",4,Wholesale and retail trade,13600
+612,Motor vehicle dealers,4,Wholesale and retail trade,76536
+620,Auto and home supply stores,4,Wholesale and retail trade,30158
+621,Gasoline service stations,4,Wholesale and retail trade,31565
+622,Miscellaneous vehicle dealers,4,Wholesale and retail trade,10282
+623,"Apparel and accessory stores, except shoe",4,Wholesale and retail trade,45669
+630,Shoe stores,4,Wholesale and retail trade,6514
+631,Furniture and home furnishings stores,4,Wholesale and retail trade,30444
+632,Household appliance stores,4,Wholesale and retail trade,3617
+633,"Radio, TV, and computer stores",4,Wholesale and retail trade,28844
+640,Music stores,4,Wholesale and retail trade,2466
+641,Eating and drinking places,6,All other,436453
+642,Drug stores,4,Wholesale and retail trade,51899
+650,Liquor stores,4,Wholesale and retail trade,9201
+651,"Sporting goods, bicycles, and hobby stores",4,Wholesale and retail trade,26671
+652,Book and stationery stores,4,Wholesale and retail trade,13283
+660,Jewelry stores,4,Wholesale and retail trade,11002
+661,"Gift, novelty, and souvenir shops",4,Wholesale and retail trade,7584
+662,"Sewing, needlework, and piece goods stores",4,Wholesale and retail trade,3193
+663,Catalog and mail order houses,4,Wholesale and retail trade,26798
+670,Vending machine operators,4,Wholesale and retail trade,2417
+671,Direct selling establishments,4,Wholesale and retail trade,9120
+672,Fuel dealers,4,Wholesale and retail trade,6853
+681,Retail florists,4,Wholesale and retail trade,5907
+682,Miscellaneous retail stores,4,Wholesale and retail trade,67547
+691,"Retail trade, n.s.",4,Wholesale and retail trade,22107
+700,Banking,2,"Finance, insurance, and real estate",133608
+701,"Savings institutions, including credit unions",2,"Finance, insurance, and real estate",18755
+702,"Credit agencies, n.e.c.",2,"Finance, insurance, and real estate",62549
+710,"Security, commodity brokerage, and investment companies",2,"Finance, insurance, and real estate",85487
+711,Insurance,2,"Finance, insurance, and real estate",172159
+712,"Real estate, including real estate-insurance offices",2,"Finance, insurance, and real estate",156109
+721,Advertising,1,Information and professional/technical services,35367
+722,Services to dwellings and other buildings,6,All other,97660
+731,Personnel supply services,6,All other,61576
+732,Computer and data processing services,1,Information and professional/technical services,214469
+740,Detective and protective services,6,All other,46523
+741,"Business services, n.e.c.",6,All other,129832
+742,"Automotive rental and leasing, without drivers",6,All other,9064
+750,Automobile parking and carwashes,6,All other,8817
+751,Automotive repair and related services,6,All other,78494
+752,Electrical repair shops,6,All other,7912
+760,Miscellaneous repair services,6,All other,32678
+761,Private households,6,All other,39654
+762,Hotels and motels,6,All other,89287
+770,"Lodging places, except hotels and motels",6,All other,5412
+771,"Laundry, cleaning, and garment services",6,All other,16057
+772,Beauty shops,6,All other,59755
+780,Barber shops,6,All other,6859
+781,Funeral service and crematories,6,All other,7254
+782,Shoe repair shops,6,All other,35
+791,Miscellaneous personal services,6,All other,57477
+800,Theaters and motion pictures,1,Information and professional/technical services,23011
+801,Video tape rental,6,All other,489
+802,Bowling centers,6,All other,2217
+810,Miscellaneous entertainment and recreation services,6,All other,157178
+812,Offices and clinics of physicians,5,"Education, health, and social services",96430
+820,Offices and clinics of dentists,5,"Education, health, and social services",57481
+821,Offices and clinics of chiropractors,5,"Education, health, and social services",9015
+822,Offices and clinics of optometrists,5,"Education, health, and social services",9262
+830,"Offices and clinics of health practitioners, n.e.c.",5,"Education, health, and social services",21120
+831,Hospitals,5,"Education, health, and social services",459411
+832,Nursing and personal care facilities,5,"Education, health, and social services",101601
+840,"Health services, n.e.c.",5,"Education, health, and social services",309789
+841,Legal services,1,Information and professional/technical services,101118
+842,Elementary and secondary schools,5,"Education, health, and social services",598732
+850,Colleges and universities,5,"Education, health, and social services",229262
+851,Vocational schools,5,"Education, health, and social services",6217
+852,Libraries,1,Information and professional/technical services,12470
+860,"Educational services, n.e.c.",5,"Education, health, and social services",47856
+861,Job training and vocational rehabilitation services,5,"Education, health, and social services",7634
+862,Child day care services,5,"Education, health, and social services",90529
+870,"Residential care facilities, without nursing",5,"Education, health, and social services",53801
+871,"Social services, n.e.c.",5,"Education, health, and social services",111766
+872,"Museums, art galleries, and zoos",6,All other,21880
+873,Labor unions,6,All other,5166
+880,Religious organizations,6,All other,57418
+881,"Membership organizations, n.e.c.",6,All other,66261
+882,"Engineering, architectural, and surveying services",1,Information and professional/technical services,107675
+890,"Accounting, auditing, and bookkeeping services",1,Information and professional/technical services,68691
+891,"Research, development, and testing services",1,Information and professional/technical services,44276
+892,Management and public relations services,1,Information and professional/technical services,105004
+900,Executive and legislative offices,6,All other,79106
+901,"General government, n.e.c.",6,All other,9059
+910,"Justice, public order, and safety",6,All other,179443
+921,"Public finance, taxation, and monetary policy",6,All other,23359
+922,Administration of human resources programs,6,All other,79376
+930,Administration of environmental quality and housing programs,6,All other,24072
+931,Administration of economic programs,6,All other,45793
+932,National security and international affairs,6,All other,67929
+952,"Armed Forces, branch not specified",6,All other,1703
