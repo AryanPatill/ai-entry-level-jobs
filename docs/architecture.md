@@ -53,7 +53,8 @@ ai-entry-level-jobs/
 │   │   ├── download_sources.py    Eloundou exposure file, Census occ crosswalk; SHA-256 verified
 │   │   └── list_industry_codes.py dump IND1990 codes with codebook labels
 │   ├── crosswalks/
-│   │   └── industry_sectors.py    IND1990 -> six preregistered sectors
+│   │   ├── industry_sectors.py    IND1990 -> six preregistered sectors
+│   │   └── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
 │   ├── analysis/                 Phases 6-10
 │   ├── agents/                   Phase 11
 │   └── utils/config.py           settings loader, REPO_ROOT, .env secrets
@@ -74,6 +75,7 @@ ai-entry-level-jobs/
 | Convert and check | `python -m src.data.convert_to_parquet` (`--force` to rebuild) |
 | Code-level checks | `python -m src.data.inspect_codes` |
 | Exposure file and occupation crosswalk (download + hash check) | `python -m src.data.download_sources` |
+| Occupation -> exposure map and coverage report | `python -m src.crosswalks.occupation_exposure` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

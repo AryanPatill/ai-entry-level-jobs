@@ -91,6 +91,7 @@ Source: the DDI codebook and src/data/inspect_codes.py section 5.
 - 435 distinct detailed SOC codes appear in parentheses inside `2018 Census Title`.
 - Military codes (55-xxxx) have no O*NET match; Armed Forces are outside the sample anyway.
 - How to expand aggregates to detailed SOC is a design choice and has not been made.
+  (Update: set by Aryan the same day; see decisions.md and the crosswalk build note below.)
 
 ## 2026-09-21: industry sector mapping (preregistration Section 15)
 
@@ -119,3 +120,40 @@ Source: src/crosswalks/industry_sectors.py; full code list in docs/industry_sect
 - Only 3 IND1990 codes appear before 2020 but not after (600, 782, 801); none appear only
   after. Each stays in the same sector across the break, so sector-level series are not
   affected by the harmonisation.
+## 2026-09-30: occupation crosswalk build (codes only; scores never printed)
+
+Source: src/crosswalks/occupation_exposure.py; map in docs/occ_soc_map.csv; coverage in
+results/tables/exposure_coverage.md; pinned by tests/test_occupation_exposure.py.
+
+### Split and merge layout
+- The main "2010 to 2018 Crosswalk" sheet puts splits source-first (2010 row, then its 2018
+  targets) and merges target-first (2018 row, then the 2010 codes it absorbs). Row position
+  cannot tell them apart: 0426 sits above its source 0430, and 8990 sits directly under the
+  unrelated row for 8900. Forward-filling the 2010 column there left 58 codes with no target and
+  attached merge targets to the wrong source.
+- "Occ Code Changes" is unambiguous: a blank 2010 code continues a split, a blank 2018 code
+  continues a merge. All 28 merge continuations are named in the merge note above them
+  (8010, for example, merges into 8025). Every half-filled row of the main sheet appears there.
+
+### Aggregate SOC expansion
+- Only 9830 (military) and 9920 (unemployed, never worked) have no SOC code.
+- Every residual X group is disjoint across Census codes and fully covered.
+- Residuals claim longest-prefix first (an implementation choice; see the 51-9199 disagreement below).
+
+### Title parentheticals vs expansion (test only), awaiting Aryan's decision
+- 137 Census codes name detailed SOC codes in their titles; 134 match the expansion once
+  broad codes cited in titles (51-7030) are expanded and a stray space ("(17-3012 )") is allowed.
+- Three disagree; none is patched:
+  - 51-9199 Production Workers, All Other: the title places it under 8990 Other Production
+    Workers (51-91XX); the expansion gives it to 8865 Other Production Equipment Operators
+    (51-919X), because the longer residual prefix claims first.
+  - 53-7065 Stockers and Order Fillers: named in a title inside the 9570 block (53-70XX), but
+    it is 9645's own SOC code, so the exclusion rule keeps it out of 9570. Likely the same
+    row-position ambiguity as above.
+- 61 of 526 scored 2010 Census codes have some SOC targets without an Eloundou score; their
+  score is the mean over scored targets only.
+
+### Unmatched codes
+- All unmatched employed OCC2010 codes are "all other" residual occupations whose SOC targets
+  (xx-xx99) have no Eloundou score. Every employed OCC2010 code is in the Census 2010 list,
+  so the IPUMS May 2012 collapses cause no gaps. Shares are in the coverage report.

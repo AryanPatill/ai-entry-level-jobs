@@ -87,7 +87,9 @@ Added as the analysis is built. Each entry names the module that creates it.
 | Variable | Created by | Definition |
 |---|---|---|
 | `sector` | `src/crosswalks/industry_sectors.py` | IND1990 mapped to the six Section 15 sectors, Rule A |
-| | | further entries added in Phases 4 and 5 |
+| `soc2018`, `n_soc_targets` | `src/crosswalks/occupation_exposure.py` | Detailed SOC 2018 codes reached from a 2010 Census code (= OCC2010), and their count; `docs/occ_soc_map.csv` |
+| `exposure`, `n_soc_scored` | `src/crosswalks/occupation_exposure.py` | Unweighted mean `dv_rating_beta` over the scored SOC targets, and how many were scored; `data/interim/occ2010_exposure.parquet` |
+| | | further entries added in Phase 5 |
 
 ## Known coverage facts
 

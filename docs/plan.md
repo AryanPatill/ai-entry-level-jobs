@@ -6,10 +6,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 ## Where the project stands
 
 - **Current phase:** 4, crosswalks and exposure mapping
-- **Last completed step:** Phase 4 step 2a, all three source files hash-verified; wage and salary
-  rule set and its CLASSWKR by-year check run
-- **Next step:** Phase 4 step 2b, build the 2010 -> 2018 Census map; blocked on Aryan choosing
-  how to read split and merge rows in the Census crosswalk (row layout is ambiguous)
+- **Last completed step:** Phase 4 step 3, exposure map built and coverage report written
+- **Next step:** Phase 4 step 4, exposure quintiles; waits for Aryan to review the coverage
+  report and rule on the 51-9199 and 53-7065 title disagreements (design_notes.md)
 
 ## Phases
 
@@ -48,8 +47,8 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 |---|---|---|
 | 1 | Exposure file downloaded, SHA-256 verified; column and code system set | Done |
 | 2a | Census crosswalk file chosen, downloaded, hash-verified; sheets inspected | Done |
-| 2b | OCC2010 -> SOC 2018 map (aggregate SOC rule set; split/merge row rule: Aryan) | Blocked |
-| 3 | Exposure merged to OCC2010; coverage report: matched share of wage and salary employment ages 22-64, unmatched OCC2010 codes with labels, `n_soc_targets` distribution | Not started |
+| 2b | OCC2010 -> SOC 2018 map (Occ Code Changes for changed codes; BLS expansion) | Done |
+| 3 | Exposure merged to OCC2010; coverage report (`results/tables/exposure_coverage.md`) | Done |
 | 4 | Exposure quintiles, only after the coverage report is reviewed | Not started |
 
 ## Possible robustness checks (not preregistered, not implemented)
