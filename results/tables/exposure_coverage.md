@@ -28,10 +28,10 @@ nothing by age group or exposure level. No quintiles have been computed.
 | SOC targets | 2010 Census codes |
 |---|---|
 | 0 | 2 |
-| 1 | 339 |
-| 2 | 85 |
-| 3 | 53 |
-| 4 | 23 |
+| 1 | 338 |
+| 2 | 88 |
+| 3 | 50 |
+| 4 | 24 |
 | 5 | 13 |
 | 6 | 13 |
 | 7 | 3 |

@@ -11,12 +11,10 @@ pytestmark = pytest.mark.skipif(
     reason="raw crosswalk files not present (data/ is never committed)",
 )
 
-# Disagreements between Census title parentheticals and the structural expansion, reported
-# in design_notes.md (2026-09-30) and awaiting Aryan's decision. Pinned so a NEW mismatch
-# fails; none is patched. 2018 Census code -> (title-only codes, expansion-only codes).
+# Disagreements between Census title parentheticals and the structural expansion that
+# Aryan ruled to keep (design_notes.md, 2026-09-30): 53-7065 stays with 9645, its own Census
+# code. Pinned so a NEW mismatch fails. 2018 Census code -> (title-only, expansion-only).
 KNOWN_TITLE_MISMATCHES = {
-    "8865": ((), ("51-9199",)),
-    "8990": (("51-9199",), ()),
     "9570": (("53-7065",), ()),
 }
 
@@ -76,6 +74,12 @@ def test_merge_continuations_named_in_note(b):
 def test_hand_checked_codes(b, census2010, census2018, soc):
     row = b["occ_map"].set_index("census2010").loc[census2010]
     assert (row.census2018, row.soc2018) == (census2018, soc)
+
+
+def test_override_51_9199_goes_to_8990(b):
+    assert "51-9199" in b["census_detail"]["8990"]
+    assert "51-9199" not in b["census_detail"]["8865"]
+    assert b["census_detail"]["9645"] == {"53-7065"}
 
 
 def test_only_military_and_never_worked_unresolved(b):

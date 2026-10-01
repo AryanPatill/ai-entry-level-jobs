@@ -48,6 +48,9 @@ design:
     sha256: fca2818d691c32777a4cd733a9ab77c8c5bd47adcacd7ac3aa149bebd45b5f7f
     file: census/2018-occupation-code-list-and-crosswalk.xlsx   # under paths.raw; never committed
     sheet: "2010 to 2018 Crosswalk "   # trailing space is in the file
+    # Detailed SOC code -> 2018 Census code, assigned before residual expansion (set by Aryan
+    # 2026-09-30): the Census title places 51-9199 under 8990, not 8865 (design_notes.md).
+    soc_overrides: {"51-9199": "8990"}
   soc_structure:                 # BLS 2018 SOC structure (set by Aryan 2026-09-30)
     url: https://www.bls.gov/soc/2018/soc_structure_2018.xlsx
     sha256: ade08af40923266f3a854842e888ca3e93c15b26a147c20a2b12a61f4c4f4077

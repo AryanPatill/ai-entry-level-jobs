@@ -90,9 +90,13 @@ def read_structure() -> tuple[set[str], dict[str, set[str]]]:
     return set(df["Detailed Occupation"]), members
 
 
-def expand(census_soc: dict[str, str], detailed: set[str], groups: dict[str, set[str]]
-           ) -> tuple[dict[str, set[str]], dict[str, str]]:
-    """Map each 2018 Census code to detailed SOC codes. Returns (mapping, unresolved)."""
+def expand(census_soc: dict[str, str], detailed: set[str], groups: dict[str, set[str]],
+           overrides: dict[str, str] | None = None) -> tuple[dict[str, set[str]], dict[str, str]]:
+    """Map each 2018 Census code to detailed SOC codes. Returns (mapping, unresolved).
+
+    `overrides` (detailed SOC -> 2018 Census code) are claimed before residuals expand.
+    """
+    overrides = overrides or {}
     out: dict[str, set[str]] = {}
     unresolved: dict[str, str] = {}
     residual = {c: s for c, s in census_soc.items() if "X" in s.upper()}
@@ -105,14 +109,15 @@ def expand(census_soc: dict[str, str], detailed: set[str], groups: dict[str, set
             out[c] = set(groups[s])
         else:
             unresolved[c] = s
-    claimed = set().union(*out.values())
+    claimed = set().union(*out.values()) | set(overrides)
     # Longest prefix first, so 51-403X claims before 51-4XXX.
     for c, s in sorted(residual.items(), key=lambda kv: -len(kv[1].upper().split("X")[0])):
         prefix = s.upper().split("X")[0]
         out[c] = {d for d in detailed if d.startswith(prefix)} - claimed
         claimed |= out[c]
-        if not out[c]:
-            unresolved[c] = s
+    for soc, c in overrides.items():
+        out.setdefault(c, set()).add(soc)
+    unresolved |= {c: s for c, s in residual.items() if not out[c]}
     return out, unresolved
 
 
@@ -135,7 +140,8 @@ def build() -> dict:
     rows18 = main.dropna(subset=["census2018", "soc2018"])
     census_soc = dict(zip(rows18["census2018"], rows18["soc2018"]))
     detailed, groups = read_structure()
-    census_detail, unresolved = expand(census_soc, detailed, groups)
+    overrides = load_settings()["design"]["occ_crosswalk"].get("soc_overrides", {})
+    census_detail, unresolved = expand(census_soc, detailed, groups, overrides)
 
     all2010 = set(main["census2010"].dropna()) | set(changes["census2010"])
     rows = []

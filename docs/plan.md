@@ -7,8 +7,8 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 4, crosswalks and exposure mapping
 - **Last completed step:** Phase 4 step 3, exposure map built and coverage report written
-- **Next step:** Phase 4 step 4, exposure quintiles; waits for Aryan to review the coverage
-  report and rule on the 51-9199 and 53-7065 title disagreements (design_notes.md)
+- **Next step:** Phase 4 step 4, exposure quintiles; waits for Aryan to accept the coverage
+  report (title disagreements ruled 2026-09-30)
 
 ## Phases
 

@@ -140,7 +140,11 @@ results/tables/exposure_coverage.md; pinned by tests/test_occupation_exposure.py
 - Every residual X group is disjoint across Census codes and fully covered.
 - Residuals claim longest-prefix first (an implementation choice; see the 51-9199 disagreement below).
 
-### Title parentheticals vs expansion (test only), awaiting Aryan's decision
+### Title parentheticals vs expansion (test only)
+Ruled by Aryan, 2026-09-30: 51-9199 goes to 8990, following the title (explicit override in
+`design.occ_crosswalk.soc_overrides`); 53-7065 stays with 9645 as the expansion gives it.
+The override changes only the `n_soc_targets` distribution; matched shares are unchanged.
+
 - 137 Census codes name detailed SOC codes in their titles; 134 match the expansion once
   broad codes cited in titles (51-7030) are expanded and a stray space ("(17-3012 )") is allowed.
 - Three disagree; none is patched:
