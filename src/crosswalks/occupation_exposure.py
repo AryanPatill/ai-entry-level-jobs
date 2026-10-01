@@ -172,26 +172,38 @@ def occ_scores(occ_map: pd.DataFrame, scores: pd.Series) -> pd.DataFrame:
     return out
 
 
+def cps_parquet() -> str:
+    log = load_log()
+    dat_path, _, _ = locate_files(log)
+    return dat_path.with_name(log["parquet"]["name"]).as_posix()
+
+
+def employment_by_occ() -> pd.DataFrame:
+    """Weighted employment per OCC2010: employed (EMPSTAT 10, 12), wage and salary, ages 22-64.
+
+    Columns occ2010, cutoff (True inside the Section 5 cutoff window), w (sum WTFINL), n (records).
+    Pooled over months; no age breakdown.
+    """
+    d = load_settings()["design"]
+    ws = ", ".join(str(c) for c in d["wage_salary_classwkr"])
+    c0, c1 = (int(x.replace("-", "")) for x in d["quintile_cutoff_window"])
+    return duckdb.connect().execute(f"""
+        SELECT OCC2010 AS occ2010, (YEAR * 100 + MONTH BETWEEN {c0} AND {c1}) AS cutoff,
+               SUM(WTFINL) AS w, COUNT(*) AS n
+        FROM read_parquet('{cps_parquet()}')
+        WHERE EMPSTAT IN (10, 12) AND CLASSWKR IN ({ws}) AND AGE BETWEEN {d['age_min']} AND {d['age_max']}
+        GROUP BY 1, 2""").df()
+
+
 def coverage_report(b: dict, occ: pd.DataFrame, scores: pd.Series) -> str:
     """Matched share of wage and salary employment, ages 22-64, by window. No ages, no exposure levels."""
-    s = load_settings()
-    d = s["design"]
-    log = load_log()
-    dat_path, _, xml_path = locate_files(log)
-    parquet = dat_path.with_name(log["parquet"]["name"]).as_posix()
-    occ_labels = labels_for(readers.read_ipums_ddi(xml_path), "OCC2010")
+    d = load_settings()["design"]
+    parquet = cps_parquet()
+    occ_labels = labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
     ws = ", ".join(str(c) for c in d["wage_salary_classwkr"])
-    ym = "YEAR * 100 + MONTH"
-    (c0, c1) = (int(x.replace("-", "")) for x in d["quintile_cutoff_window"])
-
     con = duckdb.connect()
-    emp = con.execute(f"""
-        SELECT OCC2010 AS occ2010, ({ym} BETWEEN {c0} AND {c1}) AS cutoff,
-               SUM(WTFINL) AS w, COUNT(*) AS n
-        FROM read_parquet('{parquet}')
-        WHERE EMPSTAT IN (10, 12) AND CLASSWKR IN ({ws}) AND AGE BETWEEN {d['age_min']} AND {d['age_max']}
-        GROUP BY 1, 2""").df().merge(occ[["occ2010", "exposure", "n_soc_targets", "n_soc_scored"]],
-                                     on="occ2010", how="left")
+    emp = employment_by_occ().merge(occ[["occ2010", "exposure", "n_soc_targets", "n_soc_scored"]],
+                                    on="occ2010", how="left")
     emp["matched"] = emp["exposure"].notna()
 
     def share(df: pd.DataFrame) -> str:

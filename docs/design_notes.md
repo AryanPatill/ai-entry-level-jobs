@@ -161,3 +161,13 @@ The override changes only the `n_soc_targets` distribution; matched shares are u
 - All unmatched employed OCC2010 codes are "all other" residual occupations whose SOC targets
   (xx-xx99) have no Eloundou score. Every employed OCC2010 code is in the Census 2010 list,
   so the IPUMS May 2012 collapses cause no gaps. Shares are in the coverage report.
+
+## 2026-09-30: exposure quintile cutoffs (preregistration Section 5)
+
+Source: src/crosswalks/exposure_quintiles.py; table in results/tables/exposure_quintiles.md.
+
+- Cutoffs use the Section 5 window only (2015-01 to 2020-02), so no post-treatment month
+  enters them. Occupations are not split across quintiles, so shares are close to, not exactly,
+  20% each; the table gives the actual shares.
+- One scored OCC2010 code (7930, forging machine setters) appears among employed wage and salary
+  workers after the window but not inside it. It is assigned with the same fixed cutoffs.

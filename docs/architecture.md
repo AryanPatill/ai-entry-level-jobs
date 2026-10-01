@@ -54,7 +54,8 @@ ai-entry-level-jobs/
 │   │   └── list_industry_codes.py dump IND1990 codes with codebook labels
 │   ├── crosswalks/
 │   │   ├── industry_sectors.py    IND1990 -> six preregistered sectors
-│   │   └── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
+│   │   ├── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
+│   │   └── exposure_quintiles.py  employment-weighted quintile cutoffs (2015-01 to 2020-02)
 │   ├── analysis/                 Phases 6-10
 │   ├── agents/                   Phase 11
 │   └── utils/config.py           settings loader, REPO_ROOT, .env secrets
@@ -76,6 +77,7 @@ ai-entry-level-jobs/
 | Code-level checks | `python -m src.data.inspect_codes` |
 | Exposure file and occupation crosswalk (download + hash check) | `python -m src.data.download_sources` |
 | Occupation -> exposure map and coverage report | `python -m src.crosswalks.occupation_exposure` |
+| Exposure quintile cutoffs | `python -m src.crosswalks.exposure_quintiles` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

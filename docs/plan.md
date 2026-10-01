@@ -5,10 +5,10 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 4, crosswalks and exposure mapping
-- **Last completed step:** Phase 4 step 3, exposure map built and coverage report written
-- **Next step:** Phase 4 step 4, exposure quintiles; waits for Aryan to accept the coverage
-  report (title disagreements ruled 2026-09-30)
+- **Current phase:** 5, cleaning and sample construction (not started)
+- **Last completed step:** Phase 4 step 4, exposure quintile cutoffs fixed on 2015-01 to 2020-02
+- **Next step:** Phase 5, after Aryan reviews the quintiles; open Phase 5 decisions: EDUC
+  bachelor's-or-higher codes, UHRSWORK1 997/000 handling (design_notes.md, 2026-09-30)
 
 ## Phases
 
@@ -18,7 +18,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 1 | Research design | `preregistration.md` v1.0 | Done |
 | 2 | Environment | Repo, venv, git, config | Done |
 | 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
-| 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | In progress |
+| 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Done |
 | 5 | Cleaning and sample construction | Analysis panel | Not started |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Not started |
@@ -49,7 +49,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 2a | Census crosswalk file chosen, downloaded, hash-verified; sheets inspected | Done |
 | 2b | OCC2010 -> SOC 2018 map (Occ Code Changes for changed codes; BLS expansion) | Done |
 | 3 | Exposure merged to OCC2010; coverage report (`results/tables/exposure_coverage.md`) | Done |
-| 4 | Exposure quintiles, only after the coverage report is reviewed | Not started |
+| 4 | Exposure quintiles (`results/tables/exposure_quintiles.md`) | Done |
 
 ## Possible robustness checks (not preregistered, not implemented)
 
