@@ -39,6 +39,13 @@ design:
   hours_empstat: [10]
   hours_range: [1, 168]
 
+  # Section 6: unemployment rate, unemployed placed by last occupation. 21 = experienced
+  # unemployed; 22 new workers have no occupation and are excluded, as Section 6 says.
+  unemployed_empstat: [21]
+  # Section 13 robustness samples
+  private_classwkr: [22, 23]     # private for profit, private nonprofit (DDI: under 21 "Wage/salary, private")
+  fulltime_min_hours: 35         # Section 4: "Full-time workers only (35+ usual hours)"
+
   # Section 5: exposure quintiles
   quintile_cutoff_ages: [22, 64]
   quintile_cutoff_window: ["2015-01", "2020-02"]

@@ -13,6 +13,7 @@ no pre/post split and no weights, so no trend is visible.
 | Employed (EMPSTAT 10, 12) | 8,912,311 |
 | Wage and salary (CLASSWKR 22, 23, 25, 27, 28) | 7,991,570 |
 | Occupation has an exposure quintile | 7,913,609 |
+| Also in the panel: unemployed (EMPSTAT [21]), wage and salary last job, last occupation has a quintile | 387,007 |
 
 ## Records per age group x quintile x month (main-sample months)
 

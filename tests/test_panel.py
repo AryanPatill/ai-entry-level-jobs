@@ -28,6 +28,18 @@ def test_flags_follow_settings(p):
     assert p.loc[p.post, "ym"].min() == 202212
 
 
+def test_outcome_columns_are_consistent():
+    # Accounting identities only; asserts, never prints, so no outcome is seen.
+    c = pd.read_parquet(PANEL, columns=["emp_w", "emp_w_men", "emp_w_women", "emp_w_ba", "emp_w_private",
+                                        "emp_w_fulltime", "hours_w", "hours_wsum", "unemp_w", "n_unemp"])
+    assert (c.emp_w_men + c.emp_w_women - c.emp_w).abs().max() < 1e-6 * c.emp_w.max()
+    for sub in ("emp_w_ba", "emp_w_private", "emp_w_fulltime", "hours_w"):
+        assert (c[sub] <= c.emp_w + 1e-6).all(), sub
+    pos = c.hours_w > 0
+    assert ((c.hours_wsum[pos] / c.hours_w[pos]).between(1, 168)).all()
+    assert ((c.unemp_w > 0) == (c.n_unemp > 0)).all()
+
+
 def test_one_quintile_per_occupation(p):
     assert p.groupby("occ2010").quintile.nunique().eq(1).all()
     assert set(p.quintile) == {1, 2, 3, 4, 5}
