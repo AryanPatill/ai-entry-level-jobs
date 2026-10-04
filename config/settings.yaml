@@ -30,6 +30,14 @@ design:
   # 22 private for profit, 23 private nonprofit, 25 federal, 27 state, 28 local government.
   # Excluded: 13, 14 self-employed; 29 unpaid family; 26 Armed Forces (already out via EMPSTAT = 1).
   wage_salary_classwkr: [22, 23, 25, 27, 28]
+  # Sections 4 and 14: bachelor's or higher (set by Aryan 2026-10-04; no other EDUC code >= 111 occurs)
+  # 111 Bachelor's, 123 Master's, 124 Professional school, 125 Doctorate.
+  ba_plus_educ: [111, 123, 124, 125]
+
+  # Section 6: mean-hours outcome (set by Aryan 2026-10-04; design_notes.md)
+  # At work last week only; 997 "hours vary", 000 and 999 NIU are not quantities and are excluded.
+  hours_empstat: [10]
+  hours_range: [1, 168]
 
   # Section 5: exposure quintiles
   quintile_cutoff_ages: [22, 64]

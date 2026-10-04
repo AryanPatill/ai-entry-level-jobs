@@ -103,6 +103,17 @@ def main() -> None:
     absent = sorted(set(cw) - set(counts))
     print("  labelled in DDI, never used: " + ", ".join(f"{c} {cw[c]}" for c in absent))
 
+    # 7. EDUC codes at or above 111, by year: anything outside settings.design.ba_plus_educ
+    #    would be silently left out of the bachelor's-or-higher subgroup.
+    ed = labels_for(ddi, "EDUC")
+    ba = set(load_settings()["design"]["ba_plus_educ"])
+    print(f"\nEDUC codes >= 111 by year (* = in ba_plus_educ {sorted(ba)}):")
+    rows = con.execute(f"SELECT EDUC, MIN(YEAR), MAX(YEAR), COUNT(*) FROM {src} "
+                       f"WHERE EDUC >= 111 GROUP BY 1 ORDER BY 1").fetchall()
+    for code, y0, y1, n in rows:
+        print(f" {'*' if code in ba else ' '}{code:>4}  {ed.get(int(code), '(no label)'):30s} {y0}-{y1}  {n:>10,}")
+    print("  other codes >= 111: " + (", ".join(str(r[0]) for r in rows if r[0] not in ba) or "none"))
+
 
 if __name__ == "__main__":
     main()

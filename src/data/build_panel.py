@@ -74,7 +74,26 @@ def main() -> None:
     panel.to_parquet(out, index=False)
     print(f"Wrote {out.relative_to(REPO_ROOT)}: {len(panel):,} cells (outcome not printed)")
 
-    REPORT_FILE.write_text(report(flow, in_scored, panel, d), encoding="utf-8")
+    # Hours outcome exclusions (Section 6): share of the panel sample NOT in the hours outcome,
+    # by reason, age group and period. A shift in these shares would bias mean hours.
+    h0, h1 = d["hours_range"]
+    he = ", ".join(map(str, d["hours_empstat"]))
+    period = (f"CASE WHEN ym BETWEEN {ym(d['excluded_start'])} AND {ym(d['excluded_end'])} THEN NULL "
+              f"WHEN ym < {ym(d['main_start'])} THEN NULL WHEN ym < {ym(d['treatment_month'])} THEN 'pre' ELSE 'post' END")
+    hours = con.execute(f"""
+        WITH x AS (SELECT CASE {age_case} END AS age_group, YEAR * 100 + MONTH AS ym, WTFINL AS w,
+                          EMPSTAT NOT IN ({he}) AS absent, UHRSWORK1 AS h
+                   FROM {src} p JOIN occ o ON p.OCC2010 = o.occ2010
+                   WHERE p.EMPSTAT IN (10, 12) AND p.CLASSWKR IN ({ws}))
+        SELECT age_group, {period} AS period,
+               SUM(w * absent::INT) / SUM(w) AS absent,
+               SUM(w * (NOT absent AND h = 997)::INT) / SUM(w) AS vary,
+               SUM(w * (NOT absent AND h = 0)::INT) / SUM(w) AS zero,
+               SUM(w * (NOT absent AND h <> 997 AND h <> 0 AND NOT h BETWEEN {h0} AND {h1})::INT) / SUM(w) AS other,
+               SUM(w * (absent OR NOT h BETWEEN {h0} AND {h1})::INT) / SUM(w) AS total
+        FROM x GROUP BY 1, 2 HAVING period IS NOT NULL ORDER BY 1, 2 DESC""").df()
+
+    REPORT_FILE.write_text(report(flow, in_scored, panel, d) + hours_report(hours, d), encoding="utf-8")
     print(f"Wrote {REPORT_FILE.relative_to(REPO_ROOT)}")
 
 
@@ -115,6 +134,20 @@ def report(flow, in_scored: int, panel: pd.DataFrame, d: dict) -> str:
                      f"{n.between(1, 4).mean():.1%} | {n.between(5, 9).mean():.1%} |")
     lines.append("")
     return "\n".join(lines)
+
+
+def hours_report(h: pd.DataFrame, d: dict) -> str:
+    lines = ["## Hours outcome exclusions (Section 6)", "",
+             f"Share of employed wage and salary workers in scored occupations NOT in the mean-hours",
+             f"outcome (kept: EMPSTAT {d['hours_empstat']}, UHRSWORK1 {d['hours_range'][0]}-{d['hours_range'][1]}).",
+             f"Weighted by WTFINL. Pre = {d['main_start']} to the month before {d['treatment_month']}, "
+             f"pandemic months excluded; post = {d['treatment_month']} on.", "",
+             "| Age group | Period | Absent (EMPSTAT 12) | Hours vary (997) | 0 hours | Other | Total excluded |",
+             "|---|---|---|---|---|---|---|"]
+    for r in h.itertuples():
+        lines.append(f"| {r.age_group} | {r.period} | {r.absent:.1%} | {r.vary:.1%} | {r.zero:.2%} | "
+                     f"{r.other:.2%} | {r.total:.1%} |")
+    return "\n".join(lines + [""])
 
 
 if __name__ == "__main__":

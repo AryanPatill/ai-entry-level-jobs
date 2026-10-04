@@ -65,3 +65,19 @@ no pre/post split and no weights, so no trend is visible.
 | 50-64 | Q3 | 62 | 4.8% | 17.3% | 16.2% |
 | 50-64 | Q4 | 75 | 5.9% | 22.1% | 16.2% |
 | 50-64 | Q5 | 93 | 4.4% | 19.5% | 20.5% |
+## Hours outcome exclusions (Section 6)
+
+Share of employed wage and salary workers in scored occupations NOT in the mean-hours
+outcome (kept: EMPSTAT [10], UHRSWORK1 1-168).
+Weighted by WTFINL. Pre = 2015-01 to the month before 2022-12, pandemic months excluded; post = 2022-12 on.
+
+| Age group | Period | Absent (EMPSTAT 12) | Hours vary (997) | 0 hours | Other | Total excluded |
+|---|---|---|---|---|---|---|
+| 22-25 | pre | 2.5% | 5.3% | 0.03% | 0.00% | 7.9% |
+| 22-25 | post | 2.6% | 4.5% | 0.04% | 0.00% | 7.2% |
+| 26-34 | pre | 3.1% | 4.5% | 0.02% | 0.00% | 7.6% |
+| 26-34 | post | 3.2% | 3.4% | 0.02% | 0.00% | 6.6% |
+| 35-49 | pre | 3.1% | 4.4% | 0.02% | 0.00% | 7.5% |
+| 35-49 | post | 3.1% | 3.4% | 0.02% | 0.00% | 6.6% |
+| 50-64 | pre | 3.6% | 4.6% | 0.03% | 0.00% | 8.2% |
+| 50-64 | post | 3.5% | 3.7% | 0.04% | 0.00% | 7.3% |

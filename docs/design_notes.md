@@ -187,3 +187,41 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
   unweighted-counts check (Section 13).
 - 466 occupations are in the panel; 7,913,609 records enter it (99.0% of employed wage and
   salary records).
+
+## 2026-10-04: pyfixest check, hours and education rules, minimum detectable effect
+
+### pyfixest Poisson (plan `[verify]`, resolved)
+- pyfixest 0.60.0 `fepois` fits Poisson with three interacted fixed effects
+  (`o^a + o^t + a^t`), with and without weights. On synthetic data its coefficient equals a
+  statsmodels dummy-variable Poisson GLM to 1e-6 (tests/test_pyfixest_poisson.py). Section 8
+  passes survey weights through the outcome, so the main model needs no regression weights.
+
+### Mean-hours outcome (Section 6 `[verify variable]`; interpretation, not a deviation)
+- Rule (Aryan): EMPSTAT 10 (at work) with UHRSWORK1 1-168 only. 997 "hours vary" is not a
+  quantity, 000 is not usual hours of someone at work, and absent workers (EMPSTAT 12) have
+  no hours that week to compare. Settings: `hours_empstat`, `hours_range`.
+- Excluded share (results/tables/cell_sizes.md): about 7-8% of the sample in every age group;
+  mostly absent workers (2.5-3.6%) and "hours vary" (3.4-5.3%). The "hours vary" share is about
+  one point lower after 2022-12 in every age group (22-25: 5.3% to 4.5%; 35-49: 4.4% to 3.4%),
+  so the young-old gap in it widened slightly. Any hours result must be read against this; a
+  check by quintile would show whether it differs by exposure, and has not been run.
+
+### Bachelor's or higher (Sections 4, 14)
+- EDUC codes at or above 111 in the extract are exactly 111, 123, 124, 125, in every year
+  2011-2026 (inspect_codes section 7). `ba_plus_educ` = those four; nothing is left out.
+
+### Minimum detectable effect (Section 16): a finding about the design's power
+- Method (Aryan): Section 8 model on 2015-01 to 2020-02, fake treatment 2016-12, clustered by
+  occupation, MDE = 2.80 x SE. Standard errors only; no coefficient read
+  (results/tables/mde.md).
+- Headline (ages 22-25, Q5): SE 0.032 log points, MDE 0.090, i.e. a decline of about 8.6%
+  relative to Q1 and ages 35-49. Other terms: 6.9-9.6%.
+- Against the literature: the payroll estimates (13%, 16%, 19%; Section 18) are above the MDE,
+  so an effect of that size would likely be detected. The Danish null (effects above 2% ruled
+  out) is far below it: effects of that size cannot be detected here.
+- Consequence for the Section 11 decision rule: a 95% CI is about +/-1.96 x 0.032 = +/-0.063
+  log points wide, wider than the whole "no meaningful effect" band (-0.051 to +0.049). If the
+  real SE is near this one, the headline cannot reach the "no meaningful effect" verdict; a
+  small or zero effect would be reported as "inconclusive". This is known before any outcome is
+  estimated. The SE is a guide only (fewer months than the real design, but larger monthly
+  samples); the real SE could be smaller or larger.

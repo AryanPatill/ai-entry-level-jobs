@@ -57,7 +57,7 @@ ai-entry-level-jobs/
 │   │   ├── industry_sectors.py    IND1990 -> six preregistered sectors
 │   │   ├── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
 │   │   └── exposure_quintiles.py  employment-weighted quintile cutoffs (2015-01 to 2020-02)
-│   ├── analysis/                 Phases 6-10
+│   ├── analysis/                 Phases 6-10; mde.py (Section 16, Phase 5)
 │   ├── agents/                   Phase 11
 │   └── utils/config.py           settings loader, REPO_ROOT, .env secrets
 ├── tests/                        pytest; run with `python -m pytest -q`
@@ -80,6 +80,7 @@ ai-entry-level-jobs/
 | Occupation -> exposure map and coverage report | `python -m src.crosswalks.occupation_exposure` |
 | Exposure quintile cutoffs (frozen: verifies, never overwrites) | `python -m src.crosswalks.exposure_quintiles` |
 | Analysis panel and cell sizes | `python -m src.data.build_panel` |
+| Minimum detectable effect (SEs only) | `python -m src.analysis.mde` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

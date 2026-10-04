@@ -6,9 +6,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 ## Where the project stands
 
 - **Current phase:** 5, cleaning and sample construction
-- **Last completed step:** Phase 5 steps 1-2, main panel built; cell-size report written
-- **Next step:** Phase 5 step 3, minimum detectable effect (Section 16); waits for Aryan to
-  set the method and power. Then steps 4-5 (blocked on EDUC and UHRSWORK1 code rules)
+- **Last completed step:** Phase 5 step 3, minimum detectable effect (headline about 8.6% decline)
+- **Next step:** Aryan reviews the MDE and its consequence for the Section 11 rule
+  (design_notes.md, 2026-10-04). Then steps 4-5: secondary outcomes and subgroup columns
 
 ## Phases
 
@@ -57,9 +57,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 |---|---|---|
 | 1 | Quintile cutoffs frozen; Q1/Q5 face-validity lists | Done |
 | 2 | Main panel (employed wage and salary, occ x age group x month) and cell-size report | Done |
-| 3 | Minimum detectable effect, pre-period only (method and power: Aryan) | Blocked |
-| 4 | Secondary outcomes in the panel: unemployment rate, hours (UHRSWORK1 997/000 rule: Aryan) | Blocked |
-| 5 | Subgroup and robustness columns: bachelor's or higher (EDUC codes: Aryan), sex, private only, full time | Not started |
+| 3 | Minimum detectable effect, pre-period only (`results/tables/mde.md`) | Done |
+| 4 | Secondary outcomes in the panel: unemployment rate, hours (hours rule set; exclusion shares reported) | Not started |
+| 5 | Subgroup and robustness columns: bachelor's or higher (codes set), sex, private only, full time | Not started |
 
 ## Possible robustness checks (not preregistered, not implemented)
 
@@ -70,7 +70,6 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - OCC2010 coverage across the 2020 code change: harmonised codes exist; the empirical
   coverage report is due in Phase 4
-- pyfixest Poisson with three-way fixed effects and weights
 - Teleworkability data source
 - HonestDiD availability in Python
 
