@@ -14,3 +14,33 @@ nothing after 2020-02.
 | Q5 | > 0.5278 to max | 93 | 19.96% |
 
 Scored OCC2010 codes employed after the window but not inside it: 7930 (assigned with the same fixed cutoffs).
+
+## Ten largest occupations in Q5 (window employment)
+
+| OCC2010 | IPUMS label | Exposure | Share of Q employment |
+|---|---|---|---|
+| 5700 | Secretaries and Administrative Assistants | 0.664 | 9.8% |
+| 5240 | Customer Service Representatives | 0.568 | 8.4% |
+| 0800 | Accountants and Auditors | 0.560 | 6.6% |
+| 1020 | Software Developers, Applications and Systems Software | 0.873 | 6.2% |
+| 4850 | Sales Representatives, Wholesale and Manufacturing | 0.560 | 4.6% |
+| 5860 | Office Clerks, General | 0.576 | 4.4% |
+| 5400 | Receptionists and Information Clerks | 0.533 | 4.3% |
+| 5120 | Bookkeeping, Accounting, and Auditing Clerks | 0.802 | 3.4% |
+| 4710 | First-Line Supervisors of Non-Retail Sales Workers | 0.537 | 3.4% |
+| 1107 | Computer occupations, all other | 0.793 | 2.6% |
+
+## Ten largest occupations in Q1 (window employment)
+
+| OCC2010 | IPUMS label | Exposure | Share of Q employment |
+|---|---|---|---|
+| 4220 | Janitors and Building Cleaners | 0.000 | 7.5% |
+| 3600 | Nursing, Psychiatric, and Home Health Aides | 0.076 | 7.1% |
+| 9620 | Laborers and Freight, Stock, and Material Movers, Hand | 0.042 | 6.6% |
+| 4020 | Cooks | 0.091 | 6.5% |
+| 6260 | Construction Laborers | 0.050 | 5.5% |
+| 4230 | Maids and housekeeping cleaners | 0.000 | 4.9% |
+| 7750 | Miscellaneous Assemblers and Fabricators | 0.105 | 3.7% |
+| 4250 | Grounds Maintenance Workers | 0.047 | 3.5% |
+| 7200 | Automotive Service Technicians and Mechanics | 0.082 | 2.8% |
+| 6050 | Miscellaneous agricultural workers, including animal breeders | 0.068 | 2.8% |

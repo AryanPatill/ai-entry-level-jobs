@@ -171,3 +171,19 @@ Source: src/crosswalks/exposure_quintiles.py; table in results/tables/exposure_q
   20% each; the table gives the actual shares.
 - One scored OCC2010 code (7930, forging machine setters) appears among employed wage and salary
   workers after the window but not inside it. It is assigned with the same fixed cutoffs.
+
+## 2026-10-04: panel structure and cell sizes (record counts only; no outcomes seen)
+
+Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
+
+- Face validity of the quintiles (results/tables/exposure_quintiles.md): the largest Q5
+  occupations are secretaries, customer service representatives, accountants, software
+  developers and office clerks; the largest Q1 occupations are janitors, aides, laborers,
+  cooks and construction laborers.
+- Treated ages (22-25) have the sparsest model cells: about 20-31% of occupation x month
+  cells have zero records and about 37-45% have 1-4 records, across quintiles. Older groups
+  have 4-15% zero cells. PPML handles zeros, but many occupation-level cells for 22-25 rest on
+  a handful of records. Relevant to the minimum detectable effect (Section 16) and to the
+  unweighted-counts check (Section 13).
+- 466 occupations are in the panel; 7,913,609 records enter it (99.0% of employed wage and
+  salary records).

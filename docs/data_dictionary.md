@@ -89,7 +89,8 @@ Added as the analysis is built. Each entry names the module that creates it.
 | `sector` | `src/crosswalks/industry_sectors.py` | IND1990 mapped to the six Section 15 sectors, Rule A |
 | `soc2018`, `n_soc_targets` | `src/crosswalks/occupation_exposure.py` | Detailed SOC 2018 codes reached from a 2010 Census code (= OCC2010), and their count; `docs/occ_soc_map.csv` |
 | `exposure`, `n_soc_scored` | `src/crosswalks/occupation_exposure.py` | Unweighted mean `dv_rating_beta` over the scored SOC targets, and how many were scored; `data/interim/occ2010_exposure.parquet` |
-| `quintile` | `src/crosswalks/exposure_quintiles.py` | 1-5 from `exposure` and the fixed cutoffs in `results/tables/exposure_quintile_cutoffs.csv` (Section 5); none for unscored codes; `data/interim/occ2010_quintile.parquet` |
+| `quintile` | `src/crosswalks/exposure_quintiles.py` (`occupation_quintiles()`) | 1-5 from `exposure` and the frozen cutoffs in `results/tables/exposure_quintile_cutoffs.csv` (Section 5); none for unscored codes. Assigned on read, never stored separately |
+| Panel `data/processed/panel_occ_age_month.parquet` | `src/data/build_panel.py` | One row per scored OCC2010 x age group (`22-25`, `26-34`, `35-49`, `50-64`) x month (`ym` = YYYYMM, 187 months), balanced with zeros. `emp_w` = sum of WTFINL (primary outcome, Section 6), `n_records` = unweighted records, `quintile`, flags `pandemic` (2020-03 to 2021-12), `main_sample` (2015-01 on, not pandemic), `post` (from 2022-12). Sample: EMPSTAT 10/12, CLASSWKR in `wage_salary_classwkr`, Armed Forces dropped |
 | | | further entries added in Phase 5 |
 
 ## Known coverage facts

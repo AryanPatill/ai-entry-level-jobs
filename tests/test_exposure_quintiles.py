@@ -1,7 +1,12 @@
 """Pins the weighted-quintile rule (Section 5) on synthetic data; needs no raw files."""
 import pandas as pd
 
-from src.crosswalks.exposure_quintiles import assign, cutoffs
+from src.crosswalks.exposure_quintiles import assign, cutoffs, load_cutoffs
+
+
+def test_frozen_cutoffs_are_committed():
+    # Fixed 2026-09-30 on 2015-01 to 2020-02 (Section 5); never recomputed.
+    assert [round(c, 6) for c in load_cutoffs()] == [0.137255, 0.325855, 0.428571, 0.527778]
 
 
 def test_equal_weights_ten_occupations():

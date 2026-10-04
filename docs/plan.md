@@ -5,10 +5,10 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 5, cleaning and sample construction (not started)
-- **Last completed step:** Phase 4 step 4, exposure quintile cutoffs fixed on 2015-01 to 2020-02
-- **Next step:** Phase 5, after Aryan reviews the quintiles; open Phase 5 decisions: EDUC
-  bachelor's-or-higher codes, UHRSWORK1 997/000 handling (design_notes.md, 2026-09-30)
+- **Current phase:** 5, cleaning and sample construction
+- **Last completed step:** Phase 5 steps 1-2, main panel built; cell-size report written
+- **Next step:** Phase 5 step 3, minimum detectable effect (Section 16); waits for Aryan to
+  set the method and power. Then steps 4-5 (blocked on EDUC and UHRSWORK1 code rules)
 
 ## Phases
 
@@ -19,7 +19,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 2 | Environment | Repo, venv, git, config | Done |
 | 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
 | 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Done |
-| 5 | Cleaning and sample construction | Analysis panel | Not started |
+| 5 | Cleaning and sample construction | Analysis panel | In progress |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Not started |
 | 8 | Estimation | DiD, triple-difference, event-study tables | Not started |
@@ -50,6 +50,16 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 2b | OCC2010 -> SOC 2018 map (Occ Code Changes for changed codes; BLS expansion) | Done |
 | 3 | Exposure merged to OCC2010; coverage report (`results/tables/exposure_coverage.md`) | Done |
 | 4 | Exposure quintiles (`results/tables/exposure_quintiles.md`) | Done |
+
+## Phase 5 steps
+
+| Step | What | Status |
+|---|---|---|
+| 1 | Quintile cutoffs frozen; Q1/Q5 face-validity lists | Done |
+| 2 | Main panel (employed wage and salary, occ x age group x month) and cell-size report | Done |
+| 3 | Minimum detectable effect, pre-period only (method and power: Aryan) | Blocked |
+| 4 | Secondary outcomes in the panel: unemployment rate, hours (UHRSWORK1 997/000 rule: Aryan) | Blocked |
+| 5 | Subgroup and robustness columns: bachelor's or higher (EDUC codes: Aryan), sex, private only, full time | Not started |
 
 ## Possible robustness checks (not preregistered, not implemented)
 

@@ -51,6 +51,7 @@ ai-entry-level-jobs/
 │   │   ├── convert_to_parquet.py  fixed-width -> Parquet, structural checks
 │   │   ├── inspect_codes.py       code-level checks (NIU, universes, sample size)
 │   │   ├── download_sources.py    Eloundou exposure file, Census occ crosswalk; SHA-256 verified
+│   │   ├── build_panel.py         analysis panel (occ x age group x month) and cell-size report
 │   │   └── list_industry_codes.py dump IND1990 codes with codebook labels
 │   ├── crosswalks/
 │   │   ├── industry_sectors.py    IND1990 -> six preregistered sectors
@@ -77,7 +78,8 @@ ai-entry-level-jobs/
 | Code-level checks | `python -m src.data.inspect_codes` |
 | Exposure file and occupation crosswalk (download + hash check) | `python -m src.data.download_sources` |
 | Occupation -> exposure map and coverage report | `python -m src.crosswalks.occupation_exposure` |
-| Exposure quintile cutoffs | `python -m src.crosswalks.exposure_quintiles` |
+| Exposure quintile cutoffs (frozen: verifies, never overwrites) | `python -m src.crosswalks.exposure_quintiles` |
+| Analysis panel and cell sizes | `python -m src.data.build_panel` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

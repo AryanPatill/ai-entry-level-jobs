@@ -15,8 +15,12 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from ipumspy import readers
 
 from src.crosswalks.occupation_exposure import employment_by_occ
+from src.data.convert_to_parquet import locate_files
+from src.data.inspect_codes import labels_for
+from src.data.ipums_extract import load_log
 from src.utils.config import REPO_ROOT, load_settings
 
 N = 5   # quintiles, Section 5
@@ -34,18 +38,36 @@ def assign(score: pd.Series, cuts: list[float]) -> pd.Series:
     return pd.Series(np.searchsorted(cuts, score.to_numpy(), side="left") + 1, index=score.index)
 
 
+def load_cutoffs() -> list[float]:
+    """The frozen cutoffs. Every later stage reads these; nothing recomputes them."""
+    return pd.read_csv(CUTOFF_FILE)["upper_bound_inclusive"].tolist()
+
+
+def occupation_quintiles() -> pd.DataFrame:
+    """occ2010, exposure, quintile for every scored occupation, from the frozen cutoffs."""
+    occ = pd.read_parquet(load_settings()["paths"]["interim"] / "occ2010_exposure.parquet")
+    occ = occ.dropna(subset=["exposure"])[["occ2010", "exposure"]]
+    occ["quintile"] = assign(occ["exposure"], load_cutoffs())
+    return occ
+
+
 def main() -> None:
-    interim = load_settings()["paths"]["interim"]
-    occ = pd.read_parquet(interim / "occ2010_exposure.parquet").dropna(subset=["exposure"])
+    occ = pd.read_parquet(load_settings()["paths"]["interim"] / "occ2010_exposure.parquet")
+    occ = occ.dropna(subset=["exposure"])
     emp = employment_by_occ()
     win = emp[emp.cutoff].merge(occ[["occ2010", "exposure"]], on="occ2010")   # scored, in window only
 
     cuts = cutoffs(win["exposure"], win["w"])
+    if CUTOFF_FILE.exists():   # frozen: verify, never overwrite
+        if not np.allclose(cuts, load_cutoffs(), rtol=0, atol=1e-12):
+            raise RuntimeError(f"Recomputed cutoffs {cuts} differ from frozen {CUTOFF_FILE}. "
+                               "Inputs changed; resolve before any later stage runs.")
+        print(f"Cutoffs match frozen {CUTOFF_FILE.relative_to(REPO_ROOT)}")
+    else:
+        pd.DataFrame({"cutoff": range(1, N), "upper_bound_inclusive": cuts}).to_csv(CUTOFF_FILE, index=False)
     occ["quintile"] = assign(occ["exposure"], cuts)
     win["quintile"] = assign(win["exposure"], cuts)
-    occ[["occ2010", "exposure", "quintile"]].to_parquet(interim / "occ2010_quintile.parquet", index=False)
 
-    pd.DataFrame({"cutoff": range(1, N), "upper_bound_inclusive": cuts}).to_csv(CUTOFF_FILE, index=False)
     share = win.groupby("quintile")["w"].sum() / win["w"].sum()
     n_occ = win.groupby("quintile")["occ2010"].nunique()
     outside = sorted((set(occ.occ2010) - set(win.occ2010)) & set(emp.occ2010))
@@ -67,6 +89,16 @@ def main() -> None:
         lines.append(f"| Q{q} | {lo} to {hi} | {n_occ.get(q, 0)} | {share.get(q, 0):.2%} |")
     lines += ["", f"Scored OCC2010 codes employed after the window but not inside it: "
               f"{', '.join(f'{c:04d}' for c in outside) or 'none'} (assigned with the same fixed cutoffs).", ""]
+
+    # Face-validity check: the largest occupations at each end of the exposure scale.
+    labels = labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
+    win["share_q"] = win["w"] / win.groupby("quintile")["w"].transform("sum")
+    for q in (N, 1):
+        lines += [f"## Ten largest occupations in Q{q} (window employment)", "",
+                  "| OCC2010 | IPUMS label | Exposure | Share of Q employment |", "|---|---|---|---|"]
+        for r in win[win.quintile == q].nlargest(10, "w").itertuples():
+            lines.append(f"| {r.occ2010:04d} | {labels.get(r.occ2010, '')} | {r.exposure:.3f} | {r.share_q:.1%} |")
+        lines.append("")
     REPORT_FILE.write_text("\n".join(lines), encoding="utf-8")
     print("\n".join(lines))
 
