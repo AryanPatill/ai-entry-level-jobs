@@ -61,6 +61,14 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 4 | Secondary outcomes in the panel: unemployment rate, hours (hours rule set; exclusion shares reported) | Not started |
 | 5 | Subgroup and robustness columns: bachelor's or higher (codes set), sex, private only, full time | Not started |
 
+## Commitments carried into later phases
+
+- Phase 6: "hours vary" (UHRSWORK1 997) share by quintile x period, before the hours outcome
+  is interpreted (design_notes.md, 2026-10-04).
+- Phase 8: the equivalence test (TOST against ±5%, alpha = 0.025 per side) is run and reported
+  for the headline and subgroups even though it will almost certainly fail; verdict wording
+  as fixed in preregistration Section 11.
+
 ## Possible robustness checks (not preregistered, not implemented)
 
 - Employment-weighted aggregation of exposure across O*NET-SOC variants and SOC targets,

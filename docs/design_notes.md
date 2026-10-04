@@ -225,3 +225,20 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
   small or zero effect would be reported as "inconclusive". This is known before any outcome is
   estimated. The SE is a guide only (fewer months than the real design, but larger monthly
   samples); the real SE could be smaller or larger.
+
+## 2026-10-04: what the headline comparison can and cannot show (written before any outcome was estimated)
+
+- With SE about 0.032 log points (results/tables/mde.md), the 95% CI half-width is about 6.3%,
+  wider than the ±5% equivalence band. The headline comparison therefore cannot establish
+  "no meaningful effect". A small or zero estimate will be reported as INCONCLUSIVE, not as
+  evidence of no effect (wording fixed in preregistration Section 11).
+- What the design can do: detect declines of about 8.6% or more (80% power, 5% two-sided).
+  That covers the published payroll estimates of 13-19% (Section 18).
+- What it cannot do: the roughly 2% precision of firm-level administrative data (Humlum and
+  Vestergaard) is out of reach for CPS at occupation x age x month granularity.
+- The ±5% band is kept as preregistered (Aryan, 2026-10-04): it is a claim about what counts
+  as meaningful, and widening it to fit the design's power would fit the claim to the
+  instrument. No coarser specification is pre-specified for extra power: it would change the
+  estimand, and clustering stays at occupation level either way.
+- The equivalence test (TOST at alpha = 0.025 per side) stays in Phase 8 and is reported even
+  though it will almost certainly fail; reporting it shows the band was fixed in advance.

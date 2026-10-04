@@ -139,6 +139,19 @@ Threshold: ±5% (in coefficient terms, ln(0.95) = −0.0513 to ln(1.05) = 0.0488
 | Entirely within −5% to +5% | No meaningful effect |
 | Anything else | Inconclusive |
 
+#### Reporting language (added 2026-10-04, before any outcome was estimated; clarifies the rule above, band unchanged)
+
+Each verdict is reported with the point estimate and 95% CI in percent terms, `exp(b) - 1`.
+The equivalence part of the rule is run as two one-sided tests (TOST) against -5% and +5%
+at alpha = 0.025 each, which is the same as asking whether the 95% CI lies inside the band.
+The TOST is reported whatever its result.
+
+| Verdict | Condition | Required wording |
+|---|---|---|
+| Effect detected | 95% CI entirely below -5% or entirely above +5% | "Effect detected: employment of [group] changed by X% (95% CI A% to B%), beyond the preregistered ±5% threshold." |
+| No meaningful effect | 95% CI entirely within -5% to +5% (both one-sided tests reject at alpha = 0.025) | "No meaningful effect: the change is X% (95% CI A% to B%), inside the preregistered ±5% band; equivalence established." |
+| Inconclusive | Any other CI | "Inconclusive: the change is X% (95% CI A% to B%). The data cannot distinguish an effect beyond ±5% from one inside it." If the CI excludes zero, add: "The estimate differs from zero but does not meet the preregistered threshold." It is never described as evidence of no effect. |
+
 ### Pre-trend rule
 
 A pre-trend is flagged if **either**:
@@ -244,3 +257,4 @@ Same ±5% three-verdict rule.
 | 2026-09-17 | 1.0 | Initial preregistration |
 | 2026-09-21 | 1.0 | Section 3 end month filled on pull date (2026-08), as specified. No design change. |
 | 2026-09-30 | 1.0 | Section 5 `[verify]` on the exposure column resolved: `dv_rating_beta`, O*NET-SOC 2019 collapsed to 6-digit SOC 2018. Resolves a placeholder; no design change. Source details in `decisions.md`. |
+| 2026-10-04 | 1.0 | Section 11: exact reporting language for the three verdicts, and the equivalence test stated as TOST at alpha = 0.025 per side (identical to the existing 95% CI rule). Clarification written before any outcome was estimated; the ±5% band and the verdict conditions are unchanged. |
