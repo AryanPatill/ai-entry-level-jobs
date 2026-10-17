@@ -37,6 +37,7 @@ Source: src/data/convert_to_parquet.py and src/data/inspect_codes.py.
   unweighted cell counts and the unweighted-counts robustness check (Section 13).
 
 ### SCHLCOLL covers ages 22-25 from 2013 (student filter, preregistration Section 4)
+(Superseded in part 2026-10-17: from 2013 coverage runs to age 54, not 25; see that section.)
 - Correction: the pre-download note expected SCHLCOLL to stop at age 24 in basic monthly
   samples, based on IPUMS documentation. The data shows otherwise.
 - Civilian NIU share: ages 22-24 are 0% NIU in every year 2011-2026. Age 25 is 100% NIU in
@@ -247,9 +248,14 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
 
 ### SCHLCOLL universe, corrected
 - In the panel's employed sample SCHLCOLL covers ages 22-24 in 2011-2012 (age 25 and older are
-  NIU) and ages 22-54 from 2013 onward; ages 55-64 are NIU in every year. The DDI text ("16 to
-  24, or 16 to 54 for ASEC 2013 onward") understates the basic monthly coverage after 2013.
-  The table is in results/tables/cell_sizes.md (SCHLCOLL coverage).
+  NIU) and ages 22-54 from 2013 onward, not just to age 25 as the 2026-09-21 note said. The
+  DDI text ("16 to 24, or 16 to 54 for ASEC 2013 onward") limits the 16-54 range to ASEC;
+  in this extract it holds for the basic monthly samples too.
+- This is the second time the IPUMS documentation understated this variable's coverage:
+  first age 25 (expected to stop at 24), now ages 26-54. For SCHLCOLL, trust the data's NIU
+  pattern over the documentation.
+- Ages 55-64 are NIU in every year. That is why the filter cannot be applied to the 50-64
+  placebo group. The table is in results/tables/cell_sizes.md (SCHLCOLL coverage).
 
 ### Rule (Aryan, 2026-10-17)
 - Student = SCHLCOLL 1-4; non-student = 5; NIU (0) = neither. The Section 13 check removes
@@ -260,10 +266,14 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
   check; Section 13 lists them as separate checks.
 - Panel column `emp_w_student` holds employed students per cell; the filtered sample is
   `emp_w - emp_w_student` on the rows the rule applies to.
-- Open (Aryan): which age groups the filter applies to. 22-25 only follows Section 4's intent.
-  All covered ages (22-54) would also filter the 35-49 comparison group (2.5% students), but
-  55-64 cannot be filtered. A literal "keep SCHLCOLL = 5 only" would drop all of 55-64 (NIU) and
-  is not workable.
+- Age scope (Aryan, 2026-10-17): ages 22-25 only (`student_filter_ages`). The filter answers
+  a composition objection about the treated group, that young workers in exposed
+  occupations are disproportionately part-time students. Filtering the 35-49 comparison
+  group (2.5% students) does not address that objection, and it would create an asymmetry
+  with the 55-64 part of the placebo group, which cannot be filtered at all. One
+  specification where every comparison group is built the same way beats a marginally
+  different sample. (A literal "keep SCHLCOLL = 5 only" would drop all of 55-64 and was
+  never workable.)
 - Dropping enrolled 25-year-olds departs from Section 4's text ("22-24"); logged in
   deviations.md.
 

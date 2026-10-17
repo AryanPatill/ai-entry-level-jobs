@@ -6,9 +6,8 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 ## Where the project stands
 
 - **Current phase:** 6, EDA and descriptive replication (not started)
-- **Last completed step:** Phase 5 done (step 6, student-filter column, 2026-10-17)
-- **Next step:** Aryan reads the Phase 5 summary and sets the student filter's age scope
-  (22-25 only, or all covered ages); then Phase 6, where outcomes are first seen
+- **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
+- **Next step:** Aryan approves the Phase 6 plan below; nothing in Phase 6 runs before that
 
 ## Phases
 
@@ -61,6 +60,27 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 4 | Secondary outcomes in the panel: unemployment and hours sums | Done |
 | 5 | Subgroup and robustness columns: bachelor's or higher, sex, private only, full time | Done |
 | 6 | Student-filter column `emp_w_student`, window 2013-01+ (age scope: Aryan) | Done |
+
+## Phase 6 steps (proposed 2026-10-17, awaiting Aryan; outcomes first visible here)
+
+Every figure and table is titled DESCRIPTIVE; no causal language, no model estimation (Phase 8).
+Weighted counts (`emp_w`), main-sample months, grouped into the Section 9 quarterly bins;
+pandemic months shown as a gap. Stops for review after each stage.
+
+| Step | What | Reveals outcome trends? | Status |
+|---|---|---|---|
+| A1 | Records per month, all groups pooled; 2025-10 gap and 2025-11 low response flagged | No | Not started |
+| A2 | Threat 6: Dec 2019 vs Jan 2020 employment per occupation, all ages pooled; flag large jumps | One month boundary per occupation; no age or quintile trend | Not started |
+| A3 | "Hours vary" share by quintile x period (commitment) | No (a measurement variable, not an outcome) | Not started |
+| B1 | Employment by age group over time, quintiles pooled | Yes: age trends only | Not started |
+| B2 | Employment by quintile over time, ages pooled | Yes: exposure trends only | Not started |
+| C1 | Employment index by quintile, ages 22-25 (the payroll-paper figure) | Yes: first age x exposure view | Not started |
+| C2 | Same index for 26-34, 35-49, 50-64 | Yes | Not started |
+| C3 | Unadjusted triple-difference ratio over time: (Q5/Q1 at 22-25) / (Q5/Q1 at 35-49) | Yes: closest to the headline | Not started |
+| C4 | Exploratory occupation-share outcome (Section 6) | Yes | Not started |
+| D1 | Unemployment rate by quintile x age group | Yes | Not started |
+| D2 | Mean hours by quintile x age group (read with A3) | Yes | Not started |
+| E1 | Descriptive comparison with the payroll paper: C1/C3 change since 2022 vs 13-19% | Yes: a headline-like number, labelled DESCRIPTIVE | Not started |
 
 ## Commitments carried into later phases
 

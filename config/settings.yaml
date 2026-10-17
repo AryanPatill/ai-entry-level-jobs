@@ -49,6 +49,9 @@ design:
   # 0 NIU = neither. Valid from 2013-01 only: before 2013 SCHLCOLL does not cover age 25.
   student_schlcoll: [1, 2, 3, 4]
   student_filter_start: "2013-01"
+  # Section 4 (deviation 2026-10-17: 22-25, not 22-24): the filter applies to the treated group only
+  # (set by Aryan 2026-10-17; reasoning in design_notes.md).
+  student_filter_ages: [22, 25]
 
   # Section 5: exposure quintiles
   quintile_cutoff_ages: [22, 64]
