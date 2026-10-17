@@ -282,3 +282,33 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
   after. Dropped because the last job was not wage and salary: 6.1% vs 6.5%; last occupation
   unscored: 1.1% vs 1.2%; new workers with no occupation: 3.6% vs 3.7%. No reason shifts by
   more than 0.7 points across the treatment date.
+
+## 2026-10-17: Phase 6 Stage A, data-quality checks (DESCRIPTIVE; no age x exposure outcome seen)
+
+Source: src/analysis/eda_stage_a.py; results/tables/phase6_stage_a.md; results/figures/a1_records_per_month.png.
+
+### A1. Sample size
+- Records per month fall steadily over the window, with a sharp drop in spring 2020 (pandemic
+  response collapse) and partial recovery.
+- After the October 2025 gap the sample steps down and stays down: about 51,600 records in
+  Aug-Sep 2025, about 47,500-47,800 in Nov 2025 through Jan 2026. November 2025 is not a
+  one-month dip in record counts; the lower level continues. Its late collection may still
+  matter for response quality, which record counts cannot show.
+
+### A2. Occupation code change (threat 6)
+- 165 occupations have at least 50 records in both Dec 2019 and Jan 2020; 8 (4.8%) have a
+  Dec-to-Jan employment change beyond the 2015-2019 benchmark's 99th percentile (|log change|
+  0.249), against about 1% expected without a code-change effect. The excess points to some
+  harmonisation breaks at the 2020 change.
+- The largest is Teacher Assistants (2540, +0.44); the rest are small occupations (50-110
+  records a month) where sampling noise is large: food prep and serving, vehicle cleaners,
+  PR specialists, coaches, heavy-vehicle mechanics, network administrators, advertising sales.
+- 301 occupations are too small (under 50 records in either month) to check this way.
+- Not yet assessed: whether the flagged occupations cluster in a quintile. That would make the
+  break a threat to the exposure contrast rather than noise. Candidate check for Phase 9.
+
+### A3. "Hours vary" share by quintile x period
+- The share falls after 2022-12 in every quintile: Q1 5.9% to 4.7%, Q5 2.9% to 2.3%. The fall
+  is smallest in Q5 (-0.7 points) and largest in Q3 (-1.2); the Q5-Q1 difference changes by
+  about 0.4 points. Small, but the hours outcome excludes 997, so its sample composition shifts
+  slightly more outside Q5. Read D2 with this.
