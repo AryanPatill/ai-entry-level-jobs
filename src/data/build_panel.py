@@ -11,6 +11,7 @@ Outcome sums per cell (rates and means are formed at estimation, never here):
   unemp_w / n_unemp   experienced unemployed placed by last occupation, wage and salary last job
   hours_w, hours_wsum weight and weight x UHRSWORK1 for the hours outcome (EMPSTAT 10, 1-168)
   emp_w_ba, emp_w_men, emp_w_women, emp_w_private, emp_w_fulltime   subgroup / robustness samples
+  emp_w_student       employed students (SCHLCOLL 1-4); valid only where student_window (2013-01+)
 The panel is balanced: every scored occupation x age group x month, zeros filled, because
 the Poisson model (Section 8) needs the zero cells. All months 2011-01 to 2026-08 are kept,
 with flags; excluded months are dropped at estimation time, not here.
@@ -74,7 +75,8 @@ def main() -> None:
                SUM(p.WTFINL) FILTER (WHERE {emp} AND p.SEX = 1)         AS emp_w_men,
                SUM(p.WTFINL) FILTER (WHERE {emp} AND p.SEX = 2)         AS emp_w_women,
                SUM(p.WTFINL) FILTER (WHERE {emp} AND p.CLASSWKR IN ({', '.join(map(str, d['private_classwkr']))})) AS emp_w_private,
-               SUM(p.WTFINL) FILTER (WHERE {emp} AND p.UHRSWORK1 BETWEEN {d['fulltime_min_hours']} AND {h1}) AS emp_w_fulltime
+               SUM(p.WTFINL) FILTER (WHERE {emp} AND p.UHRSWORK1 BETWEEN {d['fulltime_min_hours']} AND {h1}) AS emp_w_fulltime,
+               SUM(p.WTFINL) FILTER (WHERE {emp} AND p.SCHLCOLL IN ({', '.join(map(str, d['student_schlcoll']))})) AS emp_w_student
         FROM {src} p JOIN occ o ON p.OCC2010 = o.occ2010
         WHERE p.EMPSTAT <> 1 AND (p.EMPSTAT IN (10, 12) OR p.EMPSTAT IN ({un})) AND p.CLASSWKR IN ({ws})
         GROUP BY 1, 2, 3""").df()
@@ -92,6 +94,7 @@ def main() -> None:
     panel["pandemic"] = panel.ym.between(ym(d["excluded_start"]), ym(d["excluded_end"]))
     panel["main_sample"] = (panel.ym >= ym(d["main_start"])) & ~panel.pandemic
     panel["post"] = panel.ym >= ym(d["treatment_month"])
+    panel["student_window"] = panel.ym >= ym(d["student_filter_start"])
 
     out = s["paths"]["processed"] / "panel_occ_age_month.parquet"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -115,7 +118,28 @@ def main() -> None:
                SUM(w * (absent OR NOT h BETWEEN {h0} AND {h1})::INT) / SUM(w) AS total
         FROM x GROUP BY 1, 2 HAVING period IS NOT NULL ORDER BY 1, 2 DESC""").df()
 
-    REPORT_FILE.write_text(report(flow, in_scored, n_unemp, panel, d) + hours_report(hours, d), encoding="utf-8")
+    # SCHLCOLL coverage (student filter): NIU share by age band and year, panel's employed sample.
+    band = ("CASE WHEN AGE <= 25 THEN AGE::VARCHAR WHEN AGE <= 34 THEN '26-34' WHEN AGE <= 49 THEN '35-49' "
+            "WHEN AGE <= 54 THEN '50-54' ELSE '55-64' END")
+    niu = con.execute(f"""SELECT YEAR, {band} AS age, AVG((SCHLCOLL = 0)::INT) AS niu
+        FROM {src} p JOIN occ o ON p.OCC2010 = o.occ2010
+        WHERE {emp} AND p.CLASSWKR IN ({ws}) GROUP BY 1, 2""").df().pivot(index="YEAR", columns="age", values="niu")
+
+    # Unemployed: why records are not in the panel, by period (record shares; composition check).
+    unemp = con.execute(f"""
+        WITH x AS (SELECT {period.replace('ym', '(YEAR * 100 + MONTH)')} AS period,
+                          CASE WHEN EMPSTAT NOT IN ({un}) THEN 'new worker, no occupation (EMPSTAT 22)'
+                               WHEN CLASSWKR NOT IN ({ws}) THEN 'last job not wage and salary'
+                               WHEN o.occ2010 IS NULL THEN 'last occupation has no quintile'
+                               ELSE 'kept' END AS status
+                   FROM {src} p LEFT JOIN occ o ON p.OCC2010 = o.occ2010
+                   WHERE p.EMPSTAT IN (20, 21, 22))
+        SELECT status, period, COUNT(*) AS n FROM x WHERE period IS NOT NULL GROUP BY 1, 2""").df()
+    unemp = unemp.pivot(index="status", columns="period", values="n").fillna(0)
+    unemp = unemp / unemp.sum()
+
+    REPORT_FILE.write_text(report(flow, in_scored, n_unemp, panel, d) + hours_report(hours, d)
+                           + student_report(niu, d) + unemp_report(unemp, d), encoding="utf-8")
     print(f"Wrote {REPORT_FILE.relative_to(REPO_ROOT)}")
 
 
@@ -171,6 +195,30 @@ def hours_report(h: pd.DataFrame, d: dict) -> str:
     for r in h.itertuples():
         lines.append(f"| {r.age_group} | {r.period} | {r.absent:.1%} | {r.vary:.1%} | {r.zero:.2%} | "
                      f"{r.other:.2%} | {r.total:.1%} |")
+    return "\n".join(lines + [""])
+
+
+def student_report(niu: pd.DataFrame, d: dict) -> str:
+    cols = list(niu.columns)
+    lines = ["## SCHLCOLL coverage for the student filter (Section 13)", "",
+             "Share of employed wage and salary records in scored occupations with SCHLCOLL = 0 (NIU),",
+             f"by age and year. The filter is valid only from {d['student_filter_start']}: before 2013 age 25",
+             "is not covered.", "",
+             "| Year | " + " | ".join(cols) + " |", "|---" * (len(cols) + 1) + "|"]
+    for y, r in niu.iterrows():
+        lines.append(f"| {y} | " + " | ".join(f"{r[c]:.0%}" for c in cols) + " |")
+    return "\n".join(lines + [""])
+
+
+def unemp_report(u: pd.DataFrame, d: dict) -> str:
+    lines = ["## Unemployed records: kept and dropped, by period", "",
+             "Share of unemployed records (EMPSTAT 20-22, ages 22-64), main-sample months. A shift across",
+             f"{d['treatment_month']} would change the composition of the unemployment-rate outcome.", "",
+             "| Status | Pre | Post |", "|---|---|---|"]
+    for s in ["kept", "last job not wage and salary", "last occupation has no quintile",
+              "new worker, no occupation (EMPSTAT 22)"]:
+        if s in u.index:
+            lines.append(f"| {s} | {u.loc[s, 'pre']:.1%} | {u.loc[s, 'post']:.1%} |")
     return "\n".join(lines + [""])
 
 

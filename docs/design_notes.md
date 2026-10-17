@@ -242,3 +242,33 @@ Source: src/data/build_panel.py; report in results/tables/cell_sizes.md.
   estimand, and clustering stays at occupation level either way.
 - The equivalence test (TOST at alpha = 0.025 per side) stays in Phase 8 and is reported even
   though it will almost certainly fail; reporting it shows the band was fixed in advance.
+
+## 2026-10-17: student filter (Section 13) and unemployed composition (no outcome seen)
+
+### SCHLCOLL universe, corrected
+- In the panel's employed sample SCHLCOLL covers ages 22-24 in 2011-2012 (age 25 and older are
+  NIU) and ages 22-54 from 2013 onward; ages 55-64 are NIU in every year. The DDI text ("16 to
+  24, or 16 to 54 for ASEC 2013 onward") understates the basic monthly coverage after 2013.
+  The table is in results/tables/cell_sizes.md (SCHLCOLL coverage).
+
+### Rule (Aryan, 2026-10-17)
+- Student = SCHLCOLL 1-4; non-student = 5; NIU (0) = neither. The Section 13 check removes
+  students. From 2013 on, NIU is 0% at ages 22-25 in this sample, so for that group "remove
+  students" and "keep SCHLCOLL = 5" are the same.
+- Window: the student-filter check runs on 2013-01 onward only (`student_filter_start`,
+  panel flag `student_window`). It therefore cannot be combined with the 2011-start robustness
+  check; Section 13 lists them as separate checks.
+- Panel column `emp_w_student` holds employed students per cell; the filtered sample is
+  `emp_w - emp_w_student` on the rows the rule applies to.
+- Open (Aryan): which age groups the filter applies to. 22-25 only follows Section 4's intent.
+  All covered ages (22-54) would also filter the 35-49 comparison group (2.5% students), but
+  55-64 cannot be filtered. A literal "keep SCHLCOLL = 5 only" would drop all of 55-64 (NIU) and
+  is not workable.
+- Dropping enrolled 25-year-olds departs from Section 4's text ("22-24"); logged in
+  deviations.md.
+
+### Unemployed composition (Section 6)
+- Share of unemployed records (EMPSTAT 20-22) kept in the panel: 89.3% before 2022-12, 88.6%
+  after. Dropped because the last job was not wage and salary: 6.1% vs 6.5%; last occupation
+  unscored: 1.1% vs 1.2%; new workers with no occupation: 3.6% vs 3.7%. No reason shifts by
+  more than 0.7 points across the treatment date.

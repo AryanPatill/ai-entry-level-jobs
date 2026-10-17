@@ -19,4 +19,4 @@ Every entry must also get a row in the preregistration's Section 19 change log.
 
 | Date | Section | What changed | Why | Effect on results |
 |---|---|---|---|---|
-| — | — | None to date | — | — |
+| 2026-10-17 | 4, 13 | Student filter drops enrolled 22-25-year-olds (SCHLCOLL 1-4), not 22-24, and runs on 2013-01 onward only | Section 4 made the filter conditional on the enrollment variable covering all of 22-25, written when coverage was expected to stop at 24. The data show age 25 is covered from 2013, so the condition holds and the whole treated group is filtered consistently. Decided before any outcome was estimated | Robustness check only; its window starts 2013-01, so it cannot be combined with the 2011-start check |

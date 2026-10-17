@@ -82,3 +82,38 @@ Weighted by WTFINL. Pre = 2015-01 to the month before 2022-12, pandemic months e
 | 35-49 | post | 3.1% | 3.4% | 0.02% | 0.00% | 6.6% |
 | 50-64 | pre | 3.6% | 4.6% | 0.03% | 0.00% | 8.2% |
 | 50-64 | post | 3.5% | 3.7% | 0.04% | 0.00% | 7.3% |
+## SCHLCOLL coverage for the student filter (Section 13)
+
+Share of employed wage and salary records in scored occupations with SCHLCOLL = 0 (NIU),
+by age and year. The filter is valid only from 2013-01: before 2013 age 25
+is not covered.
+
+| Year | 22 | 23 | 24 | 25 | 26-34 | 35-49 | 50-54 | 55-64 |
+|---|---|---|---|---|---|---|---|---|
+| 2011 | 0% | 0% | 0% | 100% | 100% | 100% | 100% | 100% |
+| 2012 | 0% | 0% | 0% | 100% | 100% | 100% | 100% | 100% |
+| 2013 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2014 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2015 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2016 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2017 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2018 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2019 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2020 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2021 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2022 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2023 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2024 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2025 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+| 2026 | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 100% |
+## Unemployed records: kept and dropped, by period
+
+Share of unemployed records (EMPSTAT 20-22, ages 22-64), main-sample months. A shift across
+2022-12 would change the composition of the unemployment-rate outcome.
+
+| Status | Pre | Post |
+|---|---|---|
+| kept | 89.3% | 88.6% |
+| last job not wage and salary | 6.1% | 6.5% |
+| last occupation has no quintile | 1.1% | 1.2% |
+| new worker, no occupation (EMPSTAT 22) | 3.6% | 3.7% |

@@ -5,10 +5,10 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 5, cleaning and sample construction
-- **Last completed step:** Phase 5 steps 4-5, outcome sums and subgroup columns in the panel
-- **Next step:** Aryan confirms the unemployment and full-time interpretations (decisions.md,
-  2026-10-04) and whether to add the student-filter column; then Phase 6
+- **Current phase:** 6, EDA and descriptive replication (not started)
+- **Last completed step:** Phase 5 done (step 6, student-filter column, 2026-10-17)
+- **Next step:** Aryan reads the Phase 5 summary and sets the student filter's age scope
+  (22-25 only, or all covered ages); then Phase 6, where outcomes are first seen
 
 ## Phases
 
@@ -19,7 +19,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 2 | Environment | Repo, venv, git, config | Done |
 | 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
 | 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Done |
-| 5 | Cleaning and sample construction | Analysis panel | In progress |
+| 5 | Cleaning and sample construction | Analysis panel | Done |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Not started |
 | 8 | Estimation | DiD, triple-difference, event-study tables | Not started |
@@ -60,7 +60,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 3 | Minimum detectable effect, pre-period only (`results/tables/mde.md`) | Done |
 | 4 | Secondary outcomes in the panel: unemployment and hours sums | Done |
 | 5 | Subgroup and robustness columns: bachelor's or higher, sex, private only, full time | Done |
-| 6 | Student-filter column (Section 13; supported for 2013+, design_notes.md 2026-09-21) | Not started; not in Aryan's step-5 list |
+| 6 | Student-filter column `emp_w_student`, window 2013-01+ (age scope: Aryan) | Done |
 
 ## Commitments carried into later phases
 
