@@ -312,3 +312,31 @@ Source: src/analysis/eda_stage_a.py; results/tables/phase6_stage_a.md; results/f
   is smallest in Q5 (-0.7 points) and largest in Q3 (-1.2); the Q5-Q1 difference changes by
   about 0.4 points. Small, but the hours outcome excludes 997, so its sample composition shifts
   slightly more outside Q5. Read D2 with this.
+
+## 2026-10-30: Phase 6 Stage B, first outcome trends (DESCRIPTIVE; one dimension at a time)
+
+Source: src/analysis/eda_stage_b.py; results/tables/phase6_stage_b.md; figures b1, b2.
+Index of average monthly weighted employment per Section 9 bin, Sep-Nov 2022 = 100.
+
+### Reading cautions
+- Quarterly bins do not remove seasonality: ages 22-25 swing by 2-4 index points within each
+  year, so single bins should not be read as turning points.
+- Two bins are partial: Dec 2014-Feb 2015 (Jan-Feb only) and Dec 2021-Feb 2022 (Jan-Feb only,
+  after the pandemic exclusion). Both sit low for the young group, partly because they hold only
+  winter months.
+
+### B1. By age group, quintiles pooled
+- 22-25: roughly flat 2015-2019 (about 101-105), lower in early 2022, above base through
+  2023-2026 (about 102-107; last bin 105.6). 35-49 rises over the whole window (93 to 106).
+  50-64 is flat then falls after 2023 (100 to 95), consistent with retirement of a large cohort.
+- Nothing here separates exposed from unexposed occupations.
+
+### B2. By exposure quintile, ages pooled
+- Pre-period trends differ a lot by quintile: Q4 grew from about 84 to 95 over 2015-2019, Q5
+  and Q3 grew more slowly, Q1 and Q2 were roughly flat around 100-104. Quintile-level
+  divergence before 2022 is large, so a design comparing quintiles alone (a plain DiD) would
+  face a strong pre-trend problem. The Section 8 triple difference compares ages within the same
+  occupation-month (occupation x month fixed effects), which absorbs these quintile trends.
+- After 2022-12: Q1 drifts down (about 98 in the last bins), Q2 rises (about 107), Q3-Q5 stay
+  in about 99-105. Q2 jumps about 5 points between the Dec 2024 and Mar 2025 bins; worth
+  checking for a coding change around 2025 before reading anything into it.

@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 6, EDA and descriptive replication (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Stage A (results/tables/phase6_stage_a.md); Stage B shows the first outcome trends
+- **Next step:** Aryan reviews Stage B (results/tables/phase6_stage_b.md); Stage C is the first age x exposure view
 
 ## Phases
 
@@ -72,8 +72,8 @@ pandemic months shown as a gap. Stops for review after each stage.
 | A1 | Records per month, all groups pooled; 2025-10 gap and 2025-11 low response flagged | No | Done |
 | A2 | Threat 6: Dec 2019 vs Jan 2020 employment per occupation, all ages pooled; flag large jumps | One month boundary per occupation; no age or quintile trend | Done |
 | A3 | "Hours vary" share by quintile x period (commitment) | No (a measurement variable, not an outcome) | Done |
-| B1 | Employment by age group over time, quintiles pooled | Yes: age trends only | Not started |
-| B2 | Employment by quintile over time, ages pooled | Yes: exposure trends only | Not started |
+| B1 | Employment by age group over time, quintiles pooled | Yes: age trends only | Done |
+| B2 | Employment by quintile over time, ages pooled | Yes: exposure trends only | Done |
 | C1 | Employment index by quintile, ages 22-25 (the payroll-paper figure) | Yes: first age x exposure view | Not started |
 | C2 | Same index for 26-34, 35-49, 50-64 | Yes | Not started |
 | C3 | Unadjusted triple-difference ratio over time: (Q5/Q1 at 22-25) / (Q5/Q1 at 35-49) | Yes: closest to the headline | Not started |
