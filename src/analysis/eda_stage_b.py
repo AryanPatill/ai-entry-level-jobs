@@ -39,14 +39,17 @@ def bin_start(b: int) -> pd.Timestamp:
     return pd.Timestamp("2022-12-01") + pd.DateOffset(months=3 * b)
 
 
-def figure(idx: pd.DataFrame, title: str, name: str) -> None:
+def draw(ax, idx: pd.DataFrame, ref: float = 100, colors=SERIES, ylim=None) -> None:
+    """Lines with a pandemic gap, a reference line, a Dec 2022 marker and nudged end labels."""
     full = idx.reindex(range(idx.index.min(), idx.index.max() + 1))   # empty pandemic bins -> gap
     x = [bin_start(b) for b in full.index]
-    fig, ax = plt.subplots(figsize=(9, 4.2), facecolor=SURFACE)
     ax.set_facecolor(SURFACE)
-    ax.axhline(100, color=GRID, lw=1)
-    for color, col in zip(SERIES, full.columns):
+    if ref is not None:
+        ax.axhline(ref, color=GRID, lw=1)
+    for color, col in zip(colors, full.columns):
         ax.plot(x, full[col], color=color, lw=2)
+    if ylim:
+        ax.set_ylim(*ylim)
     lo, hi = ax.get_ylim()
     ax.axvline(bin_start(0), color=INK2, lw=0.8, ls=":")
     ax.text(bin_start(0), lo, " Dec 2022", color=INK2, fontsize=8, va="bottom")
@@ -57,14 +60,23 @@ def figure(idx: pd.DataFrame, title: str, name: str) -> None:
         placed.append((max(y, placed[-1][0] + gap) if placed else y, c))
     for y, c in placed:
         ax.annotate(str(c), (x[-1], y), xytext=(8, 0), textcoords="offset points", color=INK, fontsize=9, va="center")
-    ax.set_title(title, loc="left", color=INK, fontsize=11)
-    ax.set_ylabel(f"Index, Sep-Nov 2022 = 100", color=INK2)
     ax.grid(axis="y", color=GRID, lw=0.8)
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
     ax.tick_params(colors=INK2, length=0)
-    ax.text(0, -0.13, "Quarterly bins; pandemic months 2020-03 to 2021-12 excluded (gap). Weighted employment, "
-            "wage and salary, ages 22-64, scored occupations.", transform=ax.transAxes, color=INK2, fontsize=8)
+
+
+NOTE = ("Quarterly bins; pandemic months 2020-03 to 2021-12 excluded (gap). Weighted employment, "
+        "wage and salary, scored occupations.")
+
+
+def figure(idx: pd.DataFrame, title: str, name: str, ylabel: str = "Index, Sep-Nov 2022 = 100",
+           ref: float = 100, colors=SERIES) -> None:
+    fig, ax = plt.subplots(figsize=(9, 4.2), facecolor=SURFACE)
+    draw(ax, idx, ref, colors)
+    ax.set_title(title, loc="left", color=INK, fontsize=11)
+    ax.set_ylabel(ylabel, color=INK2)
+    ax.text(0, -0.13, NOTE, transform=ax.transAxes, color=INK2, fontsize=8)
     fig.tight_layout()
     fig.savefig(FIGDIR / name, dpi=150)
 

@@ -369,3 +369,35 @@ Source: src/analysis/eda_open_checks.py; results/tables/phase6_open_checks.md.
 - For the design: Q2 is not in the headline contrast, and a shift common to all ages in an
   occupation is absorbed by occupation x month fixed effects. It matters for the Q2 terms and
   for any reading of quintile-level levels (B2). Flag in Phase 8 if Q2 x age terms move in 2025.
+
+## 2026-10-30: Phase 6 Stage C, first age x exposure view (DESCRIPTIVE; no model, no inference)
+
+Source: src/analysis/eda_stage_c.py; results/tables/phase6_stage_c.md; figures c1-c4.
+Indexes are average monthly weighted employment per Section 9 bin, Sep-Nov 2022 = 100.
+
+### What the raw series show
+- C1 (22-25 by quintile): very noisy, with swings of 5-15 index points between adjacent bins in
+  every quintile, before and after 2022. In the last bins Q1 is highest (about 115) and Q5
+  lowest (about 90).
+- C2 (all ages): for 35-49, Q4 and Q5 rise after 2023 (to about 112-114) while Q1 falls (about
+  95-97). For 26-34 and 50-64 the post-2022 quintile lines stay close together.
+- C3 (unadjusted ratio, Q5/Q1 at age a over Q5/Q1 at 35-49):
+  - 22-25: pre-2022 bins average 100.4 (sd 4.6, range 91.5-108.9); post bins average 83.9
+    (range 68.0-97.7); the last four bins are 85.8, 79.3, 69.0, 68.0.
+  - 26-34: pre average 91.5, post average 92.7: no change against its own pre-period level.
+    The base bin (Sep-Nov 2022) sits near the top of this group's pre range, so its index looks
+    lower than it is; compare with the pre-period mean, not with 100.
+- C4: Q5's share of employed 22-25-year-olds is about 17-19% before 2022 and falls to about
+  16% in the last bins; Q1 and Q2 are about 24-26% throughout.
+
+### Cautions before anyone reads C3 as a result
+- Not the Section 8 estimate: no occupation x age or occupation x month fixed effects, no
+  inference, a single-quarter base. It cannot say whether the gap is beyond noise or beyond ±5%.
+- About a third of the last bin's movement comes from the comparison group: in log terms the
+  young Q5/Q1 ratio moved -0.24 and the 35-49 Q5/Q1 ratio moved +0.15 (young share of the move
+  63%). A rising Q5 among 35-49-year-olds lowers C3 as much as a falling Q5 among the young.
+- The largest drops are in the last bins (2025-2026), the period with the January 2025 weight
+  revision [verify], the unexplained Q2 shift, the October 2025 gap and the smallest monthly
+  samples. The headline rests on these bins more than on 2023-2024.
+- The young series are noisy enough (pre sd 4.6 points for the ratio) that single bins mean
+  little; the pre/post averages are the steadier summary.
