@@ -340,3 +340,32 @@ Index of average monthly weighted employment per Section 9 bin, Sep-Nov 2022 = 1
 - After 2022-12: Q1 drifts down (about 98 in the last bins), Q2 rises (about 107), Q3-Q5 stay
   in about 99-105. Q2 jumps about 5 points between the Dec 2024 and Mar 2025 bins; worth
   checking for a coding change around 2025 before reading anything into it.
+
+## 2026-10-30: two open checks before Stage C (DESCRIPTIVE; ages pooled)
+
+Source: src/analysis/eda_open_checks.py; results/tables/phase6_open_checks.md.
+
+### 2020 code-change flags by quintile
+- The 8 flagged occupations spread across quintiles: Q1 3 of 33 checked, Q2 1 of 38, Q3 1 of 27,
+  Q4 0 of 31, Q5 3 of 36. No single quintile concentrates them. Q1 and Q5, the two ends of the
+  headline contrast, each hold three, all small occupations.
+- An occupation-wide break moves all ages in that occupation together, so the occupation x month
+  fixed effects absorb it; it would bias the triple difference only if the recoding hit young
+  and older workers in the same occupation differently. Not testable with these counts; noted
+  for Phase 9.
+
+### Q2 jump in early 2025
+- Not a coding change: raw OCC has the same 527 codes in 2023, 2024 and 2025, and no OCC2010
+  code appears or disappears.
+- Not seasonality: in 2016-2019 and 2023-2024, Q2's share of scored employment moves by less
+  than 0.25 points at both Dec -> Jan and Dec-Feb -> Mar-May. In 2025 it moves +0.63 weighted /
+  +0.30 records at Dec -> Jan, and +0.94 / +0.71 across the bins. 2026 is closer to normal
+  (+0.22 / +0.12; +0.15 / +0.17).
+- Two parts: a January 2025 step larger in weights than in records (consistent with an unusually
+  large annual revision of CPS population controls [verify]), then a spring rise that also
+  shows in raw records.
+- Broad-based across Q2 occupations (stock clerks, bus drivers, preschool teachers, LPNs, taxi
+  drivers up; couriers, police down), so not one occupation. Cause not identified.
+- For the design: Q2 is not in the headline contrast, and a shift common to all ages in an
+  occupation is absorbed by occupation x month fixed effects. It matters for the Q2 terms and
+  for any reading of quintile-level levels (B2). Flag in Phase 8 if Q2 x age terms move in 2025.

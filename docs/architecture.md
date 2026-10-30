@@ -83,6 +83,7 @@ ai-entry-level-jobs/
 | Minimum detectable effect (SEs only) | `python -m src.analysis.mde` |
 | Phase 6 Stage A data-quality checks | `python -m src.analysis.eda_stage_a` |
 | Phase 6 Stage B trends (age; quintile) | `python -m src.analysis.eda_stage_b` |
+| Phase 6 open checks (2020 flags by quintile; Q2 2025 jump) | `python -m src.analysis.eda_open_checks` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

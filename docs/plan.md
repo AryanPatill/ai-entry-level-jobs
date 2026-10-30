@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 6, EDA and descriptive replication (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Stage B (results/tables/phase6_stage_b.md); Stage C is the first age x exposure view
+- **Next step:** Aryan reviews the two open checks (results/tables/phase6_open_checks.md); then Stage C, the first age x exposure view
 
 ## Phases
 

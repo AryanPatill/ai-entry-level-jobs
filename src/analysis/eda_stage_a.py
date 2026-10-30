@@ -68,7 +68,8 @@ def a1(con, src) -> list[str]:
             *[f"| {int(m) // 100}-{int(m) % 100:02d} | {int(n):,} |" for m, n in zip(around.ym, around.n)], ""]
 
 
-def a2(panel: pd.DataFrame, labels: dict) -> list[str]:
+def a2_flags(panel: pd.DataFrame):
+    """(log change Dec 2019 -> Jan 2020 per checked occupation, flagged subset, cutoff, joined table, n reference, occ)."""
     occ = panel.groupby(["occ2010", "ym"])[["emp_w", "n_records"]].sum().reset_index()
 
     def change(m0, m1):
@@ -82,10 +83,15 @@ def a2(panel: pd.DataFrame, labels: dict) -> list[str]:
     cut = ref.abs().quantile(0.99)
     lr, j = change(201912, 202001)
     flagged = lr[lr.abs() > cut].sort_values(key=abs, ascending=False)
+    return lr, flagged, cut, j, len(ref), occ
+
+
+def a2(panel: pd.DataFrame, labels: dict) -> list[str]:
+    lr, flagged, cut, j, n_ref, occ = a2_flags(panel)
     small = occ[(occ.ym.isin([201912, 202001]))].groupby("occ2010").n_records.min()
     lines = ["## A2. Occupation code change, Dec 2019 to Jan 2020 (threat 6)", "",
              "Weighted employment per OCC2010 code, all ages pooled. Benchmark: the same occupations' Dec to",
-             f"Jan log changes in 2015-2019 ({len(ref):,} occupation-transitions). Flag: |log change| above",
+             f"Jan log changes in 2015-2019 ({n_ref:,} occupation-transitions). Flag: |log change| above",
              f"the benchmark's 99th percentile ({cut:.3f}), among occupations with at least {MIN_RECORDS} records in",
              "both months. If the code change had no effect, about 1% would be flagged.", "",
              f"- Occupations checked: {len(lr)}; flagged: {len(flagged)} ({len(flagged) / len(lr):.1%}).",
