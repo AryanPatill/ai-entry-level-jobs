@@ -85,6 +85,7 @@ ai-entry-level-jobs/
 | Phase 6 Stage B trends (age; quintile) | `python -m src.analysis.eda_stage_b` |
 | Phase 6 open checks (2020 flags by quintile; Q2 2025 jump) | `python -m src.analysis.eda_open_checks` |
 | Phase 6 Stage C (age x exposure, unadjusted ratio, young share) | `python -m src.analysis.eda_stage_c` |
+| Phase 6 Stage D (unemployment rate, mean hours) | `python -m src.analysis.eda_stage_d` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

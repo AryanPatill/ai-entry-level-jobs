@@ -27,9 +27,14 @@ SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]   # dataviz slo
 BASE_BIN = -1
 
 
+def add_bin(p: pd.DataFrame) -> pd.DataFrame:
+    """Section 9 quarterly bin counted from 2022-12 (bin 0 = Dec-Feb, -1 = Sep-Nov 2022)."""
+    return p.assign(bin=((p.ym // 100) * 12 + p.ym % 100 - (2022 * 12 + 12)) // 3)
+
+
 def binned(p: pd.DataFrame, by: str) -> pd.DataFrame:
     """Index (bin -1 = 100) of average monthly employment per bin, one column per group."""
-    p = p.assign(bin=((p.ym // 100) * 12 + p.ym % 100 - (2022 * 12 + 12)) // 3)
+    p = add_bin(p)
     months = p.groupby("bin").ym.nunique()
     level = p.groupby(["bin", by]).emp_w.sum().unstack() .div(months, axis=0)
     return level, 100 * level / level.loc[BASE_BIN]

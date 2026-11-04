@@ -401,3 +401,22 @@ Indexes are average monthly weighted employment per Section 9 bin, Sep-Nov 2022 
   samples. The headline rests on these bins more than on 2023-2024.
 - The young series are noisy enough (pre sd 4.6 points for the ratio) that single bins mean
   little; the pre/post averages are the steadier summary.
+
+## 2026-11-03: Phase 6 Stage D, secondary outcomes (DESCRIPTIVE; no model, no inference)
+
+Source: src/analysis/eda_stage_d.py; results/tables/phase6_stage_d.md; figures d1, d2.
+
+### D1. Unemployment rate (unemployed placed by last occupation)
+- Levels follow exposure inversely: young Q1 is highest (about 7.5-9.5%), Q4-Q5 lowest (about 3.5-4.7%).
+- The 2015-2019 pre-period trends steeply down, most for young Q1 (about 14% to 7-8%), so a
+  pre/post average mainly measures that decline. Against Jan-Nov 2022 instead:
+  - 22-25: Q5 +0.16 points, Q1 +0.20 (no relative rise for Q5).
+  - 35-49: Q5 +0.39, Q1 +0.10.
+  - Raw triple difference against 2022: about -0.3 points; against the 2015-2020 average: about
+    +0.8 points. The sign depends on the baseline, so this descriptive comparison says little.
+
+### D2. Mean usual weekly hours (at work, 1-168; "hours vary" excluded)
+- Very stable: changes against Jan-Nov 2022 are within about -0.4 to +0.1 hours in every cell.
+  Raw triple difference about +0.1 hours. Nothing to read here beyond stability.
+- The A3 shift in "hours vary" (slightly smaller fall in Q5) is the size of effect that could
+  move these means by a tenth of an hour; the means should not be read more finely than that.

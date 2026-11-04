@@ -23,16 +23,17 @@ TABLE = REPO_ROOT / "results" / "tables" / "phase6_stage_c.md"
 AGES = ["22-25", "26-34", "35-49", "50-64"]
 
 
-def grid(idxs: dict[str, pd.DataFrame], name: str) -> None:
-    lo = min(i.min().min() for i in idxs.values()) - 2
-    hi = max(i.max().max() for i in idxs.values()) + 2
+def grid(idxs: dict[str, pd.DataFrame], name: str,
+         title: str = "DESCRIPTIVE. C2: employment index by exposure quintile, each age group (Sep-Nov 2022 = 100)",
+         ref: float | None = 100, pad: float = 2, note: str = NOTE) -> None:
+    lo = min(i.min().min() for i in idxs.values()) - pad
+    hi = max(i.max().max() for i in idxs.values()) + pad
     fig, axes = plt.subplots(2, 2, figsize=(11, 7), sharey=True, facecolor=SURFACE)
     for ax, (age, idx) in zip(axes.flat, idxs.items()):
-        draw(ax, idx, ylim=(lo, hi))
+        draw(ax, idx, ref=ref, ylim=(lo, hi))
         ax.set_title(f"Ages {age}", loc="left", color=INK, fontsize=10)
-    fig.suptitle("DESCRIPTIVE. C2: employment index by exposure quintile, each age group (Sep-Nov 2022 = 100)",
-                 x=0.01, ha="left", color=INK, fontsize=11)
-    fig.text(0.01, 0.005, NOTE, color=INK2, fontsize=8)
+    fig.suptitle(title, x=0.01, ha="left", color=INK, fontsize=11)
+    fig.text(0.01, 0.005, note, color=INK2, fontsize=8)
     fig.tight_layout(rect=(0, 0.02, 1, 0.97))
     fig.savefig(FIGDIR / name, dpi=150)
 
