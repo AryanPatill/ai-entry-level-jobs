@@ -43,6 +43,17 @@ def test_outcome_columns_are_consistent():
     assert ((c.unemp_w > 0) == (c.n_unemp > 0)).all()
 
 
+def test_sector_panel_sums_to_main_panel():
+    # Identity only (threat 1 panel): summing sectors reproduces the main panel cell by cell.
+    sp = pd.read_parquet(PANEL.with_name("panel_occ_sector_age_month.parquet"),
+                         columns=["occ2010", "age_group", "ym", "sector", "emp_w", "n_records"])
+    assert set(sp.sector) == {1, 2, 3, 4, 5, 6}
+    m = pd.read_parquet(PANEL, columns=["occ2010", "age_group", "ym", "emp_w", "n_records"]).set_index(["occ2010", "age_group", "ym"])
+    s = sp.groupby(["occ2010", "age_group", "ym"])[["emp_w", "n_records"]].sum().reindex(m.index, fill_value=0)
+    assert (s.n_records == m.n_records).all()
+    assert (s.emp_w - m.emp_w).abs().max() < 1e-6 * m.emp_w.max()
+
+
 def test_one_quintile_per_occupation(p):
     assert p.groupby("occ2010").quintile.nunique().eq(1).all()
     assert set(p.quintile) == {1, 2, 3, 4, 5}

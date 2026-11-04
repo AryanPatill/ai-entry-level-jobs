@@ -28,6 +28,7 @@ import duckdb
 import pandas as pd
 
 from src.crosswalks.exposure_quintiles import occupation_quintiles
+from src.crosswalks.industry_sectors import sector_for
 from src.crosswalks.occupation_exposure import cps_parquet
 from src.utils.config import REPO_ROOT, load_settings
 
@@ -100,6 +101,26 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     panel.to_parquet(out, index=False)
     print(f"Wrote {out.relative_to(REPO_ROOT)}: {len(panel):,} cells (outcome not printed)")
+
+    # Threat 1 (Section 12): same sample split by the six Section 15 sectors, for dropping tech and
+    # finance and for industry x age x month fixed effects. Balanced over occupation-sector pairs seen.
+    codes = con.execute(f"SELECT DISTINCT IND1990 FROM {src}").df().iloc[:, 0]
+    con.register("sec", pd.DataFrame({"ind1990": codes, "sector": [sector_for(int(c)) for c in codes]}))
+    sc = con.execute(f"""
+        SELECT p.OCC2010 AS occ2010, s.sector, CASE {age_case} END AS age_group, p.YEAR * 100 + p.MONTH AS ym,
+               SUM(p.WTFINL) AS emp_w, COUNT(*) AS n_records
+        FROM {src} p JOIN occ o ON p.OCC2010 = o.occ2010 JOIN sec s ON p.IND1990 = s.ind1990
+        WHERE p.EMPSTAT <> 1 AND {emp} AND p.CLASSWKR IN ({ws}) AND s.sector IS NOT NULL
+        GROUP BY 1, 2, 3, 4""").df()
+    pairs = sc[["occ2010", "sector"]].drop_duplicates()
+    grid = pairs.merge(pd.MultiIndex.from_product([list(AGE_GROUPS), months], names=["age_group", "ym"])
+                       .to_frame(index=False), how="cross")
+    sp = grid.merge(sc, how="left").fillna({"emp_w": 0.0, "n_records": 0}).astype({"n_records": int, "sector": int})
+    sp = sp.merge(panel[["occ2010", "age_group", "ym", "quintile", "pandemic", "main_sample", "post"]],
+                  on=["occ2010", "age_group", "ym"])
+    sp.to_parquet(s["paths"]["processed"] / "panel_occ_sector_age_month.parquet", index=False)
+    print(f"Wrote panel_occ_sector_age_month.parquet: {len(sp):,} cells, {len(pairs):,} occupation-sector pairs "
+          f"(records {int(sc.n_records.sum()):,} of {in_scored:,} in the main panel)")
 
     # Hours outcome exclusions (Section 6): share of the panel sample NOT in the hours outcome,
     # by reason, age group and period. A shift in these shares would bias mean hours.

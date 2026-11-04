@@ -87,6 +87,7 @@ ai-entry-level-jobs/
 | Phase 6 Stage C (age x exposure, unadjusted ratio, young share) | `python -m src.analysis.eda_stage_c` |
 | Phase 6 Stage D (unemployment rate, mean hours) | `python -m src.analysis.eda_stage_d` |
 | Phase 6 Stage E (comparison with the payroll paper) | `python -m src.analysis.eda_stage_e` |
+| Phase 7 threat inputs (growth control, SOC 15 list) | `python -m src.analysis.threat_inputs` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

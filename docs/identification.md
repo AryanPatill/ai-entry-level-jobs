@@ -93,10 +93,10 @@ flowchart LR
 
 | # | Threat | Why the fixed effects do not absorb it | Test (preregistered) | Data needed | Status |
 |---|---|---|---|---|---|
-| T1 | Rate hikes cut junior hiring more in tech and finance | Hits young workers more than older ones, in sectors where exposed occupations concentrate: an occupation x age x time shock correlated with exposure | (a) Drop tech and finance (sectors 1 and 2, `TECH_AND_FINANCE_SECTORS`); (b) add industry x age x month fixed effects | A second panel by occupation x sector x age x month (approved 2026-11-03) | Needs 7.6b |
-| T2 | Post-pandemic over-hiring correction | Exposed occupations may have over-hired juniors in 2021-22 and corrected after; the correction is age-specific within occupation | Control: occupation pre-treatment growth x age x post; inspect the 2022 event-study bins | Occupation growth over `threat2_growth_window` (2015-01 to 2020-02, approved 2026-11-03) | Needs 7.6a |
-| T3 | Remote work makes juniors harder to train | Teleworkable occupations overlap with exposed ones; any training penalty falls on the young within the occupation | Control: teleworkability x age x post | Dingel and Neiman teleworkability, crosswalked to OCC2010 | Needs 7.5 |
-| T4 | More young people studied CS, data, business | Changes the supply of young workers to exposed occupations; an age x occupation x time shift | (a) Event-study pre-trends; (b) drop computer and mathematical occupations (proposed definition: OCC2010 codes whose SOC targets are all in SOC major group 15) | Field of degree is not in CPS basic monthly `[verify]` | (a) ready for Phase 8; (b) definition for Aryan; field-of-degree check in 7.5. Partial test; reported as a limitation |
+| T1 | Rate hikes cut junior hiring more in tech and finance | Hits young workers more than older ones, in sectors where exposed occupations concentrate: an occupation x age x time shock correlated with exposure | (a) Drop tech and finance (sectors 1 and 2, `TECH_AND_FINANCE_SECTORS`); (b) add industry x age x month fixed effects | `panel_occ_sector_age_month.parquet` (built 7.6b; sums to the main panel exactly, tested) | Ready |
+| T2 | Post-pandemic over-hiring correction | Exposed occupations may have over-hired juniors in 2021-22 and corrected after; the correction is age-specific within occupation | Control: occupation pre-treatment growth x age x post; inspect the 2022 event-study bins | Occupation growth over `threat2_growth_window` (built 7.6a; 464 of 466 defined) | Ready |
+| T3 | Remote work makes juniors harder to train | Teleworkable occupations overlap with exposed ones; any training penalty falls on the young within the occupation | Control: teleworkability x age x post | Dingel and Neiman `occ_onet_scores/output/occupations_workathome.csv` (found 7.5); code system `[verify]` on download | Download awaits Aryan |
+| T4 | More young people studied CS, data, business | Changes the supply of young workers to exposed occupations; an age x occupation x time shift | (a) Event-study pre-trends; (b) drop computer and mathematical occupations (proposed definition: OCC2010 codes whose SOC targets are all in SOC major group 15) | Field of degree confirmed absent from CPS (7.5) | (a) ready for Phase 8; (b) built with the default rule (14 occupations), Aryan to confirm. Partial test; reported as a limitation |
 | T5 | Uneven pandemic recovery in 2022 | Recovery speed may differ by age within occupation, and by exposure | Pre-pandemic reference bin (Dec 2019-Feb 2020); pandemic months kept with quintile x age x pandemic indicators | Panel flags `pandemic`, `main_sample` exist | Ready |
 | T6 | January 2020 occupation code change | Absorbed by `gamma_ot` if a break moves all ages alike; not if reclassification differs by age | Phase 4 coverage report; Dec 2019 vs Jan 2020 jumps by occupation | Done: coverage report (Phase 4); Stage A, A2 (8 of 165 flagged, spread across quintiles) | Done; the age-differential part is L1 |
 | T7 | Design finds effects where none exist | Not a confounder: a check that the estimator does not manufacture effects | Placebo dates Dec 2017 and Dec 2018, 2015-01 to 2020-02 only | Panel ready | Ready |
@@ -114,10 +114,34 @@ design cannot separate AI from that threat, not that AI had no effect.
 | L3 | The comparison group moves | Stage C: about a third of the raw C3 gap is Q5 rising relative to Q1 among 35-49-year-olds | Not a bias in the estimand, which is relative by construction, but a reader may take the headline as "young workers fell" | Report, beside the headline, the Q5-vs-Q1 change within 35-49 alone and within 22-25 alone (two DiDs, labelled exploratory), plus the preregistered 50-64 placebo | Phase 8, labelled |
 | L4 | Shrinking sample | Stage A, A1: about 76,000 records a month in 2011, 48,000 in 2026; a further step down after Oct 2025 | Not a bias; lowers power where the effect would appear | Minimum detectable effect (Section 16, done: about 8.6%); report CI widths | Done |
 
+## 7.5-7.6 results (2026-11-04)
+
+- **Field of degree (T4):** confirmed absent. The IPUMS CPS core education group holds EDUC,
+  HIGRADE, EDUC99, EDCYC, EDDIPGED, EDHGCGED, COLLEG75 and SCHLCOLL only; none records a field of
+  study. T4 stays a partial test, reported as a limitation.
+- **Teleworkability (T3):** Dingel and Neiman publish occupation-level results at
+  `occ_onet_scores/output/occupations_workathome.csv` in github.com/jdingel/DingelNeiman-workathome.
+  The README does not state the O*NET-SOC version; that is checked on download. If the codes are
+  SOC 2010, the Census crosswalk's own 2010 SOC column maps them to 2010 Census codes, so no
+  extra file is needed. Download awaits Aryan.
+- **HonestDiD (Section 13):** a Python package `honestdid` exists on PyPI (version 0.1.1,
+  uploaded 2026-03-03, development status Beta, placeholder author email). Not installed. Its
+  reliability is not established; Phase 9 would need to validate it against the original R
+  package's published example before use, or log a deviation (Section 13's own rule).
+- **Threat 2 growth (7.6a):** log(mean monthly employment, Mar 2019-Feb 2020) minus log(mean,
+  Jan-Dec 2015), all ages pooled; 464 of 466 occupations defined (2 have zero employment at one
+  end). Median +0.017, 10th-90th percentile -0.34 to +0.30.
+- **T4(b) computer and mathematical occupations:** default rule (all SOC targets in group 15)
+  gives 14 codes: 1005, 1006, 1007, 1010, 1020, 1030, 1050, 1060, 1105, 1106, 1200, 1220, 1240,
+  5800. 5800 (computer operators) is in because the 2018 SOC folds it into 15-1299. 1107
+  (computer occupations, all other) is out because one target is 13-1082; an "any target" rule
+  would include it.
+- **T1 sector panel (7.6b):** `panel_occ_sector_age_month.parquet`, 2,675 occupation-sector pairs
+  x 4 age groups x 187 months; every employed record has a sector.
+
 ## Status summary
 
-- Ready for Phase 8 now: T5, T7, placebo group, T4(a), L3, and the headline itself.
-- Need definitions first: T1 (7.6b, occupation x sector panel), T2 (7.6a, growth control),
-  T4(b) (Aryan: which occupations count as computer and mathematical).
-- Need a source first: T3 (7.5, teleworkability), and the field-of-degree check for T4 (7.5).
-- Done: T6, L4. Phase 9: L1, L2.
+- Ready for Phase 8: the headline, T5, T7, placebo group, T4(a), L3.
+- Ready for Phase 9: T1, T2, T4(b) (default rule), L1, L2.
+- Awaiting Aryan: T3 (download), T4(b) rule confirmation, HonestDiD package (install and validate).
+- Done: T6, L4.

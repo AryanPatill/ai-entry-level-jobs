@@ -176,7 +176,7 @@ workers in exposed occupations after December 2022 can bias the estimate.
 | 1 | Rate hikes cut junior hiring more in tech and finance | (a) Drop tech and finance industries; (b) add industry × age × month fixed effects | Good |
 | 2 | Post-pandemic over-hiring correction | Control: occupation pre-treatment growth × age × post; inspect 2022 event-study bins | Good |
 | 3 | Remote work makes juniors harder to train | Control: occupation teleworkability (Dingel & Neiman 2020 [verify]) × age × post | Good, if available |
-| 4 | More young people studied CS, data, and business | (a) Event-study pre-trends; (b) drop computer and math occupations. Field of degree not in CPS [verify] | Partial; reported as a limitation |
+| 4 | More young people studied CS, data, and business | (a) Event-study pre-trends; (b) drop computer and math occupations. Field of degree not in CPS (confirmed 2026-11-04) | Partial; reported as a limitation |
 | 5 | Uneven pandemic recovery in 2022 | Pre-pandemic reference bin; pandemic months kept with controls | Good |
 | 6 | January 2020 occupation code change | Phase 4 coverage report; compare Dec 2019 vs Jan 2020 employment by occupation and flag large jumps | Good |
 | 7 | Design finds effects where none exist | Placebo dates Dec 2017 and Dec 2018, using Jan 2015 – Feb 2020 only | Good |
@@ -258,4 +258,5 @@ Same ±5% three-verdict rule.
 | 2026-09-21 | 1.0 | Section 3 end month filled on pull date (2026-08), as specified. No design change. |
 | 2026-09-30 | 1.0 | Section 5 `[verify]` on the exposure column resolved: `dv_rating_beta`, O*NET-SOC 2019 collapsed to 6-digit SOC 2018. Resolves a placeholder; no design change. Source details in `decisions.md`. |
 | 2026-10-04 | 1.0 | Section 11: exact reporting language for the three verdicts, and the equivalence test stated as TOST at alpha = 0.025 per side (identical to the existing 95% CI rule). Clarification written before any outcome was estimated; the ±5% band and the verdict conditions are unchanged. |
+| 2026-11-04 | 1.0 | Section 12 threat 4 `[verify]` resolved: field of degree confirmed absent from IPUMS CPS. Resolves a placeholder; no design change. |
 | 2026-10-17 | 1.0 | Deviation (see `deviations.md`): the Section 4/13 student filter drops enrolled 22-25-year-olds, not 22-24, from 2013-01 onward. Decided before any outcome was estimated. |
