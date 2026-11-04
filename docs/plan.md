@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 6, EDA and descriptive replication (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Stage D (results/tables/phase6_stage_d.md); then Stage E, the comparison with the payroll paper
+- **Next step:** Aryan reviews Stage E (results/tables/phase6_stage_e.md); all Phase 6 steps done; Phase 7 (identification) next
 
 ## Phases
 
@@ -80,7 +80,7 @@ pandemic months shown as a gap. Stops for review after each stage.
 | C4 | Exploratory occupation-share outcome (Section 6) | Yes | Done |
 | D1 | Unemployment rate by quintile x age group | Yes | Done |
 | D2 | Mean hours by quintile x age group (read with A3) | Yes | Done |
-| E1 | Descriptive comparison with the payroll paper: C1/C3 change since 2022 vs 13-19% | Yes: a headline-like number, labelled DESCRIPTIVE | Not started |
+| E1 | Descriptive comparison with the payroll paper: C1/C3 change since 2022 vs 13-19% | Yes: a headline-like number, labelled DESCRIPTIVE | Done |
 
 ## Commitments carried into later phases
 

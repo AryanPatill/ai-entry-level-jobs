@@ -420,3 +420,22 @@ Source: src/analysis/eda_stage_d.py; results/tables/phase6_stage_d.md; figures d
   Raw triple difference about +0.1 hours. Nothing to read here beyond stability.
 - The A3 shift in "hours vary" (slightly smaller fall in Q5) is the size of effect that could
   move these means by a tenth of an hour; the means should not be read more finely than that.
+
+## 2026-11-03: Phase 6 Stage E, comparison with the payroll paper (DESCRIPTIVE; no verdict)
+
+Source: src/analysis/eda_stage_e.py; results/tables/phase6_stage_e.md.
+
+- Closest analogue to the paper's "below less-exposed peers" is the young gap, log(Q5/Q1) at
+  ages 22-25. Its change since late 2022 is -5% to -13% for all employed and -4% to -8% for
+  full-time workers, depending on baseline (Sep-Nov 2022 bin or pre-period average) and window
+  (all post bins or the latest four, Sep 2025-Aug 2026). That is at or below the bottom of the
+  paper's 13-19%. The paper's main sample is full-time, where the CPS gap is smallest.
+- The triple ratio (adds the 35-49 comparison, as Section 8 does) is larger: -14% to -25% in
+  every variant. About a third of that comes from Q5 rising relative to Q1 among 35-49-year-olds
+  (Stage C), not from the young.
+- The latest-four-bin figures are always larger than the all-post averages, so the size rests
+  on Sep 2025-Aug 2026: the October 2025 gap, the late November 2025 collection, the smallest
+  monthly samples, and after the unexplained 2025 Q2 shift.
+- Noise: the young gap's sd across pre-period bins is about 6 log points (full-time), the same
+  size as several of these changes. None of this is an estimate or a verdict; the Section 8 model
+  with its fixed effects and inference (Phase 8) is the only basis for one.
