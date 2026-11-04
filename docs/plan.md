@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 11, agent layer (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Phases 8-10; pending Aryan: T3 download, T4(b) rule, HonestDiD install, alternative exposure measures
+- **Next step:** Aryan reviews Phases 8-10; pending Aryan: T4(b) rule, HonestDiD install, alternative exposure measures
 
 ## Phases
 
@@ -22,7 +22,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Done |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Done |
 | 8 | Estimation | DiD, triple-difference, event-study tables | Done |
-| 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Done except T3, alternative exposure, HonestDiD (pending Aryan) |
+| 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Done except alternative exposure, HonestDiD (pending Aryan) |
 | 10 | Heterogeneity | Subgroup results | Done |
 | 11 | Agent layer | LangGraph pipeline with typed handoffs | Not started |
 | 12 | Agent evaluation | Mapper accuracy, Skeptic catch rate | Not started |
@@ -113,7 +113,6 @@ deviations.md; new checks are labelled exploratory (Section 10) unless Aryan rul
 
 - OCC2010 coverage across the 2020 code change: harmonised codes exist; the empirical
   coverage report is due in Phase 4
-- Teleworkability data source: file found (identification.md 7.5); code system checked on download
 - HonestDiD in Python: `honestdid` 0.1.1 (Beta) exists; unvalidated
 
 ## Working agreement

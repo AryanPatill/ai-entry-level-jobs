@@ -509,3 +509,19 @@ Source: src/analysis/heterogeneity.py; results/tables/phase10_heterogeneity.md.
   professional services -29% (CI -52% to +5%), all other -15%, trade -9%, manufacturing +1%,
   education and health -1%. The concentration in finance and information matches T1(a)'s shrinkage.
 - Automation vs augmentation: not supported by the Eloundou file; logged as a deviation (Section 15).
+
+## 2026-11-04: threat 3, teleworkability (Section 12)
+
+Source: src/analysis/threat_inputs.py (mapping), src/analysis/robustness.py (T3 row).
+
+- Dingel and Neiman's occupation file uses O*NET-SOC 2010 (SOC 2010 codes such as 15-1132 are
+  present; SOC 2018 codes such as 15-1252 are not). 968 rows, 774 six-digit SOC codes; the
+  `teleworkable` score is 0-1.
+- Mapping: unweighted mean to 6-digit SOC 2010, then the Census crosswalk's own 2010 SOC column to
+  2010 Census codes (= OCC2010). Detailed codes match exactly; group and X codes by prefix.
+  458 of 466 panel occupations scored; missing 2760, 3245, 3730, 4650, 8220, 8460, 8550, 9750.
+  Checks: software developers (1020) = 1, janitors (4220) = 0.
+- Result: with teleworkability x age x post controls the headline is -12.9% (CI -22.1% to -2.6%),
+  0.91 of the main estimate. Remote work does not explain much of it; under Section 12's rule, a
+  small part cannot be separated from threat 3.
+

@@ -79,6 +79,11 @@ design:
     file: bls/soc_structure_2018.xlsx   # under paths.raw; never committed
     manual: true                   # BLS blocks automated download: fetch by hand, never auto-download
     sheet: "2018 Structure"
+  telework:                      # Section 12 threat 3: Dingel and Neiman (2020) (download approved by Aryan 2026-11-04)
+    url: https://raw.githubusercontent.com/jdingel/DingelNeiman-workathome/master/occ_onet_scores/output/occupations_workathome.csv
+    sha256: 42ff3ae084478b554526671710b53a16d39f88c3eebb24f56f46372d7243bd40
+    file: telework/occupations_workathome.csv   # under paths.raw; never committed
+    code_system: O*NET-SOC 2010   # 8-digit; averaged (unweighted) to 6-digit SOC 2010
 
   # Section 7: treatment timing
   treatment_month: "2022-12"

@@ -14,7 +14,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from src.crosswalks.occupation_exposure import MAP_FILE
+from src.crosswalks.occupation_exposure import MAP_FILE, source_path
 from src.data.build_panel import ym
 from src.utils.config import REPO_ROOT, load_settings
 
@@ -36,12 +36,41 @@ def soc15(occ_map: pd.DataFrame) -> pd.Series:
     return socs.map(lambda s: bool(s) and all(c.startswith("15-") for c in s))
 
 
+def telework() -> pd.Series:
+    """Threat 3: Dingel-Neiman teleworkability per 2010 Census code (= OCC2010).
+
+    O*NET-SOC 2010 8-digit -> 6-digit SOC 2010 (unweighted mean) -> the Census crosswalk's own
+    2010 SOC column. Detailed SOC codes match exactly; group and X codes match by prefix.
+    shortcut: prefix matching does not exclude codes claimed by sibling Census codes (unlike the 2018
+    exposure map); fine for a control, upgrade if T3 becomes a headline input.
+    """
+    path, _ = source_path("telework")
+    dn = pd.read_csv(path, dtype={"onetsoccode": str})
+    soc = dn.groupby(dn.onetsoccode.str[:7]).teleworkable.mean()
+    xw_path, cfg = source_path("occ_crosswalk")
+    xw = pd.read_excel(xw_path, sheet_name=cfg["sheet"], header=3, dtype=str)
+    xw.columns = [c.strip() for c in xw.columns]
+    xw = xw[["2010 SOC code", "2010 Census Code"]].apply(lambda c: c.str.strip()).dropna()
+    xw = xw[xw["2010 Census Code"].str.fullmatch(r"\d{4}")]
+    out = {}
+    for code, census in zip(xw["2010 SOC code"], xw["2010 Census Code"]):
+        if code == "none":
+            continue
+        major, detail = code.upper().split("-")
+        prefix = f"{major}-{detail.split('X')[0].rstrip('0')}"
+        hits = soc[soc.index.str.startswith(prefix)] if not detail[-1].isdigit() or detail.endswith("0") else soc.reindex([code]).dropna()
+        if len(hits):
+            out[int(census)] = hits.mean()
+    return pd.Series(out, name="telework")
+
+
 def main() -> None:
     s = load_settings()
     panel = pd.read_parquet(s["paths"]["processed"] / "panel_occ_age_month.parquet", columns=["occ2010", "ym", "emp_w"])
     g = growth(panel, s["design"]["threat2_growth_window"])
     flag = soc15(pd.read_csv(MAP_FILE, dtype=str)).reindex(g.index).fillna(False)
     out = pd.DataFrame({"occ2010": g.index, "growth": g.replace([np.inf, -np.inf], np.nan).values, "soc15": flag.values})
+    out["telework"] = out.occ2010.map(telework())
     out.to_parquet(s["paths"]["interim"] / OUT, index=False)
 
     bad = out.growth.isna().sum()
@@ -52,11 +81,17 @@ def main() -> None:
              f"- Distribution of log growth (all ages pooled, pre-period only): 10th pct {out.growth.quantile(.1):+.3f}, "
              f"median {out.growth.median():+.3f}, 90th pct {out.growth.quantile(.9):+.3f}.", "",
              "## Threat 4(b): computer and mathematical occupations (all SOC targets in group 15)", "",
-             f"{int(out.soc15.sum())} occupations: " + ", ".join(f"{c:04d}" for c in out.occ2010[out.soc15]), ""]
+             f"{int(out.soc15.sum())} occupations: " + ", ".join(f"{c:04d}" for c in out.occ2010[out.soc15]), "",
+             "## Threat 3 teleworkability (Dingel and Neiman 2020)", "",
+             f"- Occupations with a score: {out.telework.notna().sum()} of {len(out)}; mean {out.telework.mean():.2f}; "
+             f"share scored 0: {(out.telework == 0).mean():.0%}, scored 1: {(out.telework == 1).mean():.0%}.",
+             "- Missing: " + (", ".join(f"{c:04d}" for c in out.occ2010[out.telework.isna()]) or "none") + ".", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
     print("\n".join(lines))
 
 
 if __name__ == "__main__":
     assert soc15(pd.DataFrame({"census2010": ["1", "2", "3"], "soc2018": ["15-1252", "15-1252 11-3021", None]})).tolist() == [True, False, False]
+    tw = telework()
+    assert tw[1020] == 1 and tw[4220] == 0, (tw.get(1020), tw.get(4220))   # software developers; janitors
     main()

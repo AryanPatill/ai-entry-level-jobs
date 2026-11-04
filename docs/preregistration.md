@@ -175,7 +175,7 @@ workers in exposed occupations after December 2022 can bias the estimate.
 |---|---|---|---|
 | 1 | Rate hikes cut junior hiring more in tech and finance | (a) Drop tech and finance industries; (b) add industry × age × month fixed effects | Good |
 | 2 | Post-pandemic over-hiring correction | Control: occupation pre-treatment growth × age × post; inspect 2022 event-study bins | Good |
-| 3 | Remote work makes juniors harder to train | Control: occupation teleworkability (Dingel & Neiman 2020 [verify]) × age × post | Good, if available |
+| 3 | Remote work makes juniors harder to train | Control: occupation teleworkability (Dingel & Neiman 2020; source confirmed 2026-11-04) × age × post | Good, if available |
 | 4 | More young people studied CS, data, and business | (a) Event-study pre-trends; (b) drop computer and math occupations. Field of degree not in CPS (confirmed 2026-11-04) | Partial; reported as a limitation |
 | 5 | Uneven pandemic recovery in 2022 | Pre-pandemic reference bin; pandemic months kept with controls | Good |
 | 6 | January 2020 occupation code change | Phase 4 coverage report; compare Dec 2019 vs Jan 2020 employment by occupation and flag large jumps | Good |
@@ -260,4 +260,5 @@ Same ±5% three-verdict rule.
 | 2026-10-04 | 1.0 | Section 11: exact reporting language for the three verdicts, and the equivalence test stated as TOST at alpha = 0.025 per side (identical to the existing 95% CI rule). Clarification written before any outcome was estimated; the ±5% band and the verdict conditions are unchanged. |
 | 2026-11-04 | 1.0 | Section 12 threat 4 `[verify]` resolved: field of degree confirmed absent from IPUMS CPS. Resolves a placeholder; no design change. |
 | 2026-11-04 | 1.0 | Deviation (see `deviations.md`): Section 15 automation vs augmentation split not run; the exposure data do not support it. |
+| 2026-11-04 | 1.0 | Section 12 threat 3 `[verify]` resolved: Dingel and Neiman occupation file located and used. Resolves a placeholder; no design change. |
 | 2026-10-17 | 1.0 | Deviation (see `deviations.md`): the Section 4/13 student filter drops enrolled 22-25-year-olds, not 22-24, from 2013-01 onward. Decided before any outcome was estimated. |

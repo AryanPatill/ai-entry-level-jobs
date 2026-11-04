@@ -18,7 +18,7 @@ import urllib.request
 from src.data.ipums_extract import file_sha256
 from src.utils.config import load_settings
 
-SOURCES = ("exposure", "occ_crosswalk", "soc_structure")
+SOURCES = ("exposure", "occ_crosswalk", "soc_structure", "telework")
 
 
 def fetch(src: dict, raw_dir) -> None:

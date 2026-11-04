@@ -109,6 +109,12 @@ def main() -> None:
         t2[f"g_a{a[:2]}"] = t2.occ2010.map(g.growth) * (t2.age_group == a) * t2.post
         gx.append(f"g_a{a[:2]}")
     add("T2 pre-treatment growth x age x post", "12", "preregistered", fit(t2, extra=gx))
+    t3 = main_p[main_p.occ2010.map(g.telework).notna()].copy()
+    tx = []
+    for a in YOUNG:
+        t3[f"t_a{a[:2]}"] = t3.occ2010.map(g.telework) * (t3.age_group == a) * t3.post
+        tx.append(f"t_a{a[:2]}")
+    add("T3 teleworkability x age x post (Dingel and Neiman)", "12", "preregistered", fit(t3, extra=tx))
     add("T4(b) drop computer and math occupations (default rule)", "12", "preregistered",
         fit(main_p[~main_p.occ2010.map(g.soc15).fillna(False).astype(bool)]))
 
@@ -145,7 +151,6 @@ def main() -> None:
               f"- Joint test of the {k} pre-treatment bins (now including 2022): p = {p_joint:.3f}; bins with a CI beyond "
               f"±5%: {len(beyond)}.", "",
               "## Not run (blocked)", "",
-              "- T3 teleworkability control: Dingel and Neiman file not downloaded (awaits Aryan).",
               "- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not acquired.",
               "- HonestDiD sensitivity: Python package unvalidated, not installed (awaits Aryan).",
               "- Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).", ""]

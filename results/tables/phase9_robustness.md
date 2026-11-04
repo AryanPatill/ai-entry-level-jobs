@@ -21,6 +21,7 @@ subgroups, and is shown here as a guide.
 | T1(a) drop tech and finance (sectors 1, 2) | 12 | preregistered | -10.1% (-17.6% to -1.9%) | Inconclusive | 0.70 |
 | T1(b) industry x age x month fixed effects | 12 | preregistered | -12.2% (-19.9% to -3.9%) | Inconclusive | 0.86 |
 | T2 pre-treatment growth x age x post | 12 | preregistered | -14.3% (-21.7% to -6.1%) | Effect detected | 1.01 |
+| T3 teleworkability x age x post (Dingel and Neiman) | 12 | preregistered | -12.9% (-22.1% to -2.6%) | Inconclusive | 0.91 |
 | T4(b) drop computer and math occupations (default rule) | 12 | preregistered | -14.9% (-22.5% to -6.6%) | Effect detected | 1.06 |
 | T7 placebo date 2017-12 (2015-01 to 2020-02) | 12 | preregistered | +2.5% (-3.6% to +9.0%) | Inconclusive | -0.16 |
 | T7 placebo date 2018-12 (2015-01 to 2020-02) | 12 | preregistered | -0.7% (-7.8% to +6.9%) | Inconclusive | 0.05 |
@@ -39,7 +40,6 @@ Exposure in standard-deviation units (across occupations) x 22-25 x post: -5.7% 
 
 ## Not run (blocked)
 
-- T3 teleworkability control: Dingel and Neiman file not downloaded (awaits Aryan).
 - Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not acquired.
 - HonestDiD sensitivity: Python package unvalidated, not installed (awaits Aryan).
 - Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).
