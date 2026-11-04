@@ -496,7 +496,7 @@ Source: src/analysis/robustness.py; results/tables/phase9_robustness.md.
   to Phase 8's (p = 0.41) because "all pre-period bins equal" does not depend on which bin is the
   reference.
 - Not run: T3 (teleworkability, download pending), alternative exposure measures (not acquired),
-  HonestDiD (package unvalidated). Wild bootstrap not required (465 clusters).
+  HonestDiD (logged as a deviation 2026-11-04). Wild bootstrap not required (465 clusters).
 
 ## 2026-11-04: Phase 10 subgroups and exploratory heterogeneity (Sections 14-15)
 

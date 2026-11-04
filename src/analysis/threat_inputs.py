@@ -5,7 +5,7 @@ growth  Threat 2 control: occupation employment growth over `threat2_growth_wind
             log(mean monthly emp, last 12 months of the window) - log(mean monthly emp, first 12 months)
         A pre-period outcome; it enters Phase 9 only as growth x age x post.
 soc15   Threat 4(b): computer and mathematical occupations = 2010 Census codes whose SOC 2018
-        targets are all in SOC major group 15 (default proposed 2026-11-03; Aryan to confirm).
+        targets are all in SOC major group 15 (confirmed by Aryan 2026-11-04).
 
 Run from the repo root:  python -m src.analysis.threat_inputs
 """

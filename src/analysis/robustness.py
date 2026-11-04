@@ -115,7 +115,7 @@ def main() -> None:
         t3[f"t_a{a[:2]}"] = t3.occ2010.map(g.telework) * (t3.age_group == a) * t3.post
         tx.append(f"t_a{a[:2]}")
     add("T3 teleworkability x age x post (Dingel and Neiman)", "12", "preregistered", fit(t3, extra=tx))
-    add("T4(b) drop computer and math occupations (default rule)", "12", "preregistered",
+    add("T4(b) drop computer and math occupations (all SOC targets in group 15)", "12", "preregistered",
         fit(main_p[~main_p.occ2010.map(g.soc15).fillna(False).astype(bool)]))
 
     pre = three[three.ym.between(201501, 202002)]
@@ -152,7 +152,7 @@ def main() -> None:
               f"±5%: {len(beyond)}.", "",
               "## Not run (blocked)", "",
               "- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not acquired.",
-              "- HonestDiD sensitivity: Python package unvalidated, not installed (awaits Aryan).",
+              "- HonestDiD sensitivity: not run; logged as a deviation 2026-11-04 (no validated Python tool).",
               "- Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
     print("\n".join(lines[-20:]))

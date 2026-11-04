@@ -61,8 +61,8 @@ Research design choices are in `preregistration.md`. Facts learned from data are
 | 2026-09-30 | `download_exposure.py` renamed `download_sources.py`; one hash-checked download loop for both non-IPUMS files | Same pattern for every external file |
 | 2026-11-03 | Phase 7: threat-2 growth window 2015-01 to 2020-02 (`threat2_growth_window`); threat-1 industry x age x month via a second panel by occupation x sector x age x month; data-learned checks (L1-L4) exploratory | Approved by Aryan as proposed; details in docs/identification.md |
 | 2026-11-04 | Threat 2 growth = log mean monthly employment Mar 2019-Feb 2020 minus Jan-Dec 2015 (first and last 12 months of the approved window), all ages | Implementation of the approved window; one number per occupation |
-| 2026-11-04 | T4(b) computer and mathematical = all SOC targets in group 15 (14 codes), used as default | Proposed 2026-11-03; Aryan asked to keep going; to confirm |
-| 2026-11-04 | HonestDiD Python package (`honestdid` 0.1.1, Beta) not installed; teleworkability file not downloaded | Both need Aryan's approval; the package needs validation first |
+| 2026-11-04 | T4(b) computer and mathematical = all SOC targets in group 15 (14 codes) | Confirmed by Aryan 2026-11-04; 1107 (one target 13-1082) stays out |
+| 2026-11-04 | HonestDiD Python package (`honestdid` 0.1.1, Beta) not installed; check logged as a deviation | Aryan's choice 2026-11-04; teleworkability downloaded the same day |
 | 2026-11-04 | Phase 8: TOST p-values by normal approximation on the cluster-robust SE; the verdict itself uses pyfixest's 95% CI | The two agree on equivalence by construction; reported as such |
 | 2026-11-04 | Phase 8: secondary outcomes weighted by labour force (unemployment rate) and by `emp_w` (hours, Section 6 'cell employment'); cells with a zero denominator dropped | Section 6 weights; a rate is undefined at zero |
 | 2026-11-04 | L3 within-age DiDs use occupation and month fixed effects (occupation x month is not identified within one age group) | Exploratory companion only |
