@@ -73,9 +73,9 @@ def coef_table(fit, terms) -> pd.DataFrame:
                          "hi": ci.loc[terms].iloc[:, 1], "p": fit.pvalue()[terms]})
 
 
-def event_study(p: pd.DataFrame):
+def event_study(p: pd.DataFrame, base: int = BASE_BIN):
     p = add_bin(p)
-    bins = sorted(b for b in p.bin.unique() if b != BASE_BIN)
+    bins = sorted(b for b in p.bin.unique() if b != base)
     names = []
     for b in bins:
         for q in (2, 3, 4, 5):

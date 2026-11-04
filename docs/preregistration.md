@@ -259,4 +259,5 @@ Same ±5% three-verdict rule.
 | 2026-09-30 | 1.0 | Section 5 `[verify]` on the exposure column resolved: `dv_rating_beta`, O*NET-SOC 2019 collapsed to 6-digit SOC 2018. Resolves a placeholder; no design change. Source details in `decisions.md`. |
 | 2026-10-04 | 1.0 | Section 11: exact reporting language for the three verdicts, and the equivalence test stated as TOST at alpha = 0.025 per side (identical to the existing 95% CI rule). Clarification written before any outcome was estimated; the ±5% band and the verdict conditions are unchanged. |
 | 2026-11-04 | 1.0 | Section 12 threat 4 `[verify]` resolved: field of degree confirmed absent from IPUMS CPS. Resolves a placeholder; no design change. |
+| 2026-11-04 | 1.0 | Deviation (see `deviations.md`): Section 15 automation vs augmentation split not run; the exposure data do not support it. |
 | 2026-10-17 | 1.0 | Deviation (see `deviations.md`): the Section 4/13 student filter drops enrolled 22-25-year-olds, not 22-24, from 2013-01 onward. Decided before any outcome was estimated. |

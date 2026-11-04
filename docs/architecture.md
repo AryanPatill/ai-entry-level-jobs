@@ -89,6 +89,9 @@ ai-entry-level-jobs/
 | Phase 6 Stage E (comparison with the payroll paper) | `python -m src.analysis.eda_stage_e` |
 | Phase 7 threat inputs (growth control, SOC 15 list) | `python -m src.analysis.threat_inputs` |
 | Phase 8 main model, event study, secondary outcomes | `python -m src.analysis.estimate_main` |
+| Phase 9 robustness and falsification | `python -m src.analysis.robustness` |
+| Phase 9 randomization inference (1,000 shuffles, about 35 min) | `python -m src.analysis.randomization_inference` |
+| Phase 10 subgroups and sectors | `python -m src.analysis.heterogeneity` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

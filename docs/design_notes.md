@@ -473,3 +473,39 @@ the Phase 9 tests do not overturn it; not yet assessed.
 ### Secondary outcomes (Holm within family)
 - Unemployment rate, Q5 x 22-25: +1.13 points (CI +0.24 to +2.03), Holm p = 0.026.
 - Mean usual weekly hours: -0.09 hours (CI -0.64 to +0.47), Holm p = 0.76.
+
+## 2026-11-04: Phase 9 robustness and falsification (Sections 12-13)
+
+Source: src/analysis/robustness.py; results/tables/phase9_robustness.md.
+
+- Every preregistered variant keeps a negative headline with a 95% CI below zero: -10% to -17%
+  (ratio to main 0.70-1.21). Eight keep the "Effect detected" reading (alternative date 2023-03,
+  pandemic months kept, full-time, unweighted counts, basic fixed effects, T2, T4(b), main). The
+  others read "Inconclusive" only because the upper CI bound lies between -5% and 0: 2024-01
+  date, 2011 start, private only, student filter, T1(a), T1(b).
+- Largest shrinkage: drop tech and finance (T1a, 0.70), 2011 start (0.71), end at Dec 2024 (L2b,
+  exploratory, 0.73). Under Section 12's rule, part of the estimate cannot be separated from
+  tech-and-finance shocks (threat 1), and part rests on 2025-2026.
+- Placebo dates (T7) are clean: Dec 2017 +2.5% (CI -3.6% to +9.0%), Dec 2018 -0.7% (CI -7.8% to +6.9%).
+- **Placebo group warning (Section 12):** ages 50-64 vs 35-49 in Q5 gives -5.6% (CI -8.9% to -2.2%),
+  a clear non-zero "effect" where none is expected. Section 12 calls this a warning sign. It fits L3:
+  35-49-year-olds in exposed occupations grew after 2022, which pushes every comparison against
+  35-49 negative, for the young and for the oldest group alike.
+- Continuous exposure: -5.7% per standard deviation of exposure for 22-25 (CI -8.9% to -2.3%).
+- Pre-pandemic reference bin: post-period bins average -9.8%. The joint pre-trend test is identical
+  to Phase 8's (p = 0.41) because "all pre-period bins equal" does not depend on which bin is the
+  reference.
+- Not run: T3 (teleworkability, download pending), alternative exposure measures (not acquired),
+  HonestDiD (package unvalidated). Wild bootstrap not required (465 clusters).
+
+## 2026-11-04: Phase 10 subgroups and exploratory heterogeneity (Sections 14-15)
+
+Source: src/analysis/heterogeneity.py; results/tables/phase10_heterogeneity.md.
+
+- Subgroups (Holm within family): men -18.2% (CI -26.4% to -9.1%; Holm p 0.001) Effect detected;
+  bachelor's or higher -16.3% (CI -28.6% to -1.8%; Holm p 0.058) Inconclusive; women -12.5%
+  (CI -25.1% to +2.2%; Holm p 0.093) Inconclusive. CIs are unadjusted; Holm applies to p-values.
+- By sector (exploratory, uncorrected): finance -47% (CI -67% to -16%), information and
+  professional services -29% (CI -52% to +5%), all other -15%, trade -9%, manufacturing +1%,
+  education and health -1%. The concentration in finance and information matches T1(a)'s shrinkage.
+- Automation vs augmentation: not supported by the Eloundou file; logged as a deviation (Section 15).
