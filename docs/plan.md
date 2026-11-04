@@ -5,9 +5,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 8, estimation
+- **Current phase:** 9, robustness and falsification
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Phase 8 estimation (Aryan asked to keep going, 2026-11-04); pending Aryan: T3 download, T4(b) rule, HonestDiD install
+- **Next step:** Phase 9 robustness (results/tables/phase8_main.md has the headline); pending Aryan: T3 download, T4(b) rule, HonestDiD install
 
 ## Phases
 
@@ -21,7 +21,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 5 | Cleaning and sample construction | Analysis panel | Done |
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Done |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Done |
-| 8 | Estimation | DiD, triple-difference, event-study tables | Not started |
+| 8 | Estimation | DiD, triple-difference, event-study tables | Done |
 | 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Not started |
 | 10 | Heterogeneity | Subgroup results | Not started |
 | 11 | Agent layer | LangGraph pipeline with typed handoffs | Not started |

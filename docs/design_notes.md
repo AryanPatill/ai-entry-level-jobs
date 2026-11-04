@@ -439,3 +439,37 @@ Source: src/analysis/eda_stage_e.py; results/tables/phase6_stage_e.md.
 - Noise: the young gap's sd across pre-period bins is about 6 log points (full-time), the same
   size as several of these changes. None of this is an estimate or a verdict; the Section 8 model
   with its fixed effects and inference (Phase 8) is the only basis for one.
+
+## 2026-11-04: Phase 8 main results (Sections 8-11)
+
+Source: src/analysis/estimate_main.py; results/tables/phase8_main.md; results/figures/phase8_event_study.png.
+Status: Section 11 verdict as preregistered. Causal reading only under docs/identification.md and only if
+the Phase 9 tests do not overturn it; not yet assessed.
+
+### Headline
+- `beta_(5, 22-25)` = -0.152 (SE 0.046): -14.1% (95% CI -21.5% to -6.0%). The CI lies entirely below
+  -5%, so the preregistered verdict is **Effect detected**. TOST: equivalence not established.
+- Pre-trend rule not triggered: joint test of 24 pre-period bins p = 0.41; no pre bin's CI lies
+  beyond ±5%. The pre bins' CIs are wide (about ±15-20%), so the rule has little power; the last
+  two pre bins (Mar-May and Jun-Aug 2022) are -5.5% and -9.0%, not significant.
+- The real SE (0.046) is larger than the minimum-detectable-effect SE (0.032). The MDE exercise
+  was optimistic: on this SE the 80%-power MDE is about 12%, not 8.6%.
+
+### What the estimate is made of (read before quoting it)
+- L3 (exploratory): within ages 22-25 alone, Q5 vs Q1 changed -5.1% (CI -16.3% to +7.5%, p = 0.41).
+  Within ages 35-49 alone, Q5 vs Q1 rose +14.0% (CI +3.4% to +25.7%, p = 0.008). Most of the
+  triple difference comes from exposed occupations growing for 35-49-year-olds, not from a
+  significant fall for 22-25-year-olds against their unexposed peers. The estimand is relative by
+  construction (identification.md 7.1), so this does not change the verdict, but "young workers in
+  exposed jobs lost 14%" would misdescribe it.
+- Not monotone in exposure: young terms are Q2 -9.4%, Q3 -5.4%, Q4 -17.2%, Q5 -14.1%. Young
+  workers fell relative to older ones in every quintile against Q1, which is consistent with Q1
+  young employment doing unusually well (Stage C, C1) as much as with an exposure gradient.
+- Timing: the event study is negative from the first post bin and largest in 2026 (-31%), the
+  bins with the 2025 weight revision, the Q2 shift, the Oct 2025 gap and the smallest samples
+  (L2). The Dec 2024 end-date check (Phase 9, L2) matters.
+- No step pattern: Q5 x 26-34 is +1.1% (CI -4.0% to +6.5%).
+
+### Secondary outcomes (Holm within family)
+- Unemployment rate, Q5 x 22-25: +1.13 points (CI +0.24 to +2.03), Holm p = 0.026.
+- Mean usual weekly hours: -0.09 hours (CI -0.64 to +0.47), Holm p = 0.76.
