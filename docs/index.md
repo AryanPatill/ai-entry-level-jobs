@@ -7,6 +7,7 @@ other file links to it.
 | File | Holds | Does not hold |
 |---|---|---|
 | `preregistration.md` | The research design: sample, outcomes, estimators, robustness checks, decision rules. Written before results. Numbered Sections 1-19. | Anything learned after the design was fixed |
+| `identification.md` | How the preregistered design identifies the estimand: assumptions, fixed effects, causal diagram, threats-to-tests map | Design changes (deviations), results |
 | `deviations.md` | Every departure from the preregistration, with date and reason | Facts that are not departures |
 | `design_notes.md` | Facts learned from the data or the sources, and interpretations that the preregistration left open | Design changes (those are deviations) |
 | `decisions.md` | Choices made about how to build the project: tools, versions, formats, conventions | Research design choices (preregistration) |

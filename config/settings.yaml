@@ -84,5 +84,9 @@ design:
   treatment_month: "2022-12"
   alternative_treatment_months: ["2023-03", "2024-01"]
 
+  # Section 12, threat 2: occupation pre-treatment growth window (set by Aryan 2026-11-03; same
+  # window as the quintile cutoffs, before the pandemic and the 2022 hiring correction).
+  threat2_growth_window: ["2015-01", "2020-02"]
+
   # Section 11: decision rule
   no_effect_threshold_pct: 5
