@@ -5,9 +5,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 6, EDA and descriptive replication (not started)
+- **Current phase:** 7, identification strategy (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Stage E (results/tables/phase6_stage_e.md); all Phase 6 steps done; Phase 7 (identification) next
+- **Next step:** Aryan approves the Phase 7 plan (below); Phase 6 done
 
 ## Phases
 
@@ -19,7 +19,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 3 | Data acquisition | Raw Parquet, sector map, data dictionary | Done |
 | 4 | Crosswalks and exposure mapping | Exposure-mapped occupations, coverage report | Done |
 | 5 | Cleaning and sample construction | Analysis panel | Done |
-| 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Not started |
+| 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Done |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Not started |
 | 8 | Estimation | DiD, triple-difference, event-study tables | Not started |
 | 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Not started |
@@ -81,6 +81,20 @@ pandemic months shown as a gap. Stops for review after each stage.
 | D1 | Unemployment rate by quintile x age group | Yes | Done |
 | D2 | Mean hours by quintile x age group (read with A3) | Yes | Done |
 | E1 | Descriptive comparison with the payroll paper: C1/C3 change since 2022 vs 13-19% | Yes: a headline-like number, labelled DESCRIPTIVE | Done |
+
+## Phase 7 steps (proposed 2026-11-03, awaiting Aryan; no estimation, no new outcome views)
+
+Output: `docs/identification.md` (new; index.md gets a row). Design changes, if any, go to
+deviations.md; new checks are labelled exploratory (Section 10) unless Aryan rules otherwise.
+
+| Step | What | Touches outcomes? | Status |
+|---|---|---|---|
+| 7.1 | Estimand and identifying assumption restated in panel notation; what each fixed effect absorbs and what it cannot | No | Not started |
+| 7.2 | Causal diagram (Mermaid, renders on GitHub): AI exposure, age, time, and every threat path from Section 12 | No | Not started |
+| 7.3 | Threats-to-tests table: Section 12's seven threats, each with mechanism, why the fixed effects do or do not absorb it, the test, data needed, status | No | Not started |
+| 7.4 | Data-learned threats added to the table (exploratory): age-differential 2020 code breaks; 2025 weight revision and Q2 shift; comparison-group (35-49 Q5) movement; shrinking sample | No | Not started |
+| 7.5 | Resolve `[verify]`s: teleworkability source (threat 3), HonestDiD in Python (Section 13), field of degree absent from CPS (threat 4) | No (source checks only; any download asks first) | Not started |
+| 7.6 | Pre-specify definitions Section 12 leaves open: threat-2 growth control window; threat-1 industry x age x month built from the sector map | 7.6a computes pre-period occupation growth, a pre-period outcome | Not started |
 
 ## Commitments carried into later phases
 
