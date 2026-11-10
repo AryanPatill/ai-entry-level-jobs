@@ -5,9 +5,9 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 ## Where the project stands
 
-- **Current phase:** 11, agent layer (not started)
+- **Current phase:** 11, agent layer
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Phases 8-10; pending Aryan: Phase 11 decisions
+- **Next step:** Phase 11.5 needs Aryan: approve installing LangGraph and choose a local LLM runtime and model
 
 ## Phases
 
@@ -95,6 +95,27 @@ deviations.md; new checks are labelled exploratory (Section 10) unless Aryan rul
 | 7.4 | Data-learned threats added to the table (exploratory): age-differential 2020 code breaks; 2025 weight revision and Q2 shift; comparison-group (35-49 Q5) movement; shrinking sample | No | Done |
 | 7.5 | Resolve `[verify]`s: teleworkability source (threat 3), HonestDiD in Python (Section 13), field of degree absent from CPS (threat 4) | No (source checks only; any download asks first) | Done (T3 download pending Aryan) |
 | 7.6 | Pre-specify definitions Section 12 leaves open: threat-2 growth control window; threat-1 industry x age x month built from the sector map | 7.6a computes pre-period occupation growth, a pre-period outcome | Done |
+
+## Phase 11 steps (agent layer; started 2026-11-09)
+
+The LLM layer never produces numbers (decisions 2026-09-16). Everything an agent says is checked
+against the registry before it leaves the pipeline.
+
+| Step | What | Needs | Status |
+|---|---|---|---|
+| 11.1 | Results registry: analysis modules write results/registry/*.json; `src/agents/registry.py` flattens them | Nothing new | Done |
+| 11.2 | Typed handoffs: `Claim`, `Issue`, `SkepticReport`, `MapperResult` (stdlib dataclasses) | Nothing new | Done |
+| 11.3 | Skeptic, rule-based: label, numbers, causal wording, verdict, comparison caveat | Nothing new | Done |
+| 11.4 | Mapper, baseline: job title -> OCC2010 by string similarity | Nothing new | Done |
+| 11.5 | LangGraph pipeline: Writer (LLM drafts claims from registry keys) -> Skeptic (rules, then LLM review) -> revise loop; Mapper (LLM) with the baseline as fallback | LangGraph and a local LLM runtime and model | Blocked: Aryan |
+| 11.6 | Wire the pipeline to produce the write-up's claims; every published sentence passes the Skeptic | 11.5 | Not started |
+
+## Phase 12 steps (agent evaluation; planned)
+
+| Step | What | Status |
+|---|---|---|
+| 12.1 | Skeptic catch rate: grow the seed set (tests/test_agents.py) to about 50 bad and 25 good claims; report catch rate and false-alarm rate, rules alone and rules + LLM | Not started |
+| 12.2 | Mapper accuracy: about 100 job titles hand-coded to OCC2010; top-1 and top-3 accuracy, baseline vs LLM | Not started |
 
 ## Commitments carried into later phases
 

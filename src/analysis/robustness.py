@@ -14,7 +14,7 @@ import pandas as pd
 import pyfixest as pf
 
 from src.analysis.eda_stage_a import a2_flags
-from src.analysis.estimate_main import FE, VCOV, coef_table, event_study, pct, verdict
+from src.analysis.estimate_main import FE, VCOV, coef_table, est, event_study, pct, record, verdict
 from src.crosswalks.exposure_quintiles import occupation_quintiles
 from src.utils.config import REPO_ROOT, load_settings
 
@@ -155,6 +155,11 @@ def main() -> None:
               "- HonestDiD sensitivity: not run; logged as a deviation 2026-11-04 (no validated Python tool).",
               "- Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
+    record("phase9_robustness", {
+        "checks": {label: {**est(r), "section": sec, "kind": kind, "reading": verdict(r.b, r.lo, r.hi, "g").split(":")[0],
+                           "ratio_to_main": round(float(r.b / m0.b), 2)} for label, sec, kind, r in rows},
+        "continuous_exposure_per_sd_22_25": est(rc),
+        "prepandemic_reference": {"post_avg_pct": round(100 * (np.exp(post_avg) - 1), 2), "joint_p": round(p_joint, 4)}})
     print("\n".join(lines[-20:]))
 
 

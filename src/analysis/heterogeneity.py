@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from src.analysis.estimate_main import pct, verdict
+from src.analysis.estimate_main import est, pct, record, verdict
 from src.analysis.robustness import fit
 from src.crosswalks.industry_sectors import SECTOR_NAMES
 from src.utils.config import REPO_ROOT, load_settings
@@ -62,6 +62,9 @@ def main() -> None:
     lines += ["", "Automation vs augmentation (Section 15): not run. The Eloundou file has no automation/augmentation",
               "split; Section 15 says this is logged as a deviation when the data do not support it.", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
+    record("phase10_heterogeneity", {
+        "subgroups": {k: {**est(r), "holm_p": round(adj[k], 4), "verdict": verdict(r.b, r.lo, r.hi, k).split(":")[0]} for k, r in sub.items()},
+        "sectors_exploratory": {SECTOR_NAMES.get(k, str(k)): est(r) for k, r in sec.items() if isinstance(r, pd.Series)}})
     print("\n".join(lines))
 
 

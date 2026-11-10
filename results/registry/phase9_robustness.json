@@ -1,0 +1,214 @@
+{
+ "checks": {
+  "Main specification (Phase 8)": {
+   "pct": -14.08,
+   "lo": -21.48,
+   "hi": -5.98,
+   "p": 0.001,
+   "section": "8",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.0
+  },
+  "Treatment date 2023-03": {
+   "pct": -13.92,
+   "lo": -21.06,
+   "hi": -6.14,
+   "p": 0.0007,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 0.99
+  },
+  "Treatment date 2024-01": {
+   "pct": -12.56,
+   "lo": -19.99,
+   "hi": -4.45,
+   "p": 0.003,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.88
+  },
+  "Start in 2011-01": {
+   "pct": -10.27,
+   "lo": -18.76,
+   "hi": -0.89,
+   "p": 0.0327,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.71
+  },
+  "Pandemic months kept, quintile x age x pandemic indicators": {
+   "pct": -14.16,
+   "lo": -21.56,
+   "hi": -6.07,
+   "p": 0.0009,
+   "section": "13; T5",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.01
+  },
+  "Private-sector employees only": {
+   "pct": -12.86,
+   "lo": -20.51,
+   "hi": -4.47,
+   "p": 0.0033,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.91
+  },
+  "Full-time workers only": {
+   "pct": -16.01,
+   "lo": -23.96,
+   "hi": -7.23,
+   "p": 0.0006,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.15
+  },
+  "Student filter (enrolled 22-25 removed; 2013-01 on)": {
+   "pct": -12.08,
+   "lo": -20.02,
+   "hi": -3.34,
+   "p": 0.0077,
+   "section": "13",
+   "kind": "preregistered (deviation 2026-10-17)",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.85
+  },
+  "Unweighted counts": {
+   "pct": -14.47,
+   "lo": -21.48,
+   "hi": -6.83,
+   "p": 0.0003,
+   "section": "13; L2(a)",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.03
+  },
+  "Basic fixed effects (occupation, age, month, plus two-way terms)": {
+   "pct": -16.76,
+   "lo": -25.79,
+   "hi": -6.62,
+   "p": 0.0018,
+   "section": "13",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.21
+  },
+  "T1(a) drop tech and finance (sectors 1, 2)": {
+   "pct": -10.06,
+   "lo": -17.55,
+   "hi": -1.89,
+   "p": 0.0168,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.7
+  },
+  "T1(b) industry x age x month fixed effects": {
+   "pct": -12.23,
+   "lo": -19.86,
+   "hi": -3.88,
+   "p": 0.0049,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.86
+  },
+  "T2 pre-treatment growth x age x post": {
+   "pct": -14.25,
+   "lo": -21.69,
+   "hi": -6.11,
+   "p": 0.0009,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.01
+  },
+  "T3 teleworkability x age x post (Dingel and Neiman)": {
+   "pct": -12.89,
+   "lo": -22.09,
+   "hi": -2.61,
+   "p": 0.0153,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.91
+  },
+  "T4(b) drop computer and math occupations (all SOC targets in group 15)": {
+   "pct": -14.88,
+   "lo": -22.47,
+   "hi": -6.55,
+   "p": 0.0007,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Effect detected",
+   "ratio_to_main": 1.06
+  },
+  "T7 placebo date 2017-12 (2015-01 to 2020-02)": {
+   "pct": 2.52,
+   "lo": -3.58,
+   "hi": 9.02,
+   "p": 0.4263,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": -0.16
+  },
+  "T7 placebo date 2018-12 (2015-01 to 2020-02)": {
+   "pct": -0.69,
+   "lo": -7.75,
+   "hi": 6.92,
+   "p": 0.8541,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.05
+  },
+  "Placebo group: ages 50-64 vs 35-49": {
+   "pct": -5.64,
+   "lo": -8.95,
+   "hi": -2.22,
+   "p": 0.0014,
+   "section": "12",
+   "kind": "preregistered",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.38
+  },
+  "L1 drop the 8 occupations flagged at the 2020 code change": {
+   "pct": -12.68,
+   "lo": -19.95,
+   "hi": -4.76,
+   "p": 0.0022,
+   "section": "id. 7.4",
+   "kind": "exploratory",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.89
+  },
+  "L2(b) end the sample at 2024-12": {
+   "pct": -10.51,
+   "lo": -18.57,
+   "hi": -1.65,
+   "p": 0.0212,
+   "section": "id. 7.4",
+   "kind": "exploratory",
+   "reading": "Inconclusive",
+   "ratio_to_main": 0.73
+  }
+ },
+ "continuous_exposure_per_sd_22_25": {
+  "pct": -5.67,
+  "lo": -8.93,
+  "hi": -2.29,
+  "p": 0.0011
+ },
+ "prepandemic_reference": {
+  "post_avg_pct": -9.76,
+  "joint_p": 0.4124
+ }
+}

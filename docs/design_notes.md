@@ -525,3 +525,31 @@ Source: src/analysis/threat_inputs.py (mapping), src/analysis/robustness.py (T3 
   0.91 of the main estimate. Remote work does not explain much of it; under Section 12's rule, a
   small part cannot be separated from threat 3.
 
+## 2026-11-09: randomization inference for the headline (Section 10)
+
+Source: src/analysis/randomization_inference.py; results/tables/phase9_randomization_inference.md.
+
+- 1,000 shuffles of quintile labels across occupations (seed 20261104). Shuffled headline
+  coefficients: mean +0.001, sd 0.050, 2.5th-97.5th percentile -0.100 to +0.097. Observed -0.152.
+- None of the 1,000 shuffles is as extreme: two-sided randomization p = 0.001 (the floor for 1,000
+  draws). The headline's distance from zero is not an artefact of which occupations sit in Q5.
+- This tests the occupation-level exposure assignment, not the comparison-group concern (L3) or
+  the placebo-group warning, which it cannot address.
+- The first run was interrupted when a session ended; the module now checkpoints every 100 draws
+  and resumes on the same seeded sequence.
+
+## 2026-11-09: Phase 11 agent layer, rule-based parts (no LLM yet)
+
+Source: src/agents/; results/registry/; tests/test_agents.py.
+
+- Registry: each analysis module writes its reported numbers to results/registry/<module>.json
+  (430 keys). It is the only source of numbers for agents.
+- Skeptic (rules, no LLM): label present; every number in a claim matches a registry value; causal
+  wording only in CAUSAL_UNDER_ASSUMPTIONS claims and "prove" never; Section 11 verdict phrases
+  must match the headline's verdict; quoting the headline % must name the 35-49 comparison (L3).
+  Seed test set: 2 good claims pass, 6 bad claims each caught by the intended rule.
+- Mapper baseline (no LLM): difflib similarity plus word-prefix overlap against IPUMS OCC2010
+  labels. Right on software developer, janitor, registered nurse, cashier, customer service
+  representative, accountant, truck driver; wrong on "data scientist" (maps to biological
+  scientists). That miss is the kind of case an LLM Mapper would have to fix to earn its place.
+

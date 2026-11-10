@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import pyfixest as pf
 
-from src.analysis.estimate_main import AGES, FE, main_terms
+from src.analysis.estimate_main import AGES, FE, main_terms, record
 from src.utils.config import REPO_ROOT, load_settings
 
 N, SEED = 1000, 20261104
@@ -53,6 +53,8 @@ def main() -> None:
              f"- Two-sided randomization p = {p_ri:.3f} ({int((np.abs(draws) >= abs(observed)).sum())} of {N} "
              "shuffles at least as extreme).", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
+    record("phase9_randomization_inference", {"observed_coef": round(observed, 4), "n_shuffles": N, "seed": SEED,
+                                              "p_two_sided": round(float(p_ri), 4)})
     pd.Series(draws).to_frame("beta").to_parquet(load_settings()["paths"]["interim"] / "ri_draws.parquet", index=False)
     print("\n".join(lines))
 

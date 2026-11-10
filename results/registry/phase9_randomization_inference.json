@@ -1,0 +1,6 @@
+{
+ "observed_coef": -0.1517,
+ "n_shuffles": 1000,
+ "seed": 20261104,
+ "p_two_sided": 0.001
+}

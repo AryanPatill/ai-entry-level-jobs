@@ -13,6 +13,7 @@ Run from the repo root:  python -m src.analysis.estimate_main
 """
 from __future__ import annotations
 
+import json
 import math
 
 import matplotlib
@@ -28,6 +29,7 @@ from src.analysis.eda_stage_b import BASE_BIN, FIGDIR, GRID, INK, INK2, SERIES, 
 from src.utils.config import REPO_ROOT, load_settings
 
 TABLE = REPO_ROOT / "results" / "tables" / "phase8_main.md"
+REGISTRY = REPO_ROOT / "results" / "registry"
 LO, HI = math.log(0.95), math.log(1.05)
 AGES = ["22-25", "26-34", "35-49"]
 FE = "occ2010^age_group + occ2010^ym + age_group^ym"
@@ -55,6 +57,18 @@ def verdict(b: float, lo: float, hi: float, group: str) -> str:
 def tost(b: float, se: float) -> tuple[float, float]:
     """One-sided p-values against the lower and upper equivalence bounds (normal approximation)."""
     return 1 - stats.norm.cdf((b - LO) / se), stats.norm.cdf((b - HI) / se)
+
+
+def est(r: pd.Series) -> dict:
+    """A coefficient as the reports state it: % change, 95% CI in %, p."""
+    f = lambda v: round(100 * (math.exp(v) - 1), 2)
+    return {"pct": f(r.b), "lo": f(r.lo), "hi": f(r.hi), "p": round(float(r.p), 4)}
+
+
+def record(name: str, data: dict) -> None:
+    """Numbers the agent layer may cite (Phase 11). The only source of numbers for agents."""
+    REGISTRY.mkdir(parents=True, exist_ok=True)
+    (REGISTRY / f"{name}.json").write_text(json.dumps(data, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 def main_terms(p: pd.DataFrame, post: pd.Series) -> list[str]:
@@ -198,6 +212,16 @@ def main() -> None:
     for a, r in l3.items():
         lines.append(f"| {a} | {pct(r.b)} ({pct(r.lo)} to {pct(r.hi)}) | {r.p:.3f} |")
     TABLE.write_text("\n".join(lines + [""]), encoding="utf-8")
+    record("phase8_main", {
+        "headline": {**est(h), "verdict": verdict(h.b, h.lo, h.hi, "22-25-year-olds in Q5 occupations, relative to Q1 and to ages 35-49"),
+                     "tost_p_lower": round(t_lo, 4), "tost_p_upper": round(t_hi, 4)},
+        "pretrend": {"joint_p": round(p_joint, 4), "bins_beyond_5pct": len(beyond), "flagged": bool(flagged)},
+        "terms": {t: est(r) for t, r in ct.iterrows()},
+        "event_study_q5_a22": {f"{bin_start(r.bin):%Y-%m}": est(r) for _, r in head.iterrows()},
+        "secondary_q5_a22": {k: {"coef": round(float(r.b), 3), "lo": round(float(r.lo), 3), "hi": round(float(r.hi), 3),
+                                 "p": round(float(r.p), 4), "holm_p": round(holm[k], 4)} for k, r in sec.items()},
+        "l3_within_age_q5_vs_q1": {a: est(r) for a, r in l3.items()},
+        "n_cells": int(n_obs), "n_clusters": int(n_cl)})
     print("\n".join(lines))
 
 

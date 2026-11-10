@@ -58,7 +58,7 @@ ai-entry-level-jobs/
 │   │   ├── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
 │   │   └── exposure_quintiles.py  employment-weighted quintile cutoffs (2015-01 to 2020-02)
 │   ├── analysis/                 Phases 6-10; mde.py (Section 16), eda_stage_a.py, eda_stage_b.py (Phase 6)
-│   ├── agents/                   Phase 11
+│   ├── agents/                   Phase 11: registry.py, schemas.py, skeptic.py (rules), mapper.py (baseline)
 │   └── utils/config.py           settings loader, REPO_ROOT, .env secrets
 ├── tests/                        pytest; run with `python -m pytest -q`
 ├── data/                         git-ignored: raw, interim, processed
@@ -92,6 +92,7 @@ ai-entry-level-jobs/
 | Phase 9 robustness and falsification | `python -m src.analysis.robustness` |
 | Phase 9 randomization inference (1,000 shuffles, about 35 min) | `python -m src.analysis.randomization_inference` |
 | Phase 10 subgroups and sectors | `python -m src.analysis.heterogeneity` |
+| Results registry (numbers agents may cite) | written by the Phase 8-10 modules to `results/registry/*.json` |
 | Industry codes and sectors | `python -m src.data.list_industry_codes` then `python -m src.crosswalks.industry_sectors` |
 | Tests | `python -m pytest -q` |
 

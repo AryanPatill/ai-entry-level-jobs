@@ -1,0 +1,66 @@
+{
+ "subgroups": {
+  "Bachelor's or higher": {
+   "pct": -16.27,
+   "lo": -28.6,
+   "hi": -1.8,
+   "p": 0.029,
+   "holm_p": 0.058,
+   "verdict": "Inconclusive"
+  },
+  "Men": {
+   "pct": -18.23,
+   "lo": -26.41,
+   "hi": -9.13,
+   "p": 0.0002,
+   "holm_p": 0.0006,
+   "verdict": "Effect detected"
+  },
+  "Women": {
+   "pct": -12.47,
+   "lo": -25.07,
+   "hi": 2.24,
+   "p": 0.0929,
+   "holm_p": 0.0929,
+   "verdict": "Inconclusive"
+  }
+ },
+ "sectors_exploratory": {
+  "Information and professional/technical services": {
+   "pct": -29.23,
+   "lo": -52.23,
+   "hi": 4.84,
+   "p": 0.0847
+  },
+  "Finance, insurance, and real estate": {
+   "pct": -46.99,
+   "lo": -66.52,
+   "hi": -16.05,
+   "p": 0.0068
+  },
+  "Manufacturing": {
+   "pct": 0.57,
+   "lo": -16.82,
+   "hi": 21.58,
+   "p": 0.9535
+  },
+  "Wholesale and retail trade": {
+   "pct": -9.43,
+   "lo": -25.25,
+   "hi": 9.75,
+   "p": 0.3123
+  },
+  "Education, health, and social services": {
+   "pct": -0.75,
+   "lo": -17.7,
+   "hi": 19.69,
+   "p": 0.9372
+  },
+  "All other": {
+   "pct": -14.87,
+   "lo": -22.78,
+   "hi": -6.14,
+   "p": 0.0012
+  }
+ }
+}
