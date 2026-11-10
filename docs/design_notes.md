@@ -553,3 +553,17 @@ Source: src/agents/; results/registry/; tests/test_agents.py.
   representative, accountant, truck driver; wrong on "data scientist" (maps to biological
   scientists). That miss is the kind of case an LLM Mapper would have to fix to earn its place.
 
+## 2026-11-09: Phase 11.5 pipeline (LangGraph), built; live LLM run pending
+
+Source: src/agents/pipeline.py, writer.py, llm.py, mapper.py; tests/test_pipeline.py.
+
+- Graph: write -> render -> skeptic -> {accepted: end, revise: write, rejected: end}. Rejected after
+  max_revisions (3) failed revisions, i.e. on the fourth failing draft.
+- No-numbers rule, structurally: the Writer returns `WriterDraft{template, label}`; `render` raises if
+  the template contains any number other than the two design constants or any key not in the
+  registry, and only then substitutes registry values. A Writer cannot get a number into a claim.
+- Scripted demonstration (stand-in Writer, not an LLM): draft 1 invents "19%" -> structure issue;
+  draft 2 quotes the headline without the 35-49 comparison -> caveat issue; draft 3 accepted. Two
+  revisions. Tests pin this sequence and the rejection path.
+- Ollama was not found on the machine (decisions.md), so no live LLM output exists yet.
+

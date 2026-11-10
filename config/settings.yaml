@@ -95,3 +95,10 @@ design:
 
   # Section 11: decision rule
   no_effect_threshold_pct: 5
+
+agents:                          # Phase 11 (set by Aryan 2026-11-09); the LLM never produces a number
+  host: http://127.0.0.1:11434   # local Ollama server
+  model: qwen2.5:7b              # default: about 4.7 GB, fits the 8 GB GPU with context headroom
+  fallback_model: llama3.2:3b    # fast iteration
+  temperature: 0
+  max_revisions: 3               # Writer -> Skeptic loops before a claim is rejected

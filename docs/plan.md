@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 11, agent layer
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Phase 11.5 needs Aryan: approve installing LangGraph and choose a local LLM runtime and model
+- **Next step:** Aryan installs Ollama and pulls qwen2.5:7b and llama3.2:3b; then the live 11.5 demo, then 11.6
 
 ## Phases
 
@@ -107,7 +107,7 @@ against the registry before it leaves the pipeline.
 | 11.2 | Typed handoffs: `Claim`, `Issue`, `SkepticReport`, `MapperResult` (stdlib dataclasses) | Nothing new | Done |
 | 11.3 | Skeptic, rule-based: label, numbers, causal wording, verdict, comparison caveat | Nothing new | Done |
 | 11.4 | Mapper, baseline: job title -> OCC2010 by string similarity | Nothing new | Done |
-| 11.5 | LangGraph pipeline: Writer (LLM drafts claims from registry keys) -> Skeptic (rules, then LLM review) -> revise loop; Mapper (LLM) with the baseline as fallback | LangGraph and a local LLM runtime and model | Blocked: Aryan |
+| 11.5 | LangGraph pipeline: Writer (LLM drafts templates) -> render (code fills registry numbers) -> Skeptic (rules, then LLM review) -> revise loop, max 3; LLM Mapper choosing among baseline candidates | LangGraph (installed); Ollama with qwen2.5:7b | Built and tested with scripted stand-ins; live run blocked until Ollama is installed |
 | 11.6 | Wire the pipeline to produce the write-up's claims; every published sentence passes the Skeptic | 11.5 | Not started |
 
 ## Phase 12 steps (agent evaluation; planned)

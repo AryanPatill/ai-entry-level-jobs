@@ -28,6 +28,23 @@ def test_numbers_skip_ages_years_and_quintiles():
     assert numbers_in("22-25 in Q5 since 2022-12, Section 11: 14.1% and 0.98") == [14.1, 0.98]
 
 
+def test_design_constants_closed_list():
+    # Each entry has a reason; changing the list must change this test (see skeptic.DESIGN_CONSTANTS).
+    from src.agents.skeptic import DESIGN_CONSTANTS
+    assert set(DESIGN_CONSTANTS) == {95.0, 5.0} and all(DESIGN_CONSTANTS.values())
+
+
+@needs_registry
+@pytest.mark.parametrize("text", ["the 95% CI excludes zero", "beyond the preregistered ±5% threshold"])
+def test_design_constants_pass(text):
+    assert "number" not in {i.rule for i in check(Claim(text, "DESCRIPTIVE")).issues}
+
+
+@needs_registry
+def test_other_round_numbers_still_flagged():
+    assert "number" in {i.rule for i in check(Claim("an 80% chance of a fall", "DESCRIPTIVE")).issues}
+
+
 @needs_registry
 @pytest.mark.parametrize("claim", GOOD)
 def test_good_claims_pass(claim):

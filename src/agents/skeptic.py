@@ -17,11 +17,17 @@ from src.agents import registry
 from src.agents.schemas import Claim, Issue, SkepticReport
 
 LABELS = {"DESCRIPTIVE", "CAUSAL_UNDER_ASSUMPTIONS"}
+# Identifiers that contain digits but are not quantities; stripped before numbers are checked.
 NOT_NUMBERS = [r"\b\d{2}-\d{2}\b",               # age groups 22-25, 35-49
                r"\bQ[1-5]\b",                    # quintiles
                r"\b(?:19|20)\d{2}(?:-\d{2})?\b",  # years and year-months
-               r"\bSection \d+\b", r"\bphase \d+\b", r"\bT[1-7]\b", r"\bL[1-4]\b",
-               r"\b95% CI\b", r"±\s?5%"]                 # design constants, not results
+               r"\bSection \d+\b", r"\bphase \d+\b", r"\bT[1-7]\b", r"\bL[1-4]\b"]
+# Design constants: numbers fixed by the preregistration, not results. Closed list: a new entry needs a
+# recorded reason (decisions.md) and a test in tests/test_agents.py; never add one to silence a false positive.
+DESIGN_CONSTANTS = {
+    95.0: "confidence level of every reported interval (Sections 10-11)",
+    5.0: "preregistered equivalence band, ±5% (Section 11)",
+}
 NUMBER = re.compile(r"\d+(?:\.\d+)?")
 CAUSAL = re.compile(r"\b(caus(?:e|ed|es|ing)|because of AI|due to AI|AI (?:is |has )?(?:killing|destroying|taking|stealing|eliminat\w+)|led to)\b", re.I)
 PROVE = re.compile(r"\bprov(?:e|es|ed|ing)\b", re.I)
@@ -43,7 +49,7 @@ def check(claim: Claim) -> SkepticReport:
     if claim.label not in LABELS:
         rep.issues.append(Issue("label", f"label {claim.label!r} is not one of {sorted(LABELS)}"))
     for n in numbers_in(text):
-        if not any(abs(n - k) <= TOL for k in known):
+        if n not in DESIGN_CONSTANTS and not any(abs(n - k) <= TOL for k in known):
             rep.issues.append(Issue("number", f"{n:g} is not a reported number"))
     if CAUSAL.search(text) and claim.label != "CAUSAL_UNDER_ASSUMPTIONS":
         rep.issues.append(Issue("causal", f"causal wording {CAUSAL.search(text).group(0)!r} in a {claim.label} claim"))

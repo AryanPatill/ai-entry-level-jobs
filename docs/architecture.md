@@ -58,7 +58,7 @@ ai-entry-level-jobs/
 │   │   ├── occupation_exposure.py 2010 Census occ -> SOC 2018 -> exposure; coverage report
 │   │   └── exposure_quintiles.py  employment-weighted quintile cutoffs (2015-01 to 2020-02)
 │   ├── analysis/                 Phases 6-10; mde.py (Section 16), eda_stage_a.py, eda_stage_b.py (Phase 6)
-│   ├── agents/                   Phase 11: registry.py, schemas.py, skeptic.py (rules), mapper.py (baseline)
+│   ├── agents/                   Phase 11: registry, schemas, skeptic (rules), writer (templates), pipeline (LangGraph), mapper, llm
 │   └── utils/config.py           settings loader, REPO_ROOT, .env secrets
 ├── tests/                        pytest; run with `python -m pytest -q`
 ├── data/                         git-ignored: raw, interim, processed

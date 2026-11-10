@@ -25,6 +25,10 @@ matplotlib
 pyyaml
 python-dotenv
 
+# --- Agents (Phase 11; local LLM via Ollama, installed separately) ---
+langgraph
+langchain-ollama
+
 # --- Dev ---
 pytest
 ipykernel
