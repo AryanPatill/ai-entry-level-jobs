@@ -151,7 +151,7 @@ def main() -> None:
               f"- Joint test of the {k} pre-treatment bins (now including 2022): p = {p_joint:.3f}; bins with a CI beyond "
               f"±5%: {len(beyond)}.", "",
               "## Not run (blocked)", "",
-              "- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not acquired.",
+              "- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not run; logged as a deviation 2026-11-09.",
               "- HonestDiD sensitivity: not run; logged as a deviation 2026-11-04 (no validated Python tool).",
               "- Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")

@@ -261,5 +261,6 @@ Same ±5% three-verdict rule.
 | 2026-11-04 | 1.0 | Section 12 threat 4 `[verify]` resolved: field of degree confirmed absent from IPUMS CPS. Resolves a placeholder; no design change. |
 | 2026-11-04 | 1.0 | Deviation (see `deviations.md`): Section 15 automation vs augmentation split not run; the exposure data do not support it. |
 | 2026-11-04 | 1.0 | Deviation (see `deviations.md`): Section 13 HonestDiD sensitivity not run; no validated Python tool. |
+| 2026-11-09 | 1.0 | Deviation (see `deviations.md`): Sections 5 and 13 alternative exposure measures (Felten AIOE, Anthropic Economic Index) not run. |
 | 2026-11-04 | 1.0 | Section 12 threat 3 `[verify]` resolved: Dingel and Neiman occupation file located and used. Resolves a placeholder; no design change. |
 | 2026-10-17 | 1.0 | Deviation (see `deviations.md`): the Section 4/13 student filter drops enrolled 22-25-year-olds, not 22-24, from 2013-01 onward. Decided before any outcome was estimated. |

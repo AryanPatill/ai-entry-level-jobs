@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 11, agent layer (not started)
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews Phases 8-10; pending Aryan: alternative exposure measures; Phase 11 decisions
+- **Next step:** Aryan reviews Phases 8-10; pending Aryan: Phase 11 decisions
 
 ## Phases
 
@@ -22,7 +22,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 | 6 | EDA and descriptive replication | Trend figures, descriptive comparison | Done |
 | 7 | Identification strategy | Causal diagram, assumptions, threats-to-tests table | Done |
 | 8 | Estimation | DiD, triple-difference, event-study tables | Done |
-| 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Done except alternative exposure measures (pending Aryan); HonestDiD logged as a deviation |
+| 9 | Robustness and falsification | Placebo, sensitivity, inference tables | Done; HonestDiD and alternative exposure measures logged as deviations |
 | 10 | Heterogeneity | Subgroup results | Done |
 | 11 | Agent layer | LangGraph pipeline with typed handoffs | Not started |
 | 12 | Agent evaluation | Mapper accuracy, Skeptic catch rate | Not started |

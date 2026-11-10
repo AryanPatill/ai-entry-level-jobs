@@ -495,7 +495,7 @@ Source: src/analysis/robustness.py; results/tables/phase9_robustness.md.
 - Pre-pandemic reference bin: post-period bins average -9.8%. The joint pre-trend test is identical
   to Phase 8's (p = 0.41) because "all pre-period bins equal" does not depend on which bin is the
   reference.
-- Not run: T3 (teleworkability, download pending), alternative exposure measures (not acquired),
+- Not run: T3 (teleworkability, download pending; done later the same day), alternative exposure measures (deviation 2026-11-09),
   HonestDiD (logged as a deviation 2026-11-04). Wild bootstrap not required (465 clusters).
 
 ## 2026-11-04: Phase 10 subgroups and exploratory heterogeneity (Sections 14-15)

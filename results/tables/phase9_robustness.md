@@ -40,6 +40,6 @@ Exposure in standard-deviation units (across occupations) x 22-25 x post: -5.7% 
 
 ## Not run (blocked)
 
-- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not acquired.
+- Alternative exposure measures (Felten AIOE, Anthropic Economic Index): not run; logged as a deviation 2026-11-09.
 - HonestDiD sensitivity: not run; logged as a deviation 2026-11-04 (no validated Python tool).
 - Wild cluster bootstrap: not required (465 clusters; Section 10 applies it below 50).
