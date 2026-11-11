@@ -603,3 +603,18 @@ Source: results/tables/phase11_demo.md (current), phase11_demo_run2.md (before t
   (5120); UX designer -> 1030 web developers (debatable vs 2630 designers); warehouse associate -> 7750
   assemblers (wrong; 9620 hand laborers and material movers expected).
 
+## 2026-11-10: Phase 11.5 demo after reviewer option 1(b) (agent output, not analysis)
+
+Source: results/tables/phase11_demo.md (current); phase11_demo_run3.md (before 1b).
+
+- Run A accepted after 1 revision: "The headline estimate for 22-25-year-olds in the most AI-exposed
+  occupations (Q5) relative to ages 35-49 shows a -14.1% change in employment, with a 95% confidence
+  interval ranging from -21.5% to -6.0%, and a verdict of Effect detected."
+- Run B: the scripted bad draft ("19% ... because of AI") was repaired in 2 revisions (draft 2 failed
+  units and caveat; draft 3 passed every rule and the review) to the same sentence.
+- The accepted sentence does not mention that within 22-25 alone the Q5-vs-Q1 change is -5.1% (not
+  significant; L3). The caveat rule requires naming the 35-49 comparison, not explaining it; whether the
+  write-up needs more is a question for 11.6.
+- Still open (not adopted): no rule limits repeated placeholders, so a garbled sentence that repeats a
+  value can pass the number rules and must be caught by the caveat rule or the reviewer.
+

@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 11, agent layer
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan decides the LLM reviewer's authority and a repeated-placeholder rule; then 11.6
+- **Next step:** 11.6 (write-up claims through the pipeline), on Aryan's go-ahead
 
 ## Phases
 
@@ -107,7 +107,7 @@ against the registry before it leaves the pipeline.
 | 11.2 | Typed handoffs: `Claim`, `Issue`, `SkepticReport`, `MapperResult` (stdlib dataclasses) | Nothing new | Done |
 | 11.3 | Skeptic, rule-based: label, numbers, causal wording, verdict, comparison caveat | Nothing new | Done |
 | 11.4 | Mapper, baseline: job title -> OCC2010 by string similarity | Nothing new | Done |
-| 11.5 | LangGraph pipeline: Writer (LLM drafts templates) -> render (code fills registry numbers) -> Skeptic (rules, then grounded LLM review) -> revise loop, max 3; LLM Mapper choosing among baseline candidates | LangGraph; Ollama with qwen3:8b | Built; live demo run 2026-11-10 (results/tables/phase11_demo.md). Writer does not yet pass the caveat rule |
+| 11.5 | LangGraph pipeline: Writer (LLM drafts templates) -> render (code fills registry numbers) -> Skeptic (rules, then grounded LLM review) -> revise loop, max 3; LLM Mapper choosing among baseline top 25 | LangGraph; Ollama with qwen3:8b | Done 2026-11-10: headline claim accepted after 1 revision; scripted bad claim repaired in 2 |
 | 11.6 | Wire the pipeline to produce the write-up's claims; every published sentence passes the Skeptic | 11.5 | Not started |
 
 ## Phase 12 steps (agent evaluation; planned)

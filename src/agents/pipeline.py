@@ -16,7 +16,8 @@ from pydantic import BaseModel
 
 from src.agents.schemas import Claim, Issue
 from src.agents.skeptic import check
-from src.agents.writer import TemplateError, WriterDraft, render
+from src.agents import registry
+from src.agents.writer import TemplateError, WriterDraft, fmt, render
 
 
 class State(TypedDict, total=False):
@@ -40,13 +41,22 @@ class Review(BaseModel):
 
 
 def grounded(claim: Claim, findings: list[Finding]) -> list[str]:
-    """Keep a reviewer objection only if it quotes words that are really in the sentence (8+ characters).
+    """Keep a reviewer objection only if it quotes the Writer's own words (Aryan 2026-11-10, option 1b).
 
-    Small models echo their checklist as findings; an ungrounded objection cannot block a claim.
+    Dropped: quotes not in the sentence or under 8 characters (small models echo their checklist), and
+    quotes that overlap a value the code filled in from the registry (numbers, the preregistered verdict
+    label): those are the analysis's words, not the Writer's, and the reviewer cannot overrule them.
     """
+    reg = registry.load()
     text = claim.text.lower()
-    return [f"{f.problem} (\"{f.quote.strip()}\")" for f in findings
-            if len(f.quote.strip()) >= 8 and f.quote.strip().lower() in text]
+    filled = [fmt(k, reg[k]).lower() for k in claim.refs if k in reg]
+    keep = []
+    for f in findings:
+        q = f.quote.strip().lower()
+        if len(q) < 8 or q not in text or any(v in q or q in v for v in filled):
+            continue
+        keep.append(f"{f.problem} (\"{f.quote.strip()}\")")
+    return keep
 
 
 def build_graph(writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3):

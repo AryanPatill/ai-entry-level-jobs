@@ -56,6 +56,16 @@ def test_reviewer_findings_must_quote_the_sentence():
     assert len(kept) == 1 and "overstates" in kept[0]
 
 
+def test_reviewer_cannot_object_to_registry_text():
+    from src.agents.pipeline import Finding, grounded
+    c = render(WriterDraft(template="Employment shows a {phase8_main.headline.pct} change relative to ages 35-49, "
+                                    "and the verdict of {phase8_main.headline.verdict_label} is final.", label="DESCRIPTIVE"))
+    kept = grounded(c, [Finding(quote="verdict of Effect detected", problem="overstates certainty"),   # registry label
+                        Finding(quote="shows a -14.1% change", problem="overstates"),                  # registry number
+                        Finding(quote="is final", problem="overstates certainty")])                    # Writer's own words
+    assert kept == ['overstates certainty ("is final")']
+
+
 def test_rejected_after_max_revisions():
     from src.agents.pipeline import run
     out = run("headline", {}, scripted([SCRIPT[0]] * 10), max_revisions=3)
