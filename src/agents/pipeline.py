@@ -30,8 +30,23 @@ class State(TypedDict, total=False):
     status: str
 
 
+class Finding(BaseModel):
+    quote: str      # the exact words in the sentence that cause the problem
+    problem: str
+
+
 class Review(BaseModel):
-    issues: list[str]
+    findings: list[Finding]
+
+
+def grounded(claim: Claim, findings: list[Finding]) -> list[str]:
+    """Keep a reviewer objection only if it quotes words that are really in the sentence (8+ characters).
+
+    Small models echo their checklist as findings; an ungrounded objection cannot block a claim.
+    """
+    text = claim.text.lower()
+    return [f"{f.problem} (\"{f.quote.strip()}\")" for f in findings
+            if len(f.quote.strip()) >= 8 and f.quote.strip().lower() in text]
 
 
 def build_graph(writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3):
@@ -74,11 +89,12 @@ def llm_reviewer(model: str | None = None):
 
     def review(claim: Claim) -> list[str]:
         out = structured.invoke(
-            "Review this sentence from an economics write-up for overstatement: causal claims beyond its label "
-            f"({claim.label}), missing uncertainty, or wording that hides that the comparison is relative to older "
-            "workers and less-exposed occupations. Return an empty list if it is fine. Do not suggest numbers.\n"
+            "Review this sentence from an economics write-up. Report a finding only for a real problem: a causal claim "
+            f"stronger than its label ({claim.label}), or wording that overstates certainty. For each finding, copy the "
+            "exact words from the sentence that cause it into `quote`. If no words in the sentence cause a problem, "
+            "return an empty list. Do not suggest numbers.\n"
             f"Sentence: {claim.text}")
-        return out.issues
+        return grounded(claim, out.findings)
     return review
 
 

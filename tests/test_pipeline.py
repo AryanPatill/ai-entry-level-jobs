@@ -40,6 +40,21 @@ def test_bad_claim_fixed_in_two_revisions():
     assert out["history"][1]["issues"][0].startswith("caveat")
 
 
+def test_percent_after_placeholder_absorbed():
+    claim = render(WriterDraft(template="changed by {phase8_main.headline.pct}% relative to 35-49", label="DESCRIPTIVE"))
+    assert "%%" not in claim.text and "-14.1%" in claim.text
+
+
+def test_reviewer_findings_must_quote_the_sentence():
+    from src.agents.pipeline import Finding, grounded
+    from src.agents.schemas import Claim
+    c = Claim("Employment fell relative to ages 35-49, which proves the effect.", "DESCRIPTIVE")
+    kept = grounded(c, [Finding(quote="which proves the effect", problem="overstates"),
+                        Finding(quote="missing uncertainty", problem="checklist echo"),     # not in the sentence
+                        Finding(quote="fell", problem="too short to be evidence")])
+    assert len(kept) == 1 and "overstates" in kept[0]
+
+
 def test_rejected_after_max_revisions():
     from src.agents.pipeline import run
     out = run("headline", {}, scripted([SCRIPT[0]] * 10), max_revisions=3)

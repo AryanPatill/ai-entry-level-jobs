@@ -5,6 +5,7 @@
   "hi": -5.98,
   "p": 0.001,
   "verdict": "Effect detected: employment of 22-25-year-olds in Q5 occupations, relative to Q1 and to ages 35-49 changed by -14.1% (95% CI -21.5% to -6.0%), beyond the preregistered ±5% threshold.",
+  "verdict_label": "Effect detected",
   "tost_p_lower": 0.9856,
   "tost_p_upper": 0.0
  },

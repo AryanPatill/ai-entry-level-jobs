@@ -47,13 +47,16 @@ def render(draft: WriterDraft) -> Claim:
     literal = [n for n in numbers_in(PLACEHOLDER.sub(" ", draft.template)) if n not in DESIGN_CONSTANTS]
     if literal:
         raise TemplateError(f"the template writes numbers itself: {literal}; use registry placeholders")
-    text = PLACEHOLDER.sub(lambda m: fmt(m.group(1), reg[m.group(1)]), draft.template)
+    # A "%" typed right after a placeholder is absorbed when the value already carries one (no "-14.1%%").
+    text = re.sub(r"\{([^{}]+)\}(%?)", lambda m: (lambda v: v if v.endswith("%") else v + m.group(2))(
+        fmt(m.group(1), reg[m.group(1)])), draft.template)
     return Claim(text, draft.label, tuple(keys))
 
 
 def keys_for(*prefixes: str) -> dict:
-    """The registry entries a Writer may cite for a topic."""
-    return {k: v for k, v in registry.load().items() if k.startswith(prefixes)}
+    """The registry entries a Writer may cite for a topic: numbers and short labels, not whole sentences."""
+    return {k: v for k, v in registry.load().items()
+            if k.startswith(prefixes) and (not isinstance(v, str) or len(v) <= 40)}
 
 
 PROMPT = """You write one sentence for a research write-up on whether AI is reducing employment of young

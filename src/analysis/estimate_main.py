@@ -214,6 +214,7 @@ def main() -> None:
     TABLE.write_text("\n".join(lines + [""]), encoding="utf-8")
     record("phase8_main", {
         "headline": {**est(h), "verdict": verdict(h.b, h.lo, h.hi, "22-25-year-olds in Q5 occupations, relative to Q1 and to ages 35-49"),
+                     "verdict_label": verdict(h.b, h.lo, h.hi, "").split(":")[0],
                      "tost_p_lower": round(t_lo, 4), "tost_p_upper": round(t_hi, 4)},
         "pretrend": {"joint_p": round(p_joint, 4), "bins_beyond_5pct": len(beyond), "flagged": bool(flagged)},
         "terms": {t: est(r) for t, r in ct.iterrows()},

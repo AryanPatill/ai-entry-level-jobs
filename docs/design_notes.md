@@ -567,3 +567,22 @@ Source: src/agents/pipeline.py, writer.py, llm.py, mapper.py; tests/test_pipelin
   revisions. Tests pin this sequence and the rejection path.
 - Ollama was not found on the machine (decisions.md), so no live LLM output exists yet.
 
+## 2026-11-10: Phase 11.5 live demo with qwen3:8b (agent output, not analysis)
+
+Source: src/agents/demo.py; results/tables/phase11_demo.md (after fixes) and phase11_demo_run1.md (first run).
+
+- Ollama 0.40.16 installed by Aryan; qwen3:8b and qwen3:4b pulled (qwen2.5:7b is also present).
+- First run exposed three pipeline defects, fixed the same day: doubled `%%`; whole verdict sentences
+  embedded in claims; the LLM reviewer returning its own checklist as findings, which rejected a good
+  draft. Reviewer objections now must quote the sentence (code-enforced).
+- After the fixes, the structural rule held in every draft: the model wrote no digit; the scripted bad
+  draft ("19% ... because of AI") was stopped at render.
+- Both runs ended **rejected after 3 revisions**, correctly: the model never named the 35-49 comparison,
+  even with the Skeptic's feedback, and at temperature 0 later drafts repeat (drafts 3 and 4 identical).
+- Skeptic gap found: the model wrote "percentage point decline" for a percent change in a count, and no
+  rule caught it. Also "-14.1% ... decline" (double negative) and a stray "DESCRIPTIVE:" prefix.
+- Mapper: the LLM fixed "data scientist" (1005, computer and information research scientists) and
+  "junior accountant" (5120); both failed "software engineer" (4930 sales engineers) and "warehouse
+  associate" (LLM 5020 telephone operators) because the right code is not among the baseline's top 10.
+  Candidate generation, not the choice, is the bottleneck.
+
