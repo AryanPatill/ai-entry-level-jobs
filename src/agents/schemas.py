@@ -21,6 +21,7 @@ class Claim:
 class Issue:
     rule: str
     detail: str
+    quote: str = ""     # the exact text that triggered the rule (empty when the problem is an absence)
 
 
 @dataclass

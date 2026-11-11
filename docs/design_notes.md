@@ -618,3 +618,44 @@ Source: results/tables/phase11_demo.md (current); phase11_demo_run3.md (before 1
 - Still open (not adopted): no rule limits repeated placeholders, so a garbled sentence that repeats a
   value can pass the number rules and must be caught by the caveat rule or the reviewer.
 
+## 2026-11-10: the Skeptic enforces the headline pairing (structural, not left to each draft)
+
+Source: src/agents/skeptic.py (`caveat`, `repeat`); tests/test_agents.py.
+
+- Any claim that quotes the headline (-14.1%) is rejected unless it also (i) names the 35-49 comparison,
+  (ii) gives the within-ages-22-25 Q5-vs-Q1 estimate (-5.1%), and (iii) says that estimate is not
+  significant. Set by Aryan, 2026-11-10.
+- Why: the two numbers together are the finding. The age gap is large; the exposure gradient among young
+  workers is weak (Phase 8, L3). Quoting only the first invites the reading that AI exposure caused it,
+  which is the comparison-group objection the design cannot rule out. This is a reporting-completeness rule;
+  both numbers were already in the registry, and no new result is computed.
+- It is code: no sentence quoting the headline can leave the pipeline without the pairing, whatever the
+  Writer's prompt says. Tests pin both directions (headline alone rejected; both numbers plus the
+  non-significance statement accepted; both numbers without the statement rejected).
+- Also added: `repeat`, each registry key may render at most once per claim, which catches garbled drafts
+  that repeat a value.
+
+## 2026-11-11: traces for comparison_group and gradient (agent output, not analysis)
+
+Source: results/tables/phase11_traces/ (qwen3:8b), results/tables/phase11_traces/qwen3_4b/ (qwen3:4b).
+
+- Hypothesis checked (Aryan): pairing rule and repeat rule mutually unsatisfiable for these claims. Not
+  supported: across all 16 drafts on both models the caveat (pairing) rule never fired, because neither claim
+  quotes the headline. `repeat` fired twice, both on genuinely garbled drafts. On qwen3:8b both claims now
+  pass (comparison_group after 3 revisions, gradient after 1); the earlier rejections were most likely
+  sampling at retry temperature 0.3. No rule changed.
+- Skeptic false negatives (accepted claims that are wrong):
+  - gradient (8b): attaches the Q2 estimate (-9.4%) to "AI-exposed occupations (Q5)", and says there is "no
+    significant difference in Q2 and Q3" although Q2's p is 0.021.
+  - gradient (4b): "-5.4% ... is 0.266 statistically significant".
+  - comparison_group (8b): "-5.1% of young workers ... experienced a change in employment" (misstates the
+    estimand) and calls the within-age result "the headline".
+- Reviewer objections that look like false positives: comparison_group drafts 1-2 objected to "The headline
+  indicates a relative difference ..." as causal (it is not), and to "the result is (not) statistically
+  significant" as overstating certainty. That second objection targets wording the pairing rule requires for
+  headline claims, so the reviewer and the caveat rule can conflict.
+- Rule gap: qwen3:4b's prompt echo ("The headline is relative: ... Say so.") and a bare "DESCRIPTIVE" passed
+  every rule (no registry number is required); only the reviewer stopped them, for the wrong reasons.
+- qwen3:4b often invents placeholder names (key1, age_group) and echoes the prompt; `structure` catches the
+  first, nothing structural catches the second.
+

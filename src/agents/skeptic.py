@@ -6,8 +6,10 @@ Rules (Sections 11, 17; identification.md):
   causal    causal language only in a CAUSAL_UNDER_ASSUMPTIONS claim; "prove" never
   verdict   a Section 11 verdict phrase must be the headline's actual verdict
   units     a percent change (registry .pct/.lo/.hi) must not be called 'percentage points'
-  caveat    quoting the headline % must name the comparison (35-49 / older workers), because most of the
-            estimate comes from the comparison group (Phase 8, L3)
+  caveat    quoting the headline % must (i) name the 35-49 comparison, (ii) give the within-22-25 Q5-vs-Q1
+            estimate, and (iii) say that estimate is not significant (Aryan 2026-11-10). Together they are the
+            finding: a large age gap, a weak exposure gradient among the young (Phase 8, L3)
+  repeat    each registry key renders at most once per claim (catches garbled drafts)
 An LLM Skeptic can be layered on top later; these rules run first and cannot be argued with.
 """
 from __future__ import annotations
@@ -48,19 +50,19 @@ def check(claim: Claim) -> SkepticReport:
     text = claim.text
 
     if claim.label not in LABELS:
-        rep.issues.append(Issue("label", f"label {claim.label!r} is not one of {sorted(LABELS)}"))
+        rep.issues.append(Issue("label", f"label {claim.label!r} is not one of {sorted(LABELS)}", claim.label))
     for n in numbers_in(text):
         if n not in DESIGN_CONSTANTS and not any(abs(n - k) <= TOL for k in known):
-            rep.issues.append(Issue("number", f"{n:g} is not a reported number"))
+            rep.issues.append(Issue("number", f"{n:g} is not a reported number", f"{n:g}"))
     if CAUSAL.search(text) and claim.label != "CAUSAL_UNDER_ASSUMPTIONS":
-        rep.issues.append(Issue("causal", f"causal wording {CAUSAL.search(text).group(0)!r} in a {claim.label} claim"))
+        rep.issues.append(Issue("causal", f"causal wording in a {claim.label} claim", CAUSAL.search(text).group(0)))
     if PROVE.search(text):
-        rep.issues.append(Issue("causal", "'prove' overstates any estimate"))
+        rep.issues.append(Issue("causal", "'prove' overstates any estimate", PROVE.search(text).group(0)))
 
     actual = reg["phase8_main.headline.verdict"].split(":")[0].lower()
     for v in VERDICTS:
         if v in text.lower() and v != actual and re.search(r"headline|Q5", text, re.I):
-            rep.issues.append(Issue("verdict", f"says {v!r}; the headline verdict is {actual!r}"))
+            rep.issues.append(Issue("verdict", f"the headline verdict is {actual!r}", v))
     if re.search(r"percentage[- ]points?|\bpp\b", text, re.I):
         is_pct = lambda k: k.endswith((".pct", ".lo", ".hi")) and ".secondary_" not in k
         if claim.refs:   # a Writer claim names its registry keys exactly
@@ -72,8 +74,22 @@ def check(claim: Claim) -> SkepticReport:
             near = lambda n, xs: any(abs(n - x) <= TOL for x in xs)
             wrong = any(near(n, changes) and not near(n, points) for n in numbers_in(text))
         if wrong:
-            rep.issues.append(Issue("units", "a percent change in employment is called 'percentage points'"))
-    head = abs(reg["phase8_main.headline.pct"])
-    if any(abs(n - head) <= TOL for n in numbers_in(text)) and not re.search(r"35-49|older|comparison", text, re.I):
-        rep.issues.append(Issue("caveat", "quotes the headline without naming the 35-49 comparison it is relative to"))
+            rep.issues.append(Issue("units", "a percent change in employment is called 'percentage points'",
+                                    re.search(r"percentage[- ]points?|\bpp\b", text, re.I).group(0)))
+    nums = numbers_in(text)
+    near = lambda x: any(abs(n - abs(x)) <= TOL for n in nums)
+    if near(reg["phase8_main.headline.pct"]):
+        missing = []
+        if not re.search(r"35-49|older", text, re.I):
+            missing.append("the 35-49 comparison")
+        if not near(reg["phase8_main.l3_within_age_q5_vs_q1.22-25.pct"]):
+            missing.append("the within-22-25 Q5-vs-Q1 estimate")
+        if not re.search(r"not (?:statistically )?significant|insignificant|no (?:statistically )?significant", text, re.I):
+            missing.append("that the within-22-25 estimate is not significant")
+        if missing:
+            rep.issues.append(Issue("caveat", "quotes the headline without " + ", ".join(missing),
+                                    f"{abs(reg['phase8_main.headline.pct']):.1f}"))
+    dup = sorted({k for k in claim.refs if claim.refs.count(k) > 1})
+    if dup:
+        rep.issues.append(Issue("repeat", "renders the same registry value more than once", ", ".join(dup)))
     return rep

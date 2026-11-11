@@ -12,7 +12,8 @@ SCRIPT = [  # what a writer might do: invent a number, then drop the caveat, the
     WriterDraft(template="Young workers in exposed jobs lost 19% of employment.", label="DESCRIPTIVE"),
     WriterDraft(template=f"Employment of 22-25-year-olds in Q5 occupations changed by {H} {CI}.", label="DESCRIPTIVE"),
     WriterDraft(template=f"Employment of 22-25-year-olds in Q5 occupations changed by {H} {CI} relative to Q1 "
-                         "occupations and to ages 35-49.", label="DESCRIPTIVE"),
+                         "occupations and to ages 35-49; within ages 22-25 alone the Q5-vs-Q1 change is "
+                         "{phase8_main.l3_within_age_q5_vs_q1.22-25.pct}, not statistically significant.", label="DESCRIPTIVE"),
 ]
 
 
@@ -36,8 +37,8 @@ def test_bad_claim_fixed_in_two_revisions():
     from src.agents.pipeline import run
     out = run("headline", {}, scripted(SCRIPT))
     assert out["status"] == "accepted" and out["attempts"] == 3
-    assert out["history"][0]["issues"][0].startswith("structure")
-    assert out["history"][1]["issues"][0].startswith("caveat")
+    assert out["history"][0]["issues"][0]["rule"] == "structure" and out["history"][0]["issues"][0]["quote"] == "19"
+    assert out["history"][1]["issues"][0]["rule"] == "caveat"
 
 
 @pytest.mark.parametrize("unit", ["%", " percent"])
@@ -53,7 +54,7 @@ def test_reviewer_findings_must_quote_the_sentence():
     kept = grounded(c, [Finding(quote="which proves the effect", problem="overstates"),
                         Finding(quote="missing uncertainty", problem="checklist echo"),     # not in the sentence
                         Finding(quote="fell", problem="too short to be evidence")])
-    assert len(kept) == 1 and "overstates" in kept[0]
+    assert len(kept) == 1 and kept[0].detail == "overstates" and kept[0].quote == "which proves the effect"
 
 
 def test_reviewer_cannot_object_to_registry_text():
@@ -63,7 +64,7 @@ def test_reviewer_cannot_object_to_registry_text():
     kept = grounded(c, [Finding(quote="verdict of Effect detected", problem="overstates certainty"),   # registry label
                         Finding(quote="shows a -14.1% change", problem="overstates"),                  # registry number
                         Finding(quote="is final", problem="overstates certainty")])                    # Writer's own words
-    assert kept == ['overstates certainty ("is final")']
+    assert [(i.detail, i.quote) for i in kept] == [("overstates certainty", "is final")]
 
 
 def test_rejected_after_max_revisions():
@@ -81,3 +82,11 @@ def test_llm_mapper_cannot_leave_candidate_list():
         assert second.occ2010 != 4220 and second.occ2010 in {c.occ2010 for c in __import__("src.agents.mapper", fromlist=["x"]).map_title("janitor", 10)}
     except FileNotFoundError:
         pytest.skip("DDI codebook not present")
+
+
+def test_writeup_cache_key_tracks_inputs():
+    from src.agents.writeup import cache_key
+    k = cache_key("headline", "t", {"a": 1}, "qwen3:4b")
+    assert k == cache_key("headline", "t", {"a": 1}, "qwen3:4b")
+    assert k != cache_key("headline", "t", {"a": 2}, "qwen3:4b")       # registry value changed
+    assert k != cache_key("headline", "t", {"a": 1}, "qwen3:8b")       # model changed

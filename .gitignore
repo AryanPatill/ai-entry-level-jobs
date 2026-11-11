@@ -28,3 +28,5 @@ __pycache__/
 
 
 !.env.example
+# Phase 11 claim cache (rebuildable; --no-cache)
+results/writeup/cache.json

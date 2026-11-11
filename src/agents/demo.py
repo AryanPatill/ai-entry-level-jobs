@@ -27,7 +27,8 @@ def history(out) -> list[str]:
     lines = ["| Attempt | Template (LLM output) | Rendered claim | Issues |", "|---|---|---|---|"]
     for h in out["history"]:
         esc = lambda s: (s or "—").replace("|", "/")
-        lines.append(f"| {h['attempt']} | {esc(h['template'])} | {esc(h['claim'])} | {esc('; '.join(h['issues']) or 'passed')} |")
+        issues = "; ".join(f"{i['rule']}: {i['detail']}" + (f' ("{i["quote"]}")' if i["quote"] else "") for i in h["issues"])
+        lines.append(f"| {h['attempt']} | {esc(h['template'])} | {esc(h['claim'])} | {esc(issues or 'passed')} |")
     return lines + ["", f"Status: **{out['status']}** after {out['attempts']} draft(s) ({out['attempts'] - 1} revision(s)).", ""]
 
 

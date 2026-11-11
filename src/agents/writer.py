@@ -46,7 +46,8 @@ def render(draft: WriterDraft) -> Claim:
         raise TemplateError(f"unknown registry keys: {unknown}")
     literal = [n for n in numbers_in(PLACEHOLDER.sub(" ", draft.template)) if n not in DESIGN_CONSTANTS]
     if literal:
-        raise TemplateError(f"the template writes numbers itself: {literal}; use registry placeholders")
+        raise TemplateError(f"the template writes numbers itself: {literal}; use registry placeholders",
+                            *[f"{n:g}" for n in literal])
     # A "%" or " percent" typed right after a placeholder is absorbed when the value already carries "%"
     # (no "-14.1%%" or "-14.1% percent").
     text = re.sub(r"\{([^{}]+)\}(%| percent\b)?", lambda m: (lambda v: v if v.endswith("%") else v + (m.group(2) or ""))(
@@ -66,6 +67,8 @@ workers (ages 22-25) in AI-exposed occupations. Rules:
 - Label the sentence DESCRIPTIVE unless it states an effect under the study's assumptions (CAUSAL_UNDER_ASSUMPTIONS).
 - No causal verbs (caused, led to, due to AI) in a DESCRIPTIVE sentence. Never say "prove".
 - The headline is relative: young vs ages 35-49, and exposed (Q5) vs least exposed (Q1) occupations. Say so.
+  If you quote the headline, also give the within-ages-22-25 Q5-vs-Q1 change and say it is not statistically significant.
+- Use each placeholder at most once.
 Topic: {topic}
 Keys you may use (key = current value, for context only; do not copy the value):
 {keys}
@@ -74,7 +77,9 @@ Keys you may use (key = current value, for context only; do not copy the value):
 
 # Skeptic rule -> the concrete requirement the Writer must meet on its next draft.
 REQUIREMENTS = {
-    "caveat": "REQUIRED: the sentence must contain the exact words 'relative to ages 35-49'.",
+    "caveat": ("REQUIRED: say 'relative to ages 35-49' AND give the within-ages-22-25 Q5-vs-Q1 change "
+               "{phase8_main.l3_within_age_q5_vs_q1.22-25.pct} AND state that it is not statistically significant."),
+    "repeat": "REQUIRED: use each {placeholder} at most once.",
     "units": "REQUIRED: say 'percent', never 'percentage point', for these changes in employment.",
     "structure": "REQUIRED: write no digits at all; every number must be a {placeholder} from the key list.",
     "causal": "REQUIRED: no causal verbs (caused, led to, due to, because of AI) and never 'prove'.",

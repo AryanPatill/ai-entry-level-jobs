@@ -11,7 +11,8 @@ needs_registry = pytest.mark.skipif(not (REGISTRY_DIR / "phase8_main.json").exis
 
 GOOD = [
     Claim("DESCRIPTIVE: employment of 22-25-year-olds in Q5 occupations changed by 14.1% relative to Q1 and "
-          "to ages 35-49 after 2022-12 (95% CI 21.5% to 6.0%); headline verdict: effect detected.", "DESCRIPTIVE"),
+          "to ages 35-49 after 2022-12 (95% CI 21.5% to 6.0%); headline verdict: effect detected. Within ages "
+          "22-25 alone the Q5-vs-Q1 change is -5.1%, not statistically significant.", "DESCRIPTIVE"),
     Claim("Placebo dates in 2017 and 2018 give +2.5% and -0.7%.", "DESCRIPTIVE"),
 ]
 BAD = [  # (claim, rule that must fire)
@@ -40,6 +41,34 @@ def test_percentage_points_allowed_for_rates():
 def test_percentage_points_flagged_by_writer_refs():
     c = Claim("A -14.1% percentage point decline, relative to ages 35-49.", "DESCRIPTIVE", ("phase8_main.headline.pct",))
     assert "units" in {i.rule for i in check(c).issues}
+
+
+@needs_registry
+def test_headline_alone_rejected():
+    c = Claim("Employment of 22-25-year-olds in Q5 changed by -14.1% relative to Q1 and to ages 35-49.", "DESCRIPTIVE")
+    issues = [i for i in check(c).issues if i.rule == "caveat"]
+    assert issues and "within-22-25" in issues[0].detail and "not significant" in issues[0].detail
+
+
+@needs_registry
+def test_headline_with_pairing_passes():
+    c = Claim("Employment of 22-25-year-olds in Q5 changed by -14.1% relative to Q1 and to ages 35-49; within ages "
+              "22-25 alone the Q5-vs-Q1 change is -5.1%, which is not statistically significant.", "DESCRIPTIVE")
+    assert check(c).passed, check(c).issues
+
+
+@needs_registry
+def test_pairing_needs_the_non_significance_statement():
+    c = Claim("Employment of 22-25-year-olds in Q5 changed by -14.1% relative to ages 35-49; within ages 22-25 "
+              "alone the Q5-vs-Q1 change is -5.1%.", "DESCRIPTIVE")
+    assert "caveat" in {i.rule for i in check(c).issues}
+
+
+@needs_registry
+def test_repeated_registry_value_rejected():
+    c = Claim("-14.1% for 22-25 relative to -14.1%, ages 35-49.", "DESCRIPTIVE",
+              ("phase8_main.headline.pct", "phase8_main.headline.pct"))
+    assert "repeat" in {i.rule for i in check(c).issues}
 
 
 def test_feedback_turns_rules_into_requirements():

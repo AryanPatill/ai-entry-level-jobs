@@ -40,7 +40,7 @@ class Review(BaseModel):
     findings: list[Finding]
 
 
-def grounded(claim: Claim, findings: list[Finding]) -> list[str]:
+def grounded(claim: Claim, findings: list[Finding]) -> list[Issue]:
     """Keep a reviewer objection only if it quotes the Writer's own words (Aryan 2026-11-10, option 1b).
 
     Dropped: quotes not in the sentence or under 8 characters (small models echo their checklist), and
@@ -55,30 +55,30 @@ def grounded(claim: Claim, findings: list[Finding]) -> list[str]:
         q = f.quote.strip().lower()
         if len(q) < 8 or q not in text or any(v in q or q in v for v in filled):
             continue
-        keep.append(f"{f.problem} (\"{f.quote.strip()}\")")
+        keep.append(Issue("review", f.problem, f.quote.strip()))
     return keep
 
 
 def build_graph(writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3):
     def write(s: State) -> State:
-        feedback = [f"{i.rule}: {i.detail}" for i in s.get("issues", [])]
+        feedback = [f"{i.rule}: {i.detail}" + (f" (\"{i.quote}\")" if i.quote else "") for i in s.get("issues", [])]
         return {"draft": writer(s["topic"], s["keys"], feedback), "attempts": s.get("attempts", 0) + 1}
 
     def render_node(s: State) -> State:
         try:
             return {"claim": render(s["draft"]), "issues": []}
         except TemplateError as e:
-            return {"claim": None, "issues": [Issue("structure", str(e))]}
+            return {"claim": None, "issues": [Issue("structure", str(e), ", ".join(str(n) for n in e.args[1:]) if len(e.args) > 1 else "")]}
 
     def skeptic(s: State) -> State:
         issues = list(s["issues"])
         if s["claim"] is not None:
             issues += check(s["claim"]).issues
             if not issues and reviewer is not None:
-                issues += [Issue("review", t) for t in reviewer(s["claim"])]
+                issues += reviewer(s["claim"])
         hist = s.get("history", []) + [{"attempt": s["attempts"], "template": s["draft"].template,
                                        "claim": s["claim"].text if s["claim"] else None,
-                                       "issues": [f"{i.rule}: {i.detail}" for i in issues]}]
+                                       "issues": [{"rule": i.rule, "detail": i.detail, "quote": i.quote} for i in issues]}]
         status = "accepted" if not issues else ("rejected" if s["attempts"] > max_revisions else "revise")
         return {"issues": issues, "history": hist, "status": status}
 
@@ -97,7 +97,7 @@ def llm_reviewer(model: str | None = None):
     from src.agents.llm import chat
     structured = chat(model).with_structured_output(Review)
 
-    def review(claim: Claim) -> list[str]:
+    def review(claim: Claim) -> list[Issue]:
         out = structured.invoke(
             "Review this sentence from an economics write-up. Report a finding only for a real problem: a causal claim "
             f"stronger than its label ({claim.label}), or wording that overstates certainty. For each finding, copy the "
