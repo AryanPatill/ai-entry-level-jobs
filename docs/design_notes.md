@@ -659,3 +659,27 @@ Source: results/tables/phase11_traces/ (qwen3:8b), results/tables/phase11_traces
 - qwen3:4b often invents placeholder names (key1, age_group) and echoes the prompt; `structure` catches the
   first, nothing structural catches the second.
 
+## 2026-11-11: Phase 11.6 full run on qwen3:8b (agent output, not analysis)
+
+Source: results/tables/phase11_writeup_claims.md, results/writeup/claims.json, results/tables/phase11_traces/.
+Rule set 8988660c47e4b17d, seed 20261111.
+
+- 16 claims: 13 accepted (5 on the first draft, 8 after revisions, at most 3), 3 rejected (placebo_dates,
+  tech_finance, sectors). Every claim labelled DESCRIPTIVE; no causal wording fired.
+- False positive (a real rule bug): tech_finance "17.6 is not a reported number". The registry holds -17.55,
+  the renderer correctly shows -17.6%, and |17.6 - 17.55| is a hair over the 0.05 tolerance in floating point,
+  so the Skeptic rejects a value the code itself rendered. Any value ending in 5 at the second decimal is exposed.
+- Not a rule bug but a Writer-input one: "12 is not a reported number" (tech_finance, placebo_group) comes from
+  the robustness entries' `section` field ("12"), which keys_for offers to the Writer as a citable key.
+- placebo_dates: the model returned the bare word "DESCRIPTIVE" four times; number_required fired correctly each
+  time. That rule has no REQUIRED line in the Writer feedback, and the identical feedback with a fixed seed
+  gave identical drafts.
+- Accepted claims the rules do not catch:
+  - Estimand misstated as a level or a share: comparison_group and subgroups ("employment rate ... was -5.1%"),
+    period ("the percentage of young workers ... is -10.3%"), unemployment ("the unemployment rate ... is 1.131
+    percentage points"), hours ("is -0.088 hours"). All are changes, not levels.
+  - Incomplete against the topic: gradient gives Q2 only (Q3 and Q4 asked), subgroups gives bachelor's-or-higher
+    only (men and women asked), controls gives one of the two controls.
+  - Rendering: randomization shows the seed as "2.02611e+07" (integers formatted with %g), pretrend shows a raw
+    "(False)", and several sentences start with "The DESCRIPTIVE sentence is:" or "DESCRIPTIVE:".
+

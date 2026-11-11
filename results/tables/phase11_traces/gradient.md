@@ -1,6 +1,6 @@
 # Trace: gradient
 
-Model `qwen3:8b`; rule set f4286cc46e4d2d2e; status **accepted** after 2 draft(s). Agent output, not analysis.
+Model `qwen3:8b`, seed 20261111; rule set 8988660c47e4b17d; status **accepted** after 2 draft(s). Agent output, not analysis.
 
 Topic: The estimates for ages 22-25 in quintiles Q2, Q3 and Q4, relative to Q1 and ages 35-49.
 
@@ -8,24 +8,23 @@ Topic: The estimates for ages 22-25 in quintiles Q2, Q3 and Q4, relative to Q1 a
 
 Template (model output):
 
-> DESCRIPTIVE: For ages 22-25, the employment share in AI-exposed occupations (Q5) is {phase8_main.terms.q2_a22.pct} percentage points lower than in least exposed occupations (Q1), with a 95% confidence interval ranging from {phase8_main.terms.q2_a22.lo} to {phase8_main.terms.q2_a22.hi}, and this difference is statistically significant. In contrast, for ages 35-49, the employment share in Q5 is {phase8_main.terms.q2_a22.pct} percentage points lower than in Q1, with a 95% confidence interval ranging from {phase8_main.terms.q2_a22.lo} to {phase8_main.terms.q2_a22.hi}, and this difference is not statistically significant.
+> DESCRIPTIVE: For ages 22-25 in quintile Q2, the estimated percentage change in employment relative to quintile Q1 is {phase8_main.terms.q2_a22.pct}, with a confidence interval ranging from {phase8_main.terms.q2_a22.lo} to {phase8_main.terms.q2_a22.hi}, and the result is statistically significant at the {phase8_main.terms.q2_a22.p} level. Relative to ages 35-49, the estimated percentage change is {phase8_main.terms.q2_a22.pct}.
 
 Rendered claim:
 
-> DESCRIPTIVE: For ages 22-25, the employment share in AI-exposed occupations (Q5) is -9.4% percentage points lower than in least exposed occupations (Q1), with a 95% confidence interval ranging from -16.8% to -1.5%, and this difference is statistically significant. In contrast, for ages 35-49, the employment share in Q5 is -9.4% percentage points lower than in Q1, with a 95% confidence interval ranging from -16.8% to -1.5%, and this difference is not statistically significant.
+> DESCRIPTIVE: For ages 22-25 in quintile Q2, the estimated percentage change in employment relative to quintile Q1 is -9.4%, with a confidence interval ranging from -16.8% to -1.5%, and the result is statistically significant at the 0.021 level. Relative to ages 35-49, the estimated percentage change is -9.4%.
 
-- **units**: a percent change in employment is called 'percentage points'. Triggered by: "percentage points".
-- **repeat**: renders the same registry value more than once. Triggered by: "phase8_main.terms.q2_a22.hi, phase8_main.terms.q2_a22.lo, phase8_main.terms.q2_a22.pct".
+- **repeat**: renders the same registry value more than once. Triggered by: "phase8_main.terms.q2_a22.pct".
 
 ## Draft 2
 
 Template (model output):
 
-> DESCRIPTIVE: For ages 22-25, employment in AI-exposed occupations (Q5) relative to least exposed (Q1) shows a {phase8_main.terms.q2_a22.pct} percent change compared to ages 35-49, with a statistically significant decline in Q4 ({phase8_main.terms.q4_a22.pct} percent) but no significant difference in Q2 and Q3.
+> DESCRIPTIVE: For ages 22-25 in Q2, the estimate is {phase8_main.terms.q2_a22.pct} with a confidence interval from {phase8_main.terms.q2_a22.lo} to {phase8_main.terms.q2_a22.hi}, compared to ages 35-49 and Q1.
 
 Rendered claim:
 
-> DESCRIPTIVE: For ages 22-25, employment in AI-exposed occupations (Q5) relative to least exposed (Q1) shows a -9.4% change compared to ages 35-49, with a statistically significant decline in Q4 (-17.2%) but no significant difference in Q2 and Q3.
+> DESCRIPTIVE: For ages 22-25 in Q2, the estimate is -9.4% with a confidence interval from -16.8% to -1.5%, compared to ages 35-49 and Q1.
 
 Rules fired: none (passed).
 

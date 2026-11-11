@@ -1,0 +1,188 @@
+[
+ {
+  "id": "headline",
+  "label": "DESCRIPTIVE",
+  "text": "The DESCRIPTIVE sentence is: The headline estimate for employment among young workers (ages 22-25) in Q5 occupations is -14.1%, with a 95% confidence interval ranging from -21.5% to -6.0%, and the verdict is Effect detected. This estimate is relative to ages 35-49 and to the least exposed quintile (Q1). Within ages 22-25, the change from Q1 to Q5 is -5.1%, with a 95% confidence interval from -16.3% to +7.5%, and the change is not statistically significant.",
+  "refs": [
+   "phase8_main.headline.pct",
+   "phase8_main.headline.lo",
+   "phase8_main.headline.hi",
+   "phase8_main.headline.verdict_label",
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.pct",
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.lo",
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.hi"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "comparison_group",
+  "label": "DESCRIPTIVE",
+  "text": "DESCRIPTIVE: Within ages 22-25, the employment rate for workers in the most exposed quintile (Q5) was -5.1% relative to the least exposed quintile (Q1), with a 95% confidence interval ranging from -16.3% to +7.5%, while within ages 35-49, the employment rate for Q5 was +14.0% relative to Q1, with a 95% confidence interval from +3.4% to +25.7%.",
+  "refs": [
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.pct",
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.lo",
+   "phase8_main.l3_within_age_q5_vs_q1.22-25.hi",
+   "phase8_main.l3_within_age_q5_vs_q1.35-49.pct",
+   "phase8_main.l3_within_age_q5_vs_q1.35-49.lo",
+   "phase8_main.l3_within_age_q5_vs_q1.35-49.hi"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "pretrend",
+  "label": "DESCRIPTIVE",
+  "text": "The preregistered pre-trend test for the Q5 x 22-25 event study showed a joint p-value of 0.412, with 0 bins beyond the 5% threshold, and did not flag a pre-trend (False).",
+  "refs": [
+   "phase8_main.pretrend.joint_p",
+   "phase8_main.pretrend.bins_beyond_5pct",
+   "phase8_main.pretrend.flagged"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "timing",
+  "label": "DESCRIPTIVE",
+  "text": "The Q5 x 22-25 event-study estimate in the first post-treatment bin is -12.8% with a confidence interval from -25.0% to +1.3%, while in the latest bin it is -31.2% with a confidence interval from -42.5% to -17.8%.",
+  "refs": [
+   "phase8_main.event_study_q5_a22.2022-12.pct",
+   "phase8_main.event_study_q5_a22.2022-12.lo",
+   "phase8_main.event_study_q5_a22.2022-12.hi",
+   "phase8_main.event_study_q5_a22.2026-06.pct",
+   "phase8_main.event_study_q5_a22.2026-06.lo",
+   "phase8_main.event_study_q5_a22.2026-06.hi"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "gradient",
+  "label": "DESCRIPTIVE",
+  "text": "DESCRIPTIVE: For ages 22-25 in Q2, the estimate is -9.4% with a confidence interval from -16.8% to -1.5%, compared to ages 35-49 and Q1.",
+  "refs": [
+   "phase8_main.terms.q2_a22.pct",
+   "phase8_main.terms.q2_a22.lo",
+   "phase8_main.terms.q2_a22.hi"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "step",
+  "label": "DESCRIPTIVE",
+  "text": "The Q5 estimate for ages 26-34 shows a +1.1% change in employment relative to Q1 and ages 35-49, with a 95 percent confidence interval ranging from -4.0% to +6.5%.",
+  "refs": [
+   "phase8_main.terms.q5_a26.pct",
+   "phase8_main.terms.q5_a26.lo",
+   "phase8_main.terms.q5_a26.hi"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "unemployment",
+  "label": "DESCRIPTIVE",
+  "text": "DESCRIPTIVE: The unemployment rate for young workers (ages 22-25) in the most exposed quintile (Q5) is 1.131 percentage points, with a Holm-adjusted p-value of 0.026.",
+  "refs": [
+   "phase8_main.secondary_q5_a22.Unemployment rate (points).coef",
+   "phase8_main.secondary_q5_a22.Unemployment rate (points).holm_p"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "hours",
+  "label": "DESCRIPTIVE",
+  "text": "The mean-usual-hours for Q5 x 22-25 is -0.088 hours, with a Holm-adjusted p-value of 0.756.",
+  "refs": [
+   "phase8_main.secondary_q5_a22.Mean usual weekly hours.coef",
+   "phase8_main.secondary_q5_a22.Mean usual weekly hours.holm_p"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "randomization",
+  "label": "DESCRIPTIVE",
+  "text": "The DESCRIPTIVE sentence is: The randomization-inference p-value for the headline is 0.001 based on 1000 shuffles with a seed of 2.02611e+07.",
+  "refs": [
+   "phase9_randomization_inference.p_two_sided",
+   "phase9_randomization_inference.n_shuffles",
+   "phase9_randomization_inference.seed"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "placebo_group",
+  "label": "DESCRIPTIVE",
+  "text": "The DESCRIPTIVE estimate for the Placebo group (ages 50-64 vs 35-49) is -5.6%, with a confidence interval ranging from -8.9% to -2.2%, and a p-value of 0.001.",
+  "refs": [
+   "phase9_robustness.checks.Placebo group: ages 50-64 vs 35-49.pct",
+   "phase9_robustness.checks.Placebo group: ages 50-64 vs 35-49.lo",
+   "phase9_robustness.checks.Placebo group: ages 50-64 vs 35-49.hi",
+   "phase9_robustness.checks.Placebo group: ages 50-64 vs 35-49.p"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "period",
+  "label": "DESCRIPTIVE",
+  "text": "DESCRIPTIVE: The percentage of young workers (ages 22-25) in AI-exposed occupations relative to ages 35-49 and the least exposed quintile (Q1) is -10.3%, with a confidence interval ranging from -18.8% to -0.9%. The estimate is 0.71 times the headline estimate. When the sample ends in December 2024, the percentage is -10.5%, with a confidence interval ranging from -18.6% to -1.6%. The estimate is 0.73 times the headline estimate.",
+  "refs": [
+   "phase9_robustness.checks.Start in 2011-01.pct",
+   "phase9_robustness.checks.Start in 2011-01.lo",
+   "phase9_robustness.checks.Start in 2011-01.hi",
+   "phase9_robustness.checks.Start in 2011-01.ratio_to_main",
+   "phase9_robustness.checks.L2(b) end the sample at 2024-12.pct",
+   "phase9_robustness.checks.L2(b) end the sample at 2024-12.lo",
+   "phase9_robustness.checks.L2(b) end the sample at 2024-12.hi",
+   "phase9_robustness.checks.L2(b) end the sample at 2024-12.ratio_to_main"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "controls",
+  "label": "DESCRIPTIVE",
+  "text": "DESCRIPTIVE: The estimated employment reduction for young workers (ages 22-25) in AI-exposed occupations relative to ages 35-49 and the least exposed quintile (Q1) is -14.2%, with a statistically significant effect at 0.001 level. The effect size is 1.01 times the main estimate, and the result is Effect detected.",
+  "refs": [
+   "phase9_robustness.checks.T2 pre-treatment growth x age x post.pct",
+   "phase9_robustness.checks.T2 pre-treatment growth x age x post.p",
+   "phase9_robustness.checks.T2 pre-treatment growth x age x post.ratio_to_main",
+   "phase9_robustness.checks.T2 pre-treatment growth x age x post.reading"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ },
+ {
+  "id": "subgroups",
+  "label": "DESCRIPTIVE",
+  "text": "The DESCRIPTIVE sentence is: For Bachelor's or higher, the employment rate in AI-exposed occupations among young workers (ages 22-25) was -16.3% relative to ages 35-49 and the least exposed quintile (Q1), with a 95% confidence interval ranging from -28.6% to -1.8%, and a Holm-adjusted p-value of 0.058, leading to a verdict of Inconclusive.",
+  "refs": [
+   "phase10_heterogeneity.subgroups.Bachelor's or higher.pct",
+   "phase10_heterogeneity.subgroups.Bachelor's or higher.lo",
+   "phase10_heterogeneity.subgroups.Bachelor's or higher.hi",
+   "phase10_heterogeneity.subgroups.Bachelor's or higher.holm_p",
+   "phase10_heterogeneity.subgroups.Bachelor's or higher.verdict"
+  ],
+  "model": "qwen3:8b",
+  "seed": 20261111,
+  "rules": "8988660c47e4b17d"
+ }
+]
