@@ -28,10 +28,10 @@ def main() -> None:
 
     con = duckdb.connect()
     rows = con.execute(
-        f"SELECT IND1990, COUNT(*), BOOL_OR(YEAR < 2020), BOOL_OR(YEAR >= 2020) "
+        "SELECT IND1990, COUNT(*), BOOL_OR(YEAR < 2020), BOOL_OR(YEAR >= 2020) "
         f"FROM read_parquet('{parquet_path(log).as_posix()}') "
-        f"WHERE EMPSTAT <> 1 "            # civilians only
-        f"GROUP BY 1 ORDER BY 1"
+        "WHERE EMPSTAT <> 1 "            # civilians only
+        "GROUP BY 1 ORDER BY 1"
     ).fetchall()
 
     with open(OUT_FILE, "w", newline="", encoding="utf-8") as f:

@@ -65,7 +65,7 @@ def main() -> None:
     for year, age, share in con.execute(
         "SELECT YEAR, AGE, AVG(CASE WHEN SCHLCOLL = 0 THEN 1.0 ELSE 0.0 END) "
         f"FROM {src} WHERE AGE BETWEEN 22 AND 25 AND EMPSTAT <> 1 "
-        f"GROUP BY 1, 2 ORDER BY 1, 2"
+        "GROUP BY 1, 2 ORDER BY 1, 2"
     ).fetchall():
         shares.setdefault(year, {})[age] = share
     for year in sorted(shares):
@@ -108,7 +108,7 @@ def main() -> None:
     ba = set(design["ba_plus_educ"])
     print(f"\nEDUC codes >= 111 by year (* = in ba_plus_educ {sorted(ba)}):")
     rows = con.execute(f"SELECT EDUC, MIN(YEAR), MAX(YEAR), COUNT(*) FROM {src} "
-                       f"WHERE EDUC >= 111 GROUP BY 1 ORDER BY 1").fetchall()
+                       "WHERE EDUC >= 111 GROUP BY 1 ORDER BY 1").fetchall()
     for code, y0, y1, n in rows:
         print(f" {'*' if code in ba else ' '}{code:>4}  {ed.get(int(code), '(no label)'):30s} {y0}-{y1}  {n:>10,}")
     print("  other codes >= 111: " + (", ".join(str(r[0]) for r in rows if r[0] not in ba) or "none"))
