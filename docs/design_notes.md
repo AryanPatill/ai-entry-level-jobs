@@ -586,3 +586,20 @@ Source: src/agents/demo.py; results/tables/phase11_demo.md (after fixes) and pha
   associate" (LLM 5020 telephone operators) because the right code is not among the baseline's top 10.
   Candidate generation, not the choice, is the bottleneck.
 
+## 2026-11-10: Phase 11.5 demo after fixes 1(a), units rule, Mapper 25 (agent output, not analysis)
+
+Source: results/tables/phase11_demo.md (current), phase11_demo_run2.md (before these changes).
+
+- With explicit REQUIRED feedback the model now meets the caveat and units rules on some drafts. Run A,
+  drafts 2 and 4, pass every rule: "...relative to ages 35-49 shows a -14.1% change in employment, with a
+  95% confidence interval ranging from -21.5% to -6.0%, and a verdict of Effect detected."
+- Both runs still end rejected after 3 revisions. Passing drafts are blocked by the LLM reviewer, whose
+  grounded objection ("overstates certainty", quoting "verdict of Effect detected") targets the
+  preregistered verdict label, not the Writer's wording. Review feedback has no REQUIRED mapping, so the
+  Writer oscillates between passing the rules and failing review.
+- Skeptic gap: run B draft 2 was nonsense ("-14.1% for Effect detected among -14.1% relative to -14.1% in
+  -14.1% occupations...") and only the caveat rule stopped it. No rule limits repeated placeholders.
+- Mapper (top 25): LLM now right on software engineer (1020), data scientist (1005), junior accountant
+  (5120); UX designer -> 1030 web developers (debatable vs 2630 designers); warehouse associate -> 7750
+  assemblers (wrong; 9620 hand laborers and material movers expected).
+

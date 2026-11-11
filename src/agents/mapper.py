@@ -38,7 +38,7 @@ def map_title(title: str, k: int = 3) -> list[MapperResult]:
     return [MapperResult(title, code, lab, round(score(title, lab), 3)) for code, lab in ranked]
 
 
-def map_title_llm(title: str, chooser=None, k: int = 10) -> MapperResult:
+def map_title_llm(title: str, chooser=None, k: int = 25) -> MapperResult:   # 25: Aryan 2026-11-10
     """LLM Mapper: the model picks one of the baseline's top-k candidates; anything else falls back to baseline top-1.
 
     `chooser(title, candidates) -> int` is injected (an LLM in use, a stand-in in tests). It can only choose

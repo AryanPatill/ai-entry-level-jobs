@@ -40,9 +40,10 @@ def test_bad_claim_fixed_in_two_revisions():
     assert out["history"][1]["issues"][0].startswith("caveat")
 
 
-def test_percent_after_placeholder_absorbed():
-    claim = render(WriterDraft(template="changed by {phase8_main.headline.pct}% relative to 35-49", label="DESCRIPTIVE"))
-    assert "%%" not in claim.text and "-14.1%" in claim.text
+@pytest.mark.parametrize("unit", ["%", " percent"])
+def test_percent_after_placeholder_absorbed(unit):
+    claim = render(WriterDraft(template="changed by {phase8_main.headline.pct}" + unit + " relative to 35-49", label="DESCRIPTIVE"))
+    assert "%%" not in claim.text and "% percent" not in claim.text and "-14.1% relative" in claim.text
 
 
 def test_reviewer_findings_must_quote_the_sentence():

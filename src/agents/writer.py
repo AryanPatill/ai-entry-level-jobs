@@ -47,8 +47,9 @@ def render(draft: WriterDraft) -> Claim:
     literal = [n for n in numbers_in(PLACEHOLDER.sub(" ", draft.template)) if n not in DESIGN_CONSTANTS]
     if literal:
         raise TemplateError(f"the template writes numbers itself: {literal}; use registry placeholders")
-    # A "%" typed right after a placeholder is absorbed when the value already carries one (no "-14.1%%").
-    text = re.sub(r"\{([^{}]+)\}(%?)", lambda m: (lambda v: v if v.endswith("%") else v + m.group(2))(
+    # A "%" or " percent" typed right after a placeholder is absorbed when the value already carries "%"
+    # (no "-14.1%%" or "-14.1% percent").
+    text = re.sub(r"\{([^{}]+)\}(%| percent\b)?", lambda m: (lambda v: v if v.endswith("%") else v + (m.group(2) or ""))(
         fmt(m.group(1), reg[m.group(1)])), draft.template)
     return Claim(text, draft.label, tuple(keys))
 
@@ -71,12 +72,30 @@ Keys you may use (key = current value, for context only; do not copy the value):
 {feedback}"""
 
 
+# Skeptic rule -> the concrete requirement the Writer must meet on its next draft.
+REQUIREMENTS = {
+    "caveat": "REQUIRED: the sentence must contain the exact words 'relative to ages 35-49'.",
+    "units": "REQUIRED: say 'percent', never 'percentage point', for these changes in employment.",
+    "structure": "REQUIRED: write no digits at all; every number must be a {placeholder} from the key list.",
+    "causal": "REQUIRED: no causal verbs (caused, led to, due to, because of AI) and never 'prove'.",
+}
+
+
+def feedback_text(feedback: list[str]) -> str:
+    if not feedback:
+        return ""
+    rules = {f.split(":")[0] for f in feedback}
+    musts = [REQUIREMENTS[r] for r in sorted(rules) if r in REQUIREMENTS]
+    return ("Your previous draft was rejected for: " + "; ".join(feedback) + ".\n" + "\n".join(musts)
+            + "\nWrite a new sentence that meets every requirement.")
+
+
 def llm_writer(model: str | None = None):
-    from src.agents.llm import chat
-    structured = chat(model).with_structured_output(WriterDraft)
+    from src.agents.llm import cfg, chat
+    first = chat(model).with_structured_output(WriterDraft)
+    retry = chat(model, cfg()["retry_temperature"]).with_structured_output(WriterDraft)
 
     def write(topic: str, keys: dict, feedback: list[str]) -> WriterDraft:
-        fb = ("Your previous draft was rejected for: " + "; ".join(feedback) + ". Fix every point.") if feedback else ""
         listing = "\n".join(f"{k} = {v}" for k, v in keys.items())
-        return structured.invoke(PROMPT.format(topic=topic, keys=listing, feedback=fb))
+        return (retry if feedback else first).invoke(PROMPT.format(topic=topic, keys=listing, feedback=feedback_text(feedback)))
     return write

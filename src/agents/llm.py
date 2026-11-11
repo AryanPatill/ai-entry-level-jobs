@@ -24,8 +24,9 @@ def available(model: str | None = None) -> bool:
     return (model or cfg()["model"]) in names
 
 
-def chat(model: str | None = None):
+def chat(model: str | None = None, temperature: float | None = None):
     from langchain_ollama import ChatOllama
     c = cfg()
-    return ChatOllama(model=model or c["model"], base_url=c["host"], temperature=c["temperature"],
+    return ChatOllama(model=model or c["model"], base_url=c["host"],
+                      temperature=c["temperature"] if temperature is None else temperature,
                       reasoning=c.get("think", False))

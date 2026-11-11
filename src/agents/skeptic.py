@@ -5,6 +5,7 @@ Rules (Sections 11, 17; identification.md):
   number    every number in the text matches a registry value (|difference| <= 0.05, sign-free)
   causal    causal language only in a CAUSAL_UNDER_ASSUMPTIONS claim; "prove" never
   verdict   a Section 11 verdict phrase must be the headline's actual verdict
+  units     a percent change (registry .pct/.lo/.hi) must not be called 'percentage points'
   caveat    quoting the headline % must name the comparison (35-49 / older workers), because most of the
             estimate comes from the comparison group (Phase 8, L3)
 An LLM Skeptic can be layered on top later; these rules run first and cannot be argued with.
@@ -60,6 +61,18 @@ def check(claim: Claim) -> SkepticReport:
     for v in VERDICTS:
         if v in text.lower() and v != actual and re.search(r"headline|Q5", text, re.I):
             rep.issues.append(Issue("verdict", f"says {v!r}; the headline verdict is {actual!r}"))
+    if re.search(r"percentage[- ]points?|\bpp\b", text, re.I):
+        is_pct = lambda k: k.endswith((".pct", ".lo", ".hi")) and ".secondary_" not in k
+        if claim.refs:   # a Writer claim names its registry keys exactly
+            wrong = any(is_pct(k) for k in claim.refs)
+        else:            # free text: a number counts as a % change only if it matches no result reported in points
+            vals = lambda pred: [abs(v) for k, v in reg.items() if pred(k) and isinstance(v, (int, float))]
+            changes = vals(is_pct)
+            points = vals(lambda k: ".secondary_" in k and k.endswith((".coef", ".lo", ".hi")))
+            near = lambda n, xs: any(abs(n - x) <= TOL for x in xs)
+            wrong = any(near(n, changes) and not near(n, points) for n in numbers_in(text))
+        if wrong:
+            rep.issues.append(Issue("units", "a percent change in employment is called 'percentage points'"))
     head = abs(reg["phase8_main.headline.pct"])
     if any(abs(n - head) <= TOL for n in numbers_in(text)) and not re.search(r"35-49|older|comparison", text, re.I):
         rep.issues.append(Issue("caveat", "quotes the headline without naming the 35-49 comparison it is relative to"))

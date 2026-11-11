@@ -21,11 +21,31 @@ BAD = [  # (claim, rule that must fire)
     (Claim("Young workers in Q5 jobs lost 14.1% of employment.", "DESCRIPTIVE"), "caveat"),
     (Claim("The Q5 headline is inconclusive, relative to 35-49.", "DESCRIPTIVE"), "verdict"),
     (Claim("Employment of 22-25 in Q5 fell relative to 35-49.", "FINDING"), "label"),
+    (Claim("A 14.1 percentage point decline for 22-25 in Q5, relative to ages 35-49.", "DESCRIPTIVE"), "units"),
 ]
 
 
 def test_numbers_skip_ages_years_and_quintiles():
     assert numbers_in("22-25 in Q5 since 2022-12, Section 11: 14.1% and 0.98") == [14.1, 0.98]
+
+
+@needs_registry
+def test_percentage_points_allowed_for_rates():
+    # The unemployment-rate result really is in points; it is not a .pct registry value.
+    rep = check(Claim("The unemployment rate rose 1.131 percentage points for 22-25 in Q5, relative to ages 35-49.", "DESCRIPTIVE"))
+    assert "units" not in {i.rule for i in rep.issues}
+
+
+@needs_registry
+def test_percentage_points_flagged_by_writer_refs():
+    c = Claim("A -14.1% percentage point decline, relative to ages 35-49.", "DESCRIPTIVE", ("phase8_main.headline.pct",))
+    assert "units" in {i.rule for i in check(c).issues}
+
+
+def test_feedback_turns_rules_into_requirements():
+    from src.agents.writer import feedback_text
+    t = feedback_text(["caveat: quotes the headline without naming the 35-49 comparison"])
+    assert "relative to ages 35-49" in t and "REQUIRED" in t
 
 
 def test_design_constants_closed_list():

@@ -64,7 +64,7 @@ def main() -> None:
              f"## B. Bad first draft, repaired by the model ({tb:.0f} s)", "",
              "Draft 1 is scripted (it writes its own number and causal wording); later drafts are the model's.", "",
              *history(b),
-             "## C. Mapper: baseline vs LLM (choosing among the baseline's top 10)", "",
+             "## C. Mapper: baseline vs LLM (choosing among the baseline's top 25)", "",
              "| Title | Baseline top-1 | LLM choice |", "|---|---|---|"]
     lines += [f"| {ti} | {b0.occ2010} {b0.label} | {l.occ2010} {l.label} |" for ti, b0, l in mapped]
     TABLE.write_text("\n".join(lines + [""]), encoding="utf-8")

@@ -7,7 +7,7 @@ Phase detail lives in `preregistration.md` (design) and `architecture.md` (mecha
 
 - **Current phase:** 11, agent layer
 - **Last completed step:** Phase 5 done (student filter: ages 22-25 only, 2026-10-17)
-- **Next step:** Aryan reviews the 11.5 demo and decides the fixes below before 11.6
+- **Next step:** Aryan decides the LLM reviewer's authority and a repeated-placeholder rule; then 11.6
 
 ## Phases
 
