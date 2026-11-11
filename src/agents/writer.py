@@ -17,6 +17,7 @@ from src.agents.schemas import Claim
 from src.agents.skeptic import DESIGN_CONSTANTS, numbers_in
 
 PLACEHOLDER = re.compile(r"\{([^{}]+)\}")
+LABEL_PREFIX = re.compile(r"^\s*(?:The\s+)?(?:DESCRIPTIVE|CAUSAL_UNDER_ASSUMPTIONS)(?:\s+sentence\s+is)?\s*:\s*")
 
 
 class WriterDraft(BaseModel):
@@ -29,16 +30,19 @@ class TemplateError(ValueError):
 
 
 def fmt(key: str, v) -> str:
-    if not isinstance(v, (int, float)) or isinstance(v, bool):
+    if isinstance(v, bool):
+        return "yes" if v else "no"
+    if not isinstance(v, (int, float)):
         return str(v)
     if key.endswith((".pct", ".lo", ".hi")) or key.endswith("_pct"):
         return f"{v:+.1f}%"
     if key.endswith((".p", "_p")) or key.split(".")[-1].startswith("p_"):
         return f"{v:.3f}"
-    return f"{v:g}"
+    return str(int(v)) if float(v).is_integer() else f"{v:g}"   # %g alone turned 20261104 into 2.02611e+07
 
 
 def render(draft: WriterDraft) -> Claim:
+    draft = WriterDraft(template=LABEL_PREFIX.sub("", draft.template), label=draft.label)
     reg = registry.load()
     keys = PLACEHOLDER.findall(draft.template)
     unknown = [k for k in keys if k not in reg]
@@ -55,10 +59,14 @@ def render(draft: WriterDraft) -> Claim:
     return Claim(text, draft.label, tuple(keys))
 
 
+METADATA = {"section", "kind", "seed"}   # registry fields that describe a result, not results (Aryan 2026-11-11)
+
+
 def keys_for(*prefixes: str) -> dict:
     """The registry entries a Writer may cite for a topic: numbers and short labels, not whole sentences."""
     return {k: v for k, v in registry.load().items()
-            if k.startswith(prefixes) and (not isinstance(v, str) or len(v) <= 40)}
+            if k.startswith(prefixes) and k.rsplit(".", 1)[-1] not in METADATA
+            and (not isinstance(v, str) or len(v) <= 40)}
 
 
 HEADLINE_RULE = ("- The headline (Q5 x ages 22-25) is relative to Q1 and to ages 35-49. Say so, and also give the "
@@ -85,6 +93,7 @@ REQUIREMENTS = {
     "units": "REQUIRED: say 'percent', never 'percentage point', for these changes in employment.",
     "structure": "REQUIRED: write no digits at all; every number must be a {placeholder} from the key list.",
     "causal": "REQUIRED: no causal verbs (caused, led to, due to, because of AI) and never 'prove'.",
+    "number_required": "REQUIRED: write a full sentence that cites at least one {placeholder} from the key list.",
 }
 
 

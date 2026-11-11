@@ -60,3 +60,41 @@ def test_reviewer_cannot_object_to_a_verified_significance_statement():
     kept = grounded(c, [Finding(quote="which is not statistically significant", problem="overstates certainty"),
                         Finding(quote="the wording is final", problem="overstates certainty")])
     assert [i.quote for i in kept] == ["the wording is final"]
+
+
+def test_rendered_value_at_the_rounding_boundary_is_reported():
+    # tech_finance, 2026-11-11: registry -17.55 renders as -17.6%; the number rule must accept it.
+    from src.agents.writer import WriterDraft, render
+    key = "phase9_robustness.checks.T1(a) drop tech and finance (sectors 1, 2).lo"
+    c = render(WriterDraft(template="the lower bound is {" + key + "}", label="DESCRIPTIVE"))
+    assert "-17.6%" in c.text and "number" not in {i.rule for i in check(c).issues}
+
+
+def test_metadata_is_not_citable():
+    from src.agents.writer import keys_for
+    keys = keys_for("phase9_robustness.checks.Placebo group", "phase9_randomization_inference.")
+    assert keys and not any(k.rsplit(".", 1)[-1] in {"section", "kind", "seed"} for k in keys)
+
+
+def test_number_required_has_a_requirement_line():
+    from src.agents.writer import feedback_text
+    assert "REQUIRED" in feedback_text(["number_required: a write-up claim ... must cite at least one"])
+
+
+def test_reviewer_cannot_object_to_the_required_comparison_wording():
+    from src.agents.pipeline import Finding, grounded
+    c = Claim("For ages 22-25 in Q2, the estimate is -9.4%, compared to ages 35-49 and Q1, a dramatic collapse.",
+              "DESCRIPTIVE", ("phase8_main.terms.q2_a22.pct",))
+    kept = grounded(c, [Finding(quote="compared to ages 35-49 and Q1", problem="overstates certainty"),
+                        Finding(quote="a dramatic collapse", problem="overstates")])
+    assert [i.quote for i in kept] == ["a dramatic collapse"]
+
+
+def test_rendering_integers_booleans_and_label_prefix():
+    from src.agents.writer import WriterDraft, fmt, render
+    assert fmt("phase9_randomization_inference.n_shuffles", 1000) == "1000"
+    assert fmt("x.seed", 20261104) == "20261104"
+    assert fmt("phase8_main.pretrend.flagged", False) == "no"
+    c = render(WriterDraft(template="The DESCRIPTIVE sentence is: the shuffles were {phase9_randomization_inference.n_shuffles}.",
+                           label="DESCRIPTIVE"))
+    assert c.text == "the shuffles were 1000."

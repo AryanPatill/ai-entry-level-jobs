@@ -9,6 +9,7 @@ with the local model in use. No node lets an LLM put a number into a claim (see 
 """
 from __future__ import annotations
 
+import re
 from typing import Callable, Optional, TypedDict
 
 from langgraph.graph import END, StateGraph
@@ -16,6 +17,11 @@ from pydantic import BaseModel
 
 from src.agents.schemas import Claim, Issue
 from src.agents.skeptic import SIG_POS, check, significance_checks
+
+# The design's required comparison wording (Section 8 reference groups); not the Writer's to defend.
+COMPARISON = re.compile(r"\b(?:relative to|compared (?:to|with)|versus|vs\.?)\s+(?:the\s+)?"
+                        r"(?:ages\s+35-49|35-49|Q1|least[- ]exposed\w*(?:\s+\w+)?)(?:\s+(?:and|or)\s+(?:to\s+)?"
+                        r"(?:the\s+)?(?:ages\s+35-49|35-49|Q1|least[- ]exposed\w*(?:\s+\w+)?))?", re.I)
 from src.agents import registry
 from src.agents.writer import TemplateError, WriterDraft, fmt, render
 
@@ -58,6 +64,8 @@ def grounded(claim: Claim, findings: list[Finding]) -> list[Issue]:
             continue
         if SIG_POS.search(q) and any(q in c or c.strip() in q for c in verified):
             continue   # significance already checked against the p-value
+        if COMPARISON.search(q) and len(re.sub(r"\W+", "", COMPARISON.sub("", q))) < 8:
+            continue   # the objection is to the required comparison wording itself (rule 4, extended 2026-11-11)
         keep.append(Issue("review", f.problem, f.quote.strip()))
     return keep
 
