@@ -10,7 +10,6 @@ from src.utils.config import get_secret
 URL = "https://api.ipums.org/extracts"
 PARAMS = {"collection": "cps", "version": 2, "limit": 5}
 
-# What each HTTP status most likely means for us
 MEANINGS = {
     200: "OK: key is valid and the account can use IPUMS CPS via the API.",
     401: "Unauthorized: the key was rejected. Check for typos or extra spaces in .env.",

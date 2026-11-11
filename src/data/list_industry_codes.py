@@ -14,7 +14,7 @@ import csv
 import duckdb
 from ipumspy import readers
 
-from src.data.convert_to_parquet import locate_files
+from src.data.convert_to_parquet import locate_files, parquet_path
 from src.data.inspect_codes import labels_for
 from src.data.ipums_extract import load_log
 from src.utils.config import REPO_ROOT
@@ -24,14 +24,12 @@ OUT_FILE = REPO_ROOT / "docs" / "ind1990_codes.csv"
 
 def main() -> None:
     log = load_log()
-    dat_path, _, xml_path = locate_files(log)
-    parquet = dat_path.with_name(log["parquet"]["name"])
-    labels = labels_for(readers.read_ipums_ddi(xml_path), "IND1990")
+    labels = labels_for(readers.read_ipums_ddi(locate_files(log)[2]), "IND1990")
 
     con = duckdb.connect()
     rows = con.execute(
         f"SELECT IND1990, COUNT(*), BOOL_OR(YEAR < 2020), BOOL_OR(YEAR >= 2020) "
-        f"FROM read_parquet('{parquet.as_posix()}') "
+        f"FROM read_parquet('{parquet_path(log).as_posix()}') "
         f"WHERE EMPSTAT <> 1 "            # civilians only
         f"GROUP BY 1 ORDER BY 1"
     ).fetchall()

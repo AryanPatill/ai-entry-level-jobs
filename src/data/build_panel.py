@@ -63,7 +63,6 @@ def main() -> None:
     h0, h1 = d["hours_range"]
     emp = "p.EMPSTAT IN (10, 12)"
     hrs = f"p.EMPSTAT IN ({he}) AND p.UHRSWORK1 BETWEEN {h0} AND {h1}"
-    # Sums only; rates and means are formed at estimation (Phase 8), never here.
     cells = con.execute(f"""
         SELECT p.OCC2010 AS occ2010, CASE {age_case} END AS age_group, p.YEAR * 100 + p.MONTH AS ym,
                SUM(p.WTFINL) FILTER (WHERE {emp})                       AS emp_w,
@@ -159,12 +158,12 @@ def main() -> None:
     unemp = unemp.pivot(index="status", columns="period", values="n").fillna(0)
     unemp = unemp / unemp.sum()
 
-    REPORT_FILE.write_text(report(flow, in_scored, n_unemp, panel, d) + hours_report(hours, d)
+    REPORT_FILE.write_text(cell_size_report(flow, in_scored, n_unemp, panel, d) + hours_report(hours, d)
                            + student_report(niu, d) + unemp_report(unemp, d), encoding="utf-8")
     print(f"Wrote {REPORT_FILE.relative_to(REPO_ROOT)}")
 
 
-def report(flow, in_scored: int, n_unemp: int, panel: pd.DataFrame, d: dict) -> str:
+def cell_size_report(flow, in_scored: int, n_unemp: int, panel: pd.DataFrame, d: dict) -> str:
     m = panel[panel.main_sample]
     lines = [
         "# Cell sizes (Phase 5; preregistration Section 16)",
@@ -207,7 +206,7 @@ def report(flow, in_scored: int, n_unemp: int, panel: pd.DataFrame, d: dict) -> 
 
 def hours_report(h: pd.DataFrame, d: dict) -> str:
     lines = ["## Hours outcome exclusions (Section 6)", "",
-             f"Share of employed wage and salary workers in scored occupations NOT in the mean-hours",
+             "Share of employed wage and salary workers in scored occupations NOT in the mean-hours",
              f"outcome (kept: EMPSTAT {d['hours_empstat']}, UHRSWORK1 {d['hours_range'][0]}-{d['hours_range'][1]}).",
              f"Weighted by WTFINL. Pre = {d['main_start']} to the month before {d['treatment_month']}, "
              f"pandemic months excluded; post = {d['treatment_month']} on.", "",

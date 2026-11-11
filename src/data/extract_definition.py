@@ -34,6 +34,9 @@ VARIABLES: dict[str, str] = {
 }
 
 SAMPLE_ID_RE = re.compile(r"^cps(\d{4})_(\d{2})([a-z])$")
+MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July",
+               "August", "September", "October", "November", "December"]
+DESC_RE = re.compile(r"^IPUMS-CPS, (" + "|".join(MONTH_NAMES) + r") (\d{4})$")
 
 
 def month_key(year: int, month: int) -> str:
@@ -49,11 +52,6 @@ def month_range(first: str, last: str) -> list[str]:
         out.append(month_key(y, m))
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
     return out
-
-
-MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July",
-               "August", "September", "October", "November", "December"]
-DESC_RE = re.compile(r"^IPUMS-CPS, (" + "|".join(MONTH_NAMES) + r") (\d{4})$")
 
 
 def find_basic_monthly(all_samples: dict[str, str], start: str) -> dict[str, str]:
@@ -83,21 +81,6 @@ def find_basic_monthly(all_samples: dict[str, str], start: str) -> dict[str, str
     return dict(sorted(found.items()))
 
 
-def build_extract(sample_ids: list[str], age_min: int, age_max: int, description: str):
-    extract = MicrodataExtract(
-        collection="cps",
-        samples=sample_ids,
-        variables=list(VARIABLES),
-        description=description,
-        data_format="fixed_width",       # keeps IPUMS value labels via the DDI codebook
-        data_structure={"rectangular": {"on": "P"}},   # one row per person
-    )
-    # Person-level case selection. IPUMS defaults caseSelectWho to "individuals",
-    # so only the matching people are returned, not their whole households.
-    extract.select_cases("AGE", list(range(age_min, age_max + 1)))
-    return extract
-
-
 def main() -> None:
     settings = load_settings()
     design = settings["design"]
@@ -118,7 +101,16 @@ def main() -> None:
         f"AI exposure and young-worker employment; prereg v{prereg_version}; "
         f"CPS basic monthly {first} to {last}; ages {age_min}-{age_max}"
     )
-    extract = build_extract(list(samples_by_month.values()), age_min, age_max, description)
+    extract = MicrodataExtract(
+        collection="cps",
+        samples=list(samples_by_month.values()),
+        variables=list(VARIABLES),
+        description=description,
+        data_format="fixed_width",       # keeps IPUMS value labels via the DDI codebook
+        data_structure={"rectangular": {"on": "P"}},
+    )
+    # IPUMS defaults caseSelectWho to "individuals": only matching people come back, not whole households.
+    extract.select_cases("AGE", list(range(age_min, age_max + 1)))
     extract.api_version = client.api_version   # else "version": null is saved and IPUMS rejects it
     definition = extract.build()
 

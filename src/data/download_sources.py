@@ -26,7 +26,7 @@ def fetch(src: dict, raw_dir) -> None:
     if not dest.exists() and src.get("manual"):
         raise RuntimeError(
             f"{dest} is missing. This source blocks automated download: open\n  {src['url']}\n"
-            f"in a browser and save the file to that path, then re-run."
+            "in a browser and save the file to that path, then re-run."
         )
     if not dest.exists():
         dest.parent.mkdir(parents=True, exist_ok=True)

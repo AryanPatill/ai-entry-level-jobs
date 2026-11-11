@@ -12,7 +12,7 @@ from __future__ import annotations
 import duckdb
 from ipumspy import readers
 
-from src.data.convert_to_parquet import locate_files
+from src.data.convert_to_parquet import locate_files, parquet_path
 from src.data.ipums_extract import load_log
 from src.utils.config import load_settings
 
@@ -24,11 +24,10 @@ def labels_for(ddi, name: str) -> dict[int, str]:
 
 def main() -> None:
     log = load_log()
-    dat_path, _, xml_path = locate_files(log)
-    parquet = dat_path.with_name(log["parquet"]["name"])
-    ddi = readers.read_ipums_ddi(xml_path)
+    ddi = readers.read_ipums_ddi(locate_files(log)[2])
+    design = load_settings()["design"]
     con = duckdb.connect()
-    src = f"read_parquet('{parquet.as_posix()}')"
+    src = f"read_parquet('{parquet_path(log).as_posix()}')"
 
     # 1. Who has a zero or negative final weight?
     n_zero, n_neg = con.execute(
@@ -47,14 +46,14 @@ def main() -> None:
     print("\nSCHLCOLL by age, all months pooled:")
     for age, code, n in con.execute(
         f"SELECT AGE, SCHLCOLL, COUNT(*) FROM {src} WHERE AGE BETWEEN 22 AND 26 "
-        f"GROUP BY 1, 2 ORDER BY 1, 2"
+        "GROUP BY 1, 2 ORDER BY 1, 2"
     ).fetchall():
         print(f"  age {age}  {code:>2}  {sch.get(int(code), '(no label)'):40s} {n:>10,}")
 
     # 3. How has the monthly sample size changed?
     print("\nAverage records per month, by year:")
     for year, avg, months in con.execute(
-        f"SELECT YEAR, COUNT(*) / COUNT(DISTINCT MONTH), COUNT(DISTINCT MONTH) "
+        "SELECT YEAR, COUNT(*) / COUNT(DISTINCT MONTH), COUNT(DISTINCT MONTH) "
         f"FROM {src} GROUP BY 1 ORDER BY 1"
     ).fetchall():
         print(f"  {year}  {avg:>10,.0f}   ({months} months)")
@@ -64,7 +63,7 @@ def main() -> None:
     print("  year     age 22    age 23    age 24    age 25")
     shares: dict[int, dict[int, float]] = {}
     for year, age, share in con.execute(
-        f"SELECT YEAR, AGE, AVG(CASE WHEN SCHLCOLL = 0 THEN 1.0 ELSE 0.0 END) "
+        "SELECT YEAR, AGE, AVG(CASE WHEN SCHLCOLL = 0 THEN 1.0 ELSE 0.0 END) "
         f"FROM {src} WHERE AGE BETWEEN 22 AND 25 AND EMPSTAT <> 1 "
         f"GROUP BY 1, 2 ORDER BY 1, 2"
     ).fetchall():
@@ -87,7 +86,7 @@ def main() -> None:
     #    in some years but not in settings.design.wage_salary_classwkr would be dropped
     #    silently, especially the aggregate codes (20, 21, 24).
     cw = labels_for(ddi, "CLASSWKR")
-    keep = set(load_settings()["design"]["wage_salary_classwkr"])
+    keep = set(design["wage_salary_classwkr"])
     counts: dict[int, dict[int, int]] = {}
     for year, code, n in con.execute(
         f"SELECT YEAR, CLASSWKR, COUNT(*) FROM {src} GROUP BY 1, 2 ORDER BY 1, 2"
@@ -106,7 +105,7 @@ def main() -> None:
     # 7. EDUC codes at or above 111, by year: anything outside settings.design.ba_plus_educ
     #    would be silently left out of the bachelor's-or-higher subgroup.
     ed = labels_for(ddi, "EDUC")
-    ba = set(load_settings()["design"]["ba_plus_educ"])
+    ba = set(design["ba_plus_educ"])
     print(f"\nEDUC codes >= 111 by year (* = in ba_plus_educ {sorted(ba)}):")
     rows = con.execute(f"SELECT EDUC, MIN(YEAR), MAX(YEAR), COUNT(*) FROM {src} "
                        f"WHERE EDUC >= 111 GROUP BY 1 ORDER BY 1").fetchall()

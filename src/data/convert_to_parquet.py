@@ -22,10 +22,9 @@ import pyarrow.parquet as pq
 from ipumspy import readers
 
 from src.data.extract_definition import month_range
-from src.data.ipums_extract import file_sha256, load_log, save_log
+from src.data.ipums_extract import DEFINITION_FILE, file_sha256, load_log, save_log
 from src.utils.config import REPO_ROOT
 
-DEFINITION_FILE = REPO_ROOT / "docs" / "extract_definition.json"
 CHUNK_ROWS = 500_000
 
 
@@ -34,6 +33,11 @@ def locate_files(log: dict) -> tuple[Path, str, Path]:
     folder = REPO_ROOT / log["download_dir"]
     by_suffix = {Path(f["name"]).suffix: f for f in log["files"]}   # ".gz" and ".xml"
     return folder / by_suffix[".gz"]["name"], by_suffix[".gz"]["sha256"], folder / by_suffix[".xml"]["name"]
+
+
+def parquet_path(log: dict) -> Path:
+    """The converted extract, as recorded in the extract log."""
+    return REPO_ROOT / log["download_dir"] / log["parquet"]["name"]
 
 
 def convert(dat_path: Path, xml_path: Path, out_path: Path) -> int:
@@ -83,7 +87,7 @@ def check(out_path: Path, record: dict) -> None:
 
     age_min, age_max = con.execute(f"SELECT MIN(AGE), MAX(AGE) FROM {src}").fetchone()
     wt_null, wt_nonpos = con.execute(
-        f"SELECT COUNT(*) FILTER (WHERE WTFINL IS NULL), "
+        "SELECT COUNT(*) FILTER (WHERE WTFINL IS NULL), "
         f"COUNT(*) FILTER (WHERE WTFINL <= 0) FROM {src}"
     ).fetchone()
     null_counts = con.execute(

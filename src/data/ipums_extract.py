@@ -30,11 +30,6 @@ def now_utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
 
-def definition_sha256(definition: dict) -> str:
-    """Fingerprint of the definition, independent of key order and whitespace."""
-    return hashlib.sha256(json.dumps(definition, sort_keys=True).encode("utf-8")).hexdigest()
-
-
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with open(path, "rb") as f:
@@ -51,7 +46,7 @@ def save_log(log: dict) -> None:
     LOG_FILE.write_text(json.dumps(log, indent=2), encoding="utf-8")
 
 
-def require_number(log: dict) -> int:
+def logged_extract_number(log: dict) -> int:
     if "extract_number" not in log:
         raise SystemExit("No extract submitted yet. Run: python -m src.data.ipums_extract submit")
     return int(log["extract_number"])
@@ -74,7 +69,8 @@ def cmd_submit(client: IpumsApiClient, force: bool) -> None:
         "collection": COLLECTION,
         "submitted_utc": now_utc(),
         "definition_built_utc": record["built_utc"],
-        "definition_sha256": definition_sha256(definition),
+        # sort_keys: the fingerprint ignores key order and whitespace
+        "definition_sha256": hashlib.sha256(json.dumps(definition, sort_keys=True).encode("utf-8")).hexdigest(),
         "first_month": record["first_month"],
         "last_month": record["last_month"],
         "n_samples": record["n_samples"],
@@ -86,13 +82,13 @@ def cmd_submit(client: IpumsApiClient, force: bool) -> None:
 
 
 def cmd_status(client: IpumsApiClient) -> None:
-    number = require_number(load_log())
+    number = logged_extract_number(load_log())
     print(f"Extract {number}: {client.extract_status(number, collection=COLLECTION)}")
 
 
 def cmd_download(client: IpumsApiClient) -> None:
     log = load_log()
-    number = require_number(log)
+    number = logged_extract_number(log)
     status = client.extract_status(number, collection=COLLECTION)
     if status != "completed":
         raise SystemExit(f"Extract {number} is '{status}', not 'completed'. Try again later.")
