@@ -27,6 +27,8 @@ CACHE = REPO_ROOT / "results" / "writeup" / "cache.json"         # git-ignored; 
 TRACES = REPO_ROOT / "results" / "tables" / "phase11_traces"
 RULE_FILES = ("skeptic.py", "writer.py", "pipeline.py")   # the rule set: rules, render check, feedback, review
 H, L3, R = "phase8_main.", "phase8_main.l3_within_age_q5_vs_q1.", "phase9_robustness.checks."
+# Claim ids allowed to carry no registry number (rule number_required, Aryan 2026-11-11). Closed list.
+NUMBER_FREE = frozenset({"limitations", "method", "verdict_language"})
 
 CLAIMS = [
     ("headline", "The headline estimate for 22-25-year-olds in Q5 occupations, its 95% CI and verdict, what it is relative to, "
@@ -66,13 +68,13 @@ def rules_hash() -> str:
 
 
 def cache_key(cid: str, topic: str, keys: dict, model: str) -> str:
-    blob = json.dumps([cid, topic, sorted(keys.items()), model, rules_hash()], ensure_ascii=False, default=str)
+    blob = json.dumps([cid, topic, sorted(keys.items()), model, cfg().get("seed"), rules_hash()], ensure_ascii=False, default=str)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]
 
 
 def trace(cid: str, topic: str, model: str, out: dict) -> str:
     """Every draft in order, every rule that fired, and the exact text that triggered it."""
-    lines = [f"# Trace: {cid}", "", f"Model `{model}`; rule set {rules_hash()}; status **{out['status']}** after "
+    lines = [f"# Trace: {cid}", "", f"Model `{model}`, seed {cfg().get('seed')}; rule set {rules_hash()}; status **{out['status']}** after "
              f"{out['attempts']} draft(s). Agent output, not analysis.", "", f"Topic: {topic}", ""]
     for h in out["history"]:
         lines += [f"## Draft {h['attempt']}", "", "Template (model output):", "", f"> {h['template']}", "",
@@ -109,9 +111,10 @@ def main() -> None:
             print(f"{cid}: cached ({cache[k]['status']})", flush=True)
             continue
         t = time.time()
-        out = run(topic, keys, writer, reviewer, cfg()["max_revisions"])
+        out = run(topic, keys, writer, reviewer, cfg()["max_revisions"], require_number=cid not in NUMBER_FREE)
         claim = out.get("claim")
-        r = {"id": cid, "status": out["status"], "attempts": out["attempts"], "model": model, "rules": rules_hash(),
+        r = {"id": cid, "status": out["status"], "attempts": out["attempts"], "model": model, "seed": cfg().get("seed"),
+             "rules": rules_hash(),
              "label": claim.label if claim else None, "text": claim.text if claim else None,
              "refs": list(claim.refs) if claim else [],
              "rules_fired": [i["rule"] for h in out["history"] for i in h["issues"]], "seconds": round(time.time() - t)}
@@ -127,7 +130,7 @@ def main() -> None:
         return
     accepted = [r for r in results if r["status"] == "accepted"]
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps([{k: r[k] for k in ("id", "label", "text", "refs", "model", "rules")} for r in accepted],
+    OUT.write_text(json.dumps([{k: r.get(k) for k in ("id", "label", "text", "refs", "model", "seed", "rules")} for r in accepted],
                               indent=1, ensure_ascii=False), encoding="utf-8")
     first = sum(r["attempts"] == 1 for r in accepted)
     lines = ["# Phase 11.6: write-up claims through the pipeline (agent output, not analysis)", "",

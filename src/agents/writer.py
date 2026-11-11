@@ -61,14 +61,16 @@ def keys_for(*prefixes: str) -> dict:
             if k.startswith(prefixes) and (not isinstance(v, str) or len(v) <= 40)}
 
 
+HEADLINE_RULE = ("- The headline (Q5 x ages 22-25) is relative to Q1 and to ages 35-49. Say so, and also give the "
+                 "within-ages-22-25 Q5-vs-Q1 change and say it is not statistically significant.\n")
 PROMPT = """You write one sentence for a research write-up on whether AI is reducing employment of young
 workers (ages 22-25) in AI-exposed occupations. Rules:
 - Never write a digit. Every number must be a placeholder copied exactly from the key list, e.g. {{phase8_main.headline.pct}}.
 - Label the sentence DESCRIPTIVE unless it states an effect under the study's assumptions (CAUSAL_UNDER_ASSUMPTIONS).
 - No causal verbs (caused, led to, due to AI) in a DESCRIPTIVE sentence. Never say "prove".
-- The headline is relative: young vs ages 35-49, and exposed (Q5) vs least exposed (Q1) occupations. Say so.
-  If you quote the headline, also give the within-ages-22-25 Q5-vs-Q1 change and say it is not statistically significant.
-- Use each placeholder at most once.
+- Every estimate is relative to ages 35-49 and to the least exposed quintile (Q1). Name the quintile of each value
+  as its key says (q2 = Q2, ...); do not call a value "the headline" unless its key is phase8_main.headline.
+{headline}- Use each placeholder at most once.
 Topic: {topic}
 Keys you may use (key = current value, for context only; do not copy the value):
 {keys}
@@ -102,5 +104,8 @@ def llm_writer(model: str | None = None):
 
     def write(topic: str, keys: dict, feedback: list[str]) -> WriterDraft:
         listing = "\n".join(f"{k} = {v}" for k, v in keys.items())
-        return (retry if feedback else first).invoke(PROMPT.format(topic=topic, keys=listing, feedback=feedback_text(feedback)))
+        # Headline instructions only when the headline is citable; elsewhere they pulled drafts toward "Q5".
+        headline = HEADLINE_RULE if "phase8_main.headline.pct" in keys else ""
+        return (retry if feedback else first).invoke(PROMPT.format(topic=topic, keys=listing, headline=headline,
+                                                                   feedback=feedback_text(feedback)))
     return write

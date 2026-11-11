@@ -29,4 +29,4 @@ def chat(model: str | None = None, temperature: float | None = None):
     c = cfg()
     return ChatOllama(model=model or c["model"], base_url=c["host"],
                       temperature=c["temperature"] if temperature is None else temperature,
-                      reasoning=c.get("think", False))
+                      reasoning=c.get("think", False), seed=c.get("seed"))

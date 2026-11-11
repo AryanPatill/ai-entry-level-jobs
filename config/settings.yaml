@@ -103,4 +103,5 @@ agents:                          # Phase 11 (set by Aryan 2026-11-09); the LLM n
   temperature: 0
   think: false                   # qwen3 reasoning mode off: short rule-bound outputs, checked by the Skeptic anyway
   max_revisions: 3               # Writer -> Skeptic loops before a claim is rejected
+  seed: 20261111                # fixed Ollama sampling seed (Aryan 2026-11-11); recorded with every claim
   retry_temperature: 0.3        # revisions only, so a rejected draft is not repeated word for word (Aryan 2026-11-10)

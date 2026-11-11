@@ -114,8 +114,8 @@ against the registry before it leaves the pipeline.
 
 | Step | What | Status |
 |---|---|---|
-| 12.1 | Skeptic catch rate: grow the seed set (tests/test_agents.py) to about 50 bad and 25 good claims; report catch rate and false-alarm rate, rules alone and rules + LLM | Not started |
-| 12.2 | Mapper accuracy: about 100 job titles hand-coded to OCC2010; top-1 and top-3 accuracy, baseline vs LLM | Not started |
+| 12.1 | Skeptic catch rate: grow the seed set (tests/test_agents.py) to about 50 bad and 25 good claims; report catch rate and false-alarm rate, rules alone and rules + LLM, over at least 3 runs (fixed seed 20261111 and two more recorded seeds) with the spread | Not started |
+| 12.2 | Mapper accuracy: about 100 job titles hand-coded to OCC2010; top-1 and top-3 accuracy, baseline vs LLM, over at least 3 runs with the spread | Not started |
 
 ## Commitments carried into later phases
 

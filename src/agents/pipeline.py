@@ -15,7 +15,7 @@ from langgraph.graph import END, StateGraph
 from pydantic import BaseModel
 
 from src.agents.schemas import Claim, Issue
-from src.agents.skeptic import check
+from src.agents.skeptic import SIG_POS, check, significance_checks
 from src.agents import registry
 from src.agents.writer import TemplateError, WriterDraft, fmt, render
 
@@ -50,16 +50,19 @@ def grounded(claim: Claim, findings: list[Finding]) -> list[Issue]:
     reg = registry.load()
     text = claim.text.lower()
     filled = [fmt(k, reg[k]).lower() for k in claim.refs if k in reg]
+    verified = [c.lower() for c, _, ok in significance_checks(claim) if ok]   # rule 4 (Aryan 2026-11-11)
     keep = []
     for f in findings:
         q = f.quote.strip().lower()
         if len(q) < 8 or q not in text or any(v in q or q in v for v in filled):
             continue
+        if SIG_POS.search(q) and any(q in c or c.strip() in q for c in verified):
+            continue   # significance already checked against the p-value
         keep.append(Issue("review", f.problem, f.quote.strip()))
     return keep
 
 
-def build_graph(writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3):
+def build_graph(writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3, require_number: bool = False):
     def write(s: State) -> State:
         feedback = [f"{i.rule}: {i.detail}" + (f" (\"{i.quote}\")" if i.quote else "") for i in s.get("issues", [])]
         return {"draft": writer(s["topic"], s["keys"], feedback), "attempts": s.get("attempts", 0) + 1}
@@ -73,7 +76,7 @@ def build_graph(writer: Callable, reviewer: Callable | None = None, max_revision
     def skeptic(s: State) -> State:
         issues = list(s["issues"])
         if s["claim"] is not None:
-            issues += check(s["claim"]).issues
+            issues += check(s["claim"], require_number).issues
             if not issues and reviewer is not None:
                 issues += reviewer(s["claim"])
         hist = s.get("history", []) + [{"attempt": s["attempts"], "template": s["draft"].template,
@@ -108,5 +111,6 @@ def llm_reviewer(model: str | None = None):
     return review
 
 
-def run(topic: str, keys: dict, writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3) -> State:
-    return build_graph(writer, reviewer, max_revisions).invoke({"topic": topic, "keys": keys})
+def run(topic: str, keys: dict, writer: Callable, reviewer: Callable | None = None, max_revisions: int = 3,
+        require_number: bool = False) -> State:
+    return build_graph(writer, reviewer, max_revisions, require_number).invoke({"topic": topic, "keys": keys})

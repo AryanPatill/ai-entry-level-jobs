@@ -10,6 +10,12 @@ Rules (Sections 11, 17; identification.md):
             estimate, and (iii) say that estimate is not significant (Aryan 2026-11-10). Together they are the
             finding: a large age gap, a weak exposure gradient among the young (Phase 8, L3)
   repeat    each registry key renders at most once per claim (catches garbled drafts)
+  significance  "significant" / "not significant" in a clause must agree with the p-value (Holm-adjusted where
+            Section 10 adjusts) of the estimate it describes: a cited value in the clause (at least one must
+            agree), or, with no value in the clause, each quintile label it names (all must agree)
+  quintile  a Q1-Q5 label in a clause must belong to a value cited there (Q1 is always the reference)
+  number_required  a write-up claim with registry keys assigned must cite at least one (scoped; see writeup.py)
+Rules significance, quintile, number_required: Aryan 2026-11-11.
 An LLM Skeptic can be layered on top later; these rules run first and cannot be argued with.
 """
 from __future__ import annotations
@@ -36,6 +42,11 @@ CAUSAL = re.compile(r"\b(caus(?:e|ed|es|ing)|because of AI|due to AI|AI (?:is |h
 PROVE = re.compile(r"\bprov(?:e|es|ed|ing)\b", re.I)
 VERDICTS = ("effect detected", "no meaningful effect", "inconclusive")
 TOL = 0.05
+CLAUSE = re.compile(r"(?<!\d)[.;](?!\d)|\b(?:but|while|whereas|in contrast)\b", re.I)
+SIG_NEG = re.compile(r"not (?:statistically )?significant|insignificant|no (?:statistically )?significant", re.I)
+SIG_POS = re.compile(r"(?:statistically )?significant", re.I)
+QLABEL = re.compile(r"\bQ([1-5])\b")
+TERM = re.compile(r"^(phase8_main\.terms\.q)(\d)(_a\d\d)\.")
 
 
 def numbers_in(text: str) -> list[float]:
@@ -44,7 +55,59 @@ def numbers_in(text: str) -> list[float]:
     return [float(n) for n in NUMBER.findall(text)]
 
 
-def check(claim: Claim) -> SkepticReport:
+def base(key: str) -> str:
+    return key.rsplit(".", 1)[0]
+
+
+def p_value(reg: dict, b: str):
+    return reg.get(b + ".holm_p", reg.get(b + ".p"))   # Holm where Section 10 adjusts
+
+
+def quintiles(key: str) -> set[int] | None:
+    m = TERM.match(key)
+    if m:
+        return {int(m.group(2)), 1}
+    if any(s in key for s in ("headline.", "event_study_q5", "l3_within", "secondary_q5", "phase9_", "phase10_")):
+        return {5, 1}
+    return None   # not a quintile-specific estimate
+
+
+def clauses(claim: Claim, reg: dict) -> list[tuple[str, list[str]]]:
+    """Each clause with the cited registry keys whose values appear in it."""
+    out = []
+    for c in CLAUSE.split(claim.text):
+        nums = numbers_in(c)
+        keys = [k for k in dict.fromkeys(claim.refs)
+                if isinstance(reg.get(k), (int, float)) and any(abs(n - abs(reg[k])) <= TOL for n in nums)]
+        out.append((c, keys))
+    return out
+
+
+def significance_checks(claim: Claim) -> list[tuple[str, str, bool]]:
+    """(clause, phrase, consistent) for every clause whose significance statement could be checked."""
+    reg, out = registry.load(), []
+    for c, keys in clauses(claim, reg):
+        neg, pos = SIG_NEG.search(c), SIG_POS.search(SIG_NEG.sub(" ", c))
+        if bool(neg) == bool(pos):   # no statement, or both in one clause: not checkable
+            continue
+        says_sig = bool(pos)
+        bases = {base(k) for k in keys if p_value(reg, base(k)) is not None}
+        if bases:      # a cited value in the clause: at least one estimate must agree
+            ok = any((p_value(reg, b) < 0.05) == says_sig for b in bases)
+        else:          # labels only, e.g. "no significant difference in Q2 and Q3": every named quintile must agree
+            fam = next((TERM.match(k) for k in claim.refs if TERM.match(k)), None)
+            if not fam:
+                continue
+            bs = [f"{fam.group(1)}{q}{fam.group(3)}" for q in {int(x) for x in QLABEL.findall(c)} - {1}]
+            bs = [b for b in bs if p_value(reg, b) is not None]
+            if not bs:
+                continue
+            ok = all((p_value(reg, b) < 0.05) == says_sig for b in bs)
+        out.append((c, (neg or pos).group(0), ok))
+    return out
+
+
+def check(claim: Claim, require_number: bool = False) -> SkepticReport:
     rep, reg = SkepticReport(claim), registry.load()
     known = [abs(v) for v in registry.numbers()]
     text = claim.text
@@ -92,4 +155,14 @@ def check(claim: Claim) -> SkepticReport:
     dup = sorted({k for k in claim.refs if claim.refs.count(k) > 1})
     if dup:
         rep.issues.append(Issue("repeat", "renders the same registry value more than once", ", ".join(dup)))
+    for c, phrase, ok in significance_checks(claim):
+        if not ok:
+            rep.issues.append(Issue("significance", "the significance statement disagrees with the estimate's p-value", phrase))
+    for c, keys in clauses(claim, reg):
+        allowed = set().union(*[quintiles(k) for k in keys if quintiles(k) is not None])
+        bad = sorted({int(q) for q in QLABEL.findall(c)} - allowed) if allowed else []
+        for q in bad:
+            rep.issues.append(Issue("quintile", "the quintile label does not match the value cited beside it", f"Q{q}"))
+    if require_number and not claim.refs:
+        rep.issues.append(Issue("number_required", "a write-up claim with registry keys assigned must cite at least one"))
     return rep
