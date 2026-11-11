@@ -32,7 +32,7 @@ import duckdb
 import pandas as pd
 from ipumspy import readers
 
-from src.data.convert_to_parquet import locate_files
+from src.data.convert_to_parquet import locate_files, parquet_path
 from src.data.inspect_codes import labels_for
 from src.data.ipums_extract import load_log
 from src.utils.config import REPO_ROOT, load_settings
@@ -41,7 +41,6 @@ MAP_FILE = REPO_ROOT / "docs" / "occ_soc_map.csv"                     # codes on
 REPORT_FILE = REPO_ROOT / "results" / "tables" / "exposure_coverage.md"
 LEVELS = ("Major Group", "Minor Group", "Broad Group")
 TITLE_SOC = re.compile(r"\(\s*(\d\d-\d{4})\s*\)")   # one title has "(17-3012 )"
-CODE = r"\d{4}"
 
 
 def source_path(name: str):
@@ -58,7 +57,7 @@ def read_main() -> pd.DataFrame:
                             "2018 SOC Code": "soc2018", "2018 Census Title": "title2018"})
     df = df[["census2010", "census2018", "soc2018", "title2018"]].apply(lambda c: c.str.strip())
     for col in ("census2010", "census2018"):
-        df.loc[~df[col].str.fullmatch(CODE, na=False), col] = None
+        df.loc[~df[col].str.fullmatch(r"\d{4}", na=False), col] = None
     return df
 
 
@@ -91,12 +90,11 @@ def read_structure() -> tuple[set[str], dict[str, set[str]]]:
 
 
 def expand(census_soc: dict[str, str], detailed: set[str], groups: dict[str, set[str]],
-           overrides: dict[str, str] | None = None) -> tuple[dict[str, set[str]], dict[str, str]]:
+           overrides: dict[str, str]) -> tuple[dict[str, set[str]], dict[str, str]]:
     """Map each 2018 Census code to detailed SOC codes. Returns (mapping, unresolved).
 
     `overrides` (detailed SOC -> 2018 Census code) are claimed before residuals expand.
     """
-    overrides = overrides or {}
     out: dict[str, set[str]] = {}
     unresolved: dict[str, str] = {}
     residual = {c: s for c, s in census_soc.items() if "X" in s.upper()}
@@ -121,18 +119,6 @@ def expand(census_soc: dict[str, str], detailed: set[str], groups: dict[str, set
     return out, unresolved
 
 
-def title_codes(main: pd.DataFrame) -> dict[str, set[str]]:
-    """Detailed SOC codes named in parentheses, attributed to the 2018 Census code above them."""
-    named: dict[str, set[str]] = {}
-    last = None
-    for census2018, title in zip(main["census2018"], main["title2018"]):
-        if census2018:
-            last = census2018
-        if last and isinstance(title, str):
-            named.setdefault(last, set()).update(TITLE_SOC.findall(title))
-    return {k: v for k, v in named.items() if v}
-
-
 def build() -> dict:
     main, changes = read_main(), read_changes()
     pairs = pd.concat([main.dropna(subset=["census2010", "census2018"])[["census2010", "census2018"]],
@@ -150,9 +136,18 @@ def build() -> dict:
         socs = set().union(*(census_detail.get(c, set()) for c in c18))
         rows.append({"census2010": c10, "census2018": " ".join(c18),
                      "soc2018": " ".join(sorted(socs)), "n_soc_targets": len(socs)})
+
+    # Detailed SOC codes named in parentheses in titles, attributed to the 2018 Census code above them.
+    named: dict[str, set[str]] = {}
+    last = None
+    for census2018, title in zip(main["census2018"], main["title2018"]):
+        if census2018:
+            last = census2018
+        if last and isinstance(title, str):
+            named.setdefault(last, set()).update(TITLE_SOC.findall(title))
     return {"main": main, "changes": changes, "census_soc": census_soc,
             "census_detail": census_detail, "unresolved": unresolved, "detailed": detailed,
-            "occ_map": pd.DataFrame(rows), "title_codes": title_codes(main)}
+            "occ_map": pd.DataFrame(rows), "title_codes": {k: v for k, v in named.items() if v}}
 
 
 def soc_scores() -> pd.Series:
@@ -173,9 +168,8 @@ def occ_scores(occ_map: pd.DataFrame, scores: pd.Series) -> pd.DataFrame:
 
 
 def cps_parquet() -> str:
-    log = load_log()
-    dat_path, _, _ = locate_files(log)
-    return dat_path.with_name(log["parquet"]["name"]).as_posix()
+    # shortcut: kept only because src/data and src/analysis import it; their clean-up commits switch to parquet_path.
+    return parquet_path(load_log()).as_posix()
 
 
 def employment_by_occ() -> pd.DataFrame:
@@ -232,8 +226,7 @@ def coverage_report(b: dict, occ: pd.DataFrame, scores: pd.Series) -> str:
         "|---|---|---|---|---|",
     ]
     total = cut["w"].sum()
-    by_occ = emp.groupby("occ2010").agg(w=("w", "sum")).join(
-        cut.groupby("occ2010").agg(w_cut=("w", "sum")))
+    by_occ = cut.groupby("occ2010").agg(w_cut=("w", "sum"))
     late = set(con.execute(f"""SELECT DISTINCT OCC2010 FROM read_parquet('{parquet}')
         WHERE YEAR >= 2020 AND EMPSTAT IN (10, 12) AND CLASSWKR IN ({ws})""").df()["OCC2010"])
     um = emp[~emp.matched].drop_duplicates("occ2010").merge(by_occ, on="occ2010", how="left")

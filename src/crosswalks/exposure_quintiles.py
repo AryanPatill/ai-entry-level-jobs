@@ -28,10 +28,10 @@ CUTOFF_FILE = REPO_ROOT / "results" / "tables" / "exposure_quintile_cutoffs.csv"
 REPORT_FILE = REPO_ROOT / "results" / "tables" / "exposure_quintiles.md"
 
 
-def cutoffs(score: pd.Series, weight: pd.Series, n: int = N) -> list[float]:
+def cutoffs(score: pd.Series, weight: pd.Series) -> list[float]:
     order = np.argsort(score.to_numpy(), kind="stable")
     s, cum = score.to_numpy()[order], np.cumsum(weight.to_numpy()[order]) / weight.sum()
-    return [float(s[np.searchsorted(cum, k / n - 1e-12)]) for k in range(1, n)]
+    return [float(s[np.searchsorted(cum, k / N - 1e-12)]) for k in range(1, N)]
 
 
 def assign(score: pd.Series, cuts: list[float]) -> pd.Series:
