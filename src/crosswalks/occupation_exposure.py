@@ -30,10 +30,9 @@ import re
 
 import duckdb
 import pandas as pd
-from ipumspy import readers
 
-from src.data.convert_to_parquet import locate_files, parquet_path
-from src.data.inspect_codes import labels_for
+from src.data.convert_to_parquet import parquet_path
+from src.data.inspect_codes import occ2010_labels
 from src.data.ipums_extract import load_log
 from src.utils.config import REPO_ROOT, load_settings
 
@@ -167,11 +166,6 @@ def occ_scores(occ_map: pd.DataFrame, scores: pd.Series) -> pd.DataFrame:
     return out
 
 
-def cps_parquet() -> str:
-    # shortcut: kept only because src/data and src/analysis import it; their clean-up commits switch to parquet_path.
-    return parquet_path(load_log()).as_posix()
-
-
 def employment_by_occ() -> pd.DataFrame:
     """Weighted employment per OCC2010: employed (EMPSTAT 10, 12), wage and salary, ages 22-64.
 
@@ -184,7 +178,7 @@ def employment_by_occ() -> pd.DataFrame:
     return duckdb.connect().execute(f"""
         SELECT OCC2010 AS occ2010, (YEAR * 100 + MONTH BETWEEN {c0} AND {c1}) AS cutoff,
                SUM(WTFINL) AS w, COUNT(*) AS n
-        FROM read_parquet('{cps_parquet()}')
+        FROM read_parquet('{parquet_path(load_log()).as_posix()}')
         WHERE EMPSTAT IN (10, 12) AND CLASSWKR IN ({ws}) AND AGE BETWEEN {d['age_min']} AND {d['age_max']}
         GROUP BY 1, 2""").df()
 
@@ -192,8 +186,8 @@ def employment_by_occ() -> pd.DataFrame:
 def coverage_report(b: dict, occ: pd.DataFrame, scores: pd.Series) -> str:
     """Matched share of wage and salary employment, ages 22-64, by window. No ages, no exposure levels."""
     d = load_settings()["design"]
-    parquet = cps_parquet()
-    occ_labels = labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
+    parquet = parquet_path(load_log()).as_posix()
+    occ_labels = occ2010_labels()
     ws = ", ".join(str(c) for c in d["wage_salary_classwkr"])
     con = duckdb.connect()
     emp = employment_by_occ().merge(occ[["occ2010", "exposure", "n_soc_targets", "n_soc_scored"]],

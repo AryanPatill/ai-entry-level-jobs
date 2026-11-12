@@ -15,12 +15,9 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from ipumspy import readers
 
 from src.crosswalks.occupation_exposure import employment_by_occ
-from src.data.convert_to_parquet import locate_files
-from src.data.inspect_codes import labels_for
-from src.data.ipums_extract import load_log
+from src.data.inspect_codes import occ2010_labels
 from src.utils.config import REPO_ROOT, load_settings
 
 N = 5   # quintiles, Section 5
@@ -91,7 +88,7 @@ def main() -> None:
               f"{', '.join(f'{c:04d}' for c in outside) or 'none'} (assigned with the same fixed cutoffs).", ""]
 
     # Face-validity check: the largest occupations at each end of the exposure scale.
-    labels = labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
+    labels = occ2010_labels()
     win["share_q"] = win["w"] / win.groupby("quintile")["w"].transform("sum")
     for q in (N, 1):
         lines += [f"## Ten largest occupations in Q{q} (window employment)", "",
