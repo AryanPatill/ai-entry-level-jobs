@@ -5,15 +5,12 @@ Writer -> Claim -> Skeptic -> SkepticReport.   Title -> Mapper -> MapperResult.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
-
-Label = Literal["DESCRIPTIVE", "CAUSAL_UNDER_ASSUMPTIONS"]   # Section 17: every result is labelled
 
 
 @dataclass(frozen=True)
 class Claim:
     text: str
-    label: str                      # must be one of Label; the Skeptic checks it
+    label: str                      # DESCRIPTIVE or CAUSAL_UNDER_ASSUMPTIONS (Section 17); the Skeptic checks it
     refs: tuple[str, ...] = ()      # registry keys the claim relies on
 
 

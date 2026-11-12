@@ -10,20 +10,15 @@ import difflib
 import re
 from functools import lru_cache
 
-from ipumspy import readers
-
 from src.agents.schemas import MapperResult
-from src.data.convert_to_parquet import locate_files
-from src.data.inspect_codes import labels_for
-from src.data.ipums_extract import load_log
+from src.data.inspect_codes import occ2010_labels
 
 WORD = re.compile(r"[a-z]+")
 
 
 @lru_cache(maxsize=1)
 def labels() -> dict[int, str]:
-    out = labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
-    return {k: v for k, v in out.items() if k != 9999}
+    return {k: v for k, v in occ2010_labels().items() if k != 9999}
 
 
 def score(title: str, label: str) -> float:

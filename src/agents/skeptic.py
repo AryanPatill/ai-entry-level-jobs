@@ -46,6 +46,7 @@ CLAUSE = re.compile(r"(?<!\d)[.;](?!\d)|\b(?:but|while|whereas|in contrast)\b", 
 SIG_NEG = re.compile(r"not (?:statistically )?significant|insignificant|no (?:statistically )?significant", re.I)
 SIG_POS = re.compile(r"(?:statistically )?significant", re.I)
 QLABEL = re.compile(r"\bQ([1-5])\b")
+POINTS = re.compile(r"percentage[- ]points?|\bpp\b", re.I)
 TERM = re.compile(r"^(phase8_main\.terms\.q)(\d)(_a\d\d)\.")
 
 
@@ -126,7 +127,7 @@ def check(claim: Claim, require_number: bool = False) -> SkepticReport:
     for v in VERDICTS:
         if v in text.lower() and v != actual and re.search(r"headline|Q5", text, re.I):
             rep.issues.append(Issue("verdict", f"the headline verdict is {actual!r}", v))
-    if re.search(r"percentage[- ]points?|\bpp\b", text, re.I):
+    if POINTS.search(text):
         is_pct = lambda k: k.endswith((".pct", ".lo", ".hi")) and ".secondary_" not in k
         if claim.refs:   # a Writer claim names its registry keys exactly
             wrong = any(is_pct(k) for k in claim.refs)
@@ -138,7 +139,7 @@ def check(claim: Claim, require_number: bool = False) -> SkepticReport:
             wrong = any(near(n, changes) and not near(n, points) for n in numbers_in(text))
         if wrong:
             rep.issues.append(Issue("units", "a percent change in employment is called 'percentage points'",
-                                    re.search(r"percentage[- ]points?|\bpp\b", text, re.I).group(0)))
+                                    POINTS.search(text).group(0)))
     nums = numbers_in(text)
     near = lambda x: any(abs(n - abs(x)) <= TOL for n in nums)
     if near(reg["phase8_main.headline.pct"]):
@@ -147,7 +148,7 @@ def check(claim: Claim, require_number: bool = False) -> SkepticReport:
             missing.append("the 35-49 comparison")
         if not near(reg["phase8_main.l3_within_age_q5_vs_q1.22-25.pct"]):
             missing.append("the within-22-25 Q5-vs-Q1 estimate")
-        if not re.search(r"not (?:statistically )?significant|insignificant|no (?:statistically )?significant", text, re.I):
+        if not SIG_NEG.search(text):
             missing.append("that the within-22-25 estimate is not significant")
         if missing:
             rep.issues.append(Issue("caveat", "quotes the headline without " + ", ".join(missing),

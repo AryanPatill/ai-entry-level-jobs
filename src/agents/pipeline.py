@@ -15,15 +15,15 @@ from typing import Callable, Optional, TypedDict
 from langgraph.graph import END, StateGraph
 from pydantic import BaseModel
 
+from src.agents import registry
 from src.agents.schemas import Claim, Issue
 from src.agents.skeptic import SIG_POS, check, significance_checks
+from src.agents.writer import TemplateError, WriterDraft, fmt, render
 
 # The design's required comparison wording (Section 8 reference groups); not the Writer's to defend.
 COMPARISON = re.compile(r"\b(?:relative to|compared (?:to|with)|versus|vs\.?)\s+(?:the\s+)?"
                         r"(?:ages\s+35-49|35-49|Q1|least[- ]exposed\w*(?:\s+\w+)?)(?:\s+(?:and|or)\s+(?:to\s+)?"
                         r"(?:the\s+)?(?:ages\s+35-49|35-49|Q1|least[- ]exposed\w*(?:\s+\w+)?))?", re.I)
-from src.agents import registry
-from src.agents.writer import TemplateError, WriterDraft, fmt, render
 
 
 class State(TypedDict, total=False):
