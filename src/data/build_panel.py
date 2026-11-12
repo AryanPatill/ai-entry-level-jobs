@@ -29,7 +29,8 @@ import pandas as pd
 
 from src.crosswalks.exposure_quintiles import occupation_quintiles
 from src.crosswalks.industry_sectors import sector_for
-from src.crosswalks.occupation_exposure import cps_parquet
+from src.data.convert_to_parquet import parquet_path
+from src.data.ipums_extract import load_log
 from src.utils.config import REPO_ROOT, load_settings
 
 AGE_GROUPS = {"22-25": "treated_ages", "26-34": "secondary_ages",
@@ -44,7 +45,7 @@ def ym(month: str) -> int:
 def main() -> None:
     s = load_settings()
     d = s["design"]
-    src = f"read_parquet('{cps_parquet()}')"
+    src = f"read_parquet('{parquet_path(load_log()).as_posix()}')"
     ws = ", ".join(str(c) for c in d["wage_salary_classwkr"])
     age_case = " ".join(f"WHEN AGE BETWEEN {d[k][0]} AND {d[k][1]} THEN '{g}'" for g, k in AGE_GROUPS.items())
     con = duckdb.connect()

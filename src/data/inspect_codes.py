@@ -9,6 +9,8 @@ Run from the repo root:  python -m src.data.inspect_codes
 """
 from __future__ import annotations
 
+from functools import lru_cache
+
 import duckdb
 from ipumspy import readers
 
@@ -20,6 +22,12 @@ from src.utils.config import load_settings
 def labels_for(ddi, name: str) -> dict[int, str]:
     """Code -> label, from the codebook (ipumspy stores label -> code)."""
     return {int(code): label for label, code in ddi.get_variable_info(name).codes.items()}
+
+
+@lru_cache(maxsize=1)
+def occ2010_labels() -> dict[int, str]:
+    """OCC2010 code -> IPUMS label, from the extract's codebook (parsed once per process)."""
+    return labels_for(readers.read_ipums_ddi(locate_files(load_log())[2]), "OCC2010")
 
 
 def main() -> None:
