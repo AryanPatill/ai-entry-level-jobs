@@ -25,13 +25,14 @@ import pandas as pd
 import pyfixest as pf
 from scipy import stats
 
-from src.analysis.eda_stage_b import BASE_BIN, FIGDIR, GRID, INK, INK2, SERIES, SURFACE, add_bin, bin_start
+from src.analysis.eda_stage_b import BASE_BIN, FIGDIR, GRID, INK, INK2, SERIES, SURFACE, add_bin, bin_start, style
 from src.utils.config import REPO_ROOT, load_settings
 
 TABLE = REPO_ROOT / "results" / "tables" / "phase8_main.md"
 REGISTRY = REPO_ROOT / "results" / "registry"
 LO, HI = math.log(0.95), math.log(1.05)
 AGES = ["22-25", "26-34", "35-49"]
+YOUNG = ("22-25", "26-34")
 FE = "occ2010^age_group + occ2010^ym + age_group^ym"
 VCOV = {"CRV1": "occ2010"}
 
@@ -71,11 +72,21 @@ def record(name: str, data: dict) -> None:
     (REGISTRY / f"{name}.json").write_text(json.dumps(data, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
-def main_terms(p: pd.DataFrame, post: pd.Series) -> list[str]:
+def holm(p: dict[str, float]) -> dict[str, float]:
+    order = sorted(p, key=p.get)
+    out, run = {}, 0.0
+    for i, k in enumerate(order):
+        run = max(run, min(1.0, (len(order) - i) * p[k]))
+        out[k] = run
+    return out
+
+
+def main_terms(p: pd.DataFrame, post: pd.Series, ages=YOUNG, prefix: str = "q") -> list[str]:
+    """Adds quintile x age x `post` indicators (Q2-Q5) to `p` in place; returns their names."""
     terms = []
     for q in (2, 3, 4, 5):
-        for a in ("22-25", "26-34"):
-            name = f"q{q}_a{a[:2]}"
+        for a in ages:
+            name = f"{prefix}{q}_a{a[:2]}"
             p[name] = ((p.quintile == q) & (p.age_group == a)).astype(int) * post.astype(int)
             terms.append(name)
     return terms
@@ -93,7 +104,7 @@ def event_study(p: pd.DataFrame, base: int = BASE_BIN):
     names = []
     for b in bins:
         for q in (2, 3, 4, 5):
-            for a in ("22-25", "26-34"):
+            for a in YOUNG:
                 n = f"e{q}_{a[:2]}_{'m' if b < 0 else 'p'}{abs(b)}"
                 p[n] = ((p.quintile == q) & (p.age_group == a) & (p.bin == b)).astype(int)
                 names.append((n, b, q, a))
@@ -107,7 +118,7 @@ def event_study(p: pd.DataFrame, base: int = BASE_BIN):
     wald = float(pre.b.values @ np.linalg.solve(V, pre.b.values))
     p_joint = 1 - stats.chi2.cdf(wald, len(pre))
     beyond = pre[(pre.hi < LO) | (pre.lo > HI)]
-    return es, head, p_joint, len(pre), beyond
+    return head, p_joint, len(pre), beyond
 
 
 def es_figure(head: pd.DataFrame) -> None:
@@ -127,10 +138,7 @@ def es_figure(head: pd.DataFrame) -> None:
     ax.set_ylabel("Percent change vs Sep-Nov 2022 (95% CI)", color=INK2)
     ax.text(0, -0.13, "Poisson PML; occupation x age, occupation x month, age x month FE; CRV1 by occupation. "
             "Grey band: ±5%. Dot: reference bin.", transform=ax.transAxes, color=INK2, fontsize=8)
-    ax.grid(axis="y", color=GRID, lw=0.8)
-    for s in ("top", "right", "left"):
-        ax.spines[s].set_visible(False)
-    ax.tick_params(colors=INK2, length=0)
+    style(ax)
     fig.tight_layout()
     fig.savefig(FIGDIR / "phase8_event_study.png", dpi=150)
 
@@ -149,7 +157,7 @@ def main() -> None:
     t_lo, t_hi = tost(h.b, h.se)
 
     # 8.2 Event study.
-    es, head, p_joint, k_pre, beyond = event_study(p.copy())
+    head, p_joint, k_pre, beyond = event_study(p.copy())
     es_figure(head)
     flagged = p_joint < 0.05 or len(beyond) > 0
 
@@ -157,14 +165,13 @@ def main() -> None:
     sec = {}
     for name, y, w in (("Unemployment rate (points)", "urate", "lf"), ("Mean usual weekly hours", "hours", "emp_w")):
         q = p.assign(lf=p.emp_w + p.unemp_w)
-        q = q[(q.lf > 0) & ((q.hours_w > 0) if y == "hours" else True)].copy()
+        q = q[q.lf > 0].copy()
         q["urate"] = 100 * q.unemp_w / q.lf
-        q["hours"] = q.hours_wsum / q.hours_w.where(q.hours_w > 0)
+        q["hours"] = q.hours_wsum / q.hours_w.where(q.hours_w > 0)   # NaN without hours; dropna removes those rows
         q = q.dropna(subset=[y])
         f2 = pf.feols(f"{y} ~ {' + '.join(terms)} | {FE}", data=q, weights=w, vcov=VCOV)
         sec[name] = coef_table(f2, terms).loc["q5_a22"]
-    pv = sorted(sec.items(), key=lambda kv: kv[1].p)
-    holm = {k: min(1.0, max((len(pv) - i) * v.p for i, (_, v) in enumerate(pv[: j + 1]))) for j, (k, _) in enumerate(pv)}
+    holm_p = holm({k: r.p for k, r in sec.items()})
 
     # 8.4 L3 (exploratory): within-age DiD, Q2-Q5 x post, occupation and month fixed effects.
     l3 = {}
@@ -205,7 +212,7 @@ def main() -> None:
     lines += ["", "## Secondary outcomes, Q5 x 22-25 (Section 6; Holm within family, Section 10)", "",
               "| Outcome | Coefficient (units) | 95% CI | p | Holm p |", "|---|---|---|---|---|"]
     for k, r in sec.items():
-        lines.append(f"| {k} | {r.b:+.3f} | {r.lo:+.3f} to {r.hi:+.3f} | {r.p:.3f} | {holm[k]:.3f} |")
+        lines.append(f"| {k} | {r.b:+.3f} | {r.lo:+.3f} to {r.hi:+.3f} | {r.p:.3f} | {holm_p[k]:.3f} |")
     lines += ["", "## L3 (exploratory): Q5 vs Q1 within one age group", "",
               "Poisson PML within each age group, occupation and month fixed effects, CRV1. Exploratory; not preregistered.", "",
               "| Age group | Q5 x post, % change (95% CI) | p |", "|---|---|---|"]
@@ -220,7 +227,7 @@ def main() -> None:
         "terms": {t: est(r) for t, r in ct.iterrows()},
         "event_study_q5_a22": {f"{bin_start(r.bin):%Y-%m}": est(r) for _, r in head.iterrows()},
         "secondary_q5_a22": {k: {"coef": round(float(r.b), 3), "lo": round(float(r.lo), 3), "hi": round(float(r.hi), 3),
-                                 "p": round(float(r.p), 4), "holm_p": round(holm[k], 4)} for k, r in sec.items()},
+                                 "p": round(float(r.p), 4), "holm_p": round(holm_p[k], 4)} for k, r in sec.items()},
         "l3_within_age_q5_vs_q1": {a: est(r) for a, r in l3.items()},
         "n_cells": int(n_obs), "n_clusters": int(n_cl)})
     print("\n".join(lines))
@@ -230,4 +237,5 @@ if __name__ == "__main__":
     assert verdict(-0.2, -0.3, -0.1, "g").startswith("Effect detected")
     assert verdict(0.0, -0.02, 0.02, "g").startswith("No meaningful effect")
     assert "differs from zero" in verdict(-0.06, -0.10, -0.01, "g")
+    assert holm({"a": 0.01, "b": 0.04, "c": 0.03}) == {"a": 0.03, "c": 0.06, "b": 0.06}
     main()

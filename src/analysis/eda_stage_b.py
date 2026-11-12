@@ -32,16 +32,24 @@ def add_bin(p: pd.DataFrame) -> pd.DataFrame:
     return p.assign(bin=((p.ym // 100) * 12 + p.ym % 100 - (2022 * 12 + 12)) // 3)
 
 
-def binned(p: pd.DataFrame, by: str) -> pd.DataFrame:
-    """Index (bin -1 = 100) of average monthly employment per bin, one column per group."""
+def binned(p: pd.DataFrame, by: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """(level, index with bin -1 = 100) of average monthly employment per bin, one column per group."""
     p = add_bin(p)
     months = p.groupby("bin").ym.nunique()
-    level = p.groupby(["bin", by]).emp_w.sum().unstack() .div(months, axis=0)
+    level = p.groupby(["bin", by]).emp_w.sum().unstack().div(months, axis=0)
     return level, 100 * level / level.loc[BASE_BIN]
 
 
 def bin_start(b: int) -> pd.Timestamp:
     return pd.Timestamp("2022-12-01") + pd.DateOffset(months=3 * b)
+
+
+def style(ax) -> None:
+    """House chart style: y grid only, no box, quiet ticks."""
+    ax.grid(axis="y", color=GRID, lw=0.8)
+    for s in ("top", "right", "left"):
+        ax.spines[s].set_visible(False)
+    ax.tick_params(colors=INK2, length=0)
 
 
 def draw(ax, idx: pd.DataFrame, ref: float = 100, colors=SERIES, ylim=None) -> None:
@@ -65,10 +73,7 @@ def draw(ax, idx: pd.DataFrame, ref: float = 100, colors=SERIES, ylim=None) -> N
         placed.append((max(y, placed[-1][0] + gap) if placed else y, c))
     for y, c in placed:
         ax.annotate(str(c), (x[-1], y), xytext=(8, 0), textcoords="offset points", color=INK, fontsize=9, va="center")
-    ax.grid(axis="y", color=GRID, lw=0.8)
-    for s in ("top", "right", "left"):
-        ax.spines[s].set_visible(False)
-    ax.tick_params(colors=INK2, length=0)
+    style(ax)
 
 
 NOTE = ("Quarterly bins; pandemic months 2020-03 to 2021-12 excluded (gap). Weighted employment, "

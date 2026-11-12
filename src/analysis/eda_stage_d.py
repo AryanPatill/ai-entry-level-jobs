@@ -19,34 +19,33 @@ from src.analysis.eda_stage_c import AGES, grid
 from src.utils.config import load_settings
 
 TABLE = REPO_ROOT / "results" / "tables" / "phase6_stage_d.md"
-RATE = ("unemp_w", lambda s: 100 * s.unemp_w / (s.emp_w + s.unemp_w))
-HOURS = ("hours_wsum", lambda s: s.hours_wsum / s.hours_w)
+SUMS = ["emp_w", "unemp_w", "hours_w", "hours_wsum"]
+RATE = lambda s: 100 * s.unemp_w / (s.emp_w + s.unemp_w)
+HOURS = lambda s: s.hours_wsum / s.hours_w
 
 
 def by_bin(p: pd.DataFrame, f) -> dict[str, pd.DataFrame]:
-    s = add_bin(p).groupby(["age_group", "bin", "quintile"])[["emp_w", "unemp_w", "hours_w", "hours_wsum"]].sum()
-    v = f(s)
+    v = f(add_bin(p).groupby(["age_group", "bin", "quintile"])[SUMS].sum())
     return {a: v.loc[a].unstack() for a in AGES}
 
 
-def pre_post(p: pd.DataFrame, f, fmt: str) -> list[str]:
+def pre_post(p: pd.DataFrame, f) -> list[str]:
     # The 2015-2022 pre-period trends strongly (unemployment falls), so also show Jan-Nov 2022 alone.
     period = p.post.map({True: "post", False: "pre"}).where(~p.ym.between(202201, 202211), "2022")
-    s = p.assign(period=period).groupby(["age_group", "quintile", "period"])[["emp_w", "unemp_w", "hours_w", "hours_wsum"]].sum()
-    v = f(s).unstack()
+    v = f(p.assign(period=period).groupby(["age_group", "quintile", "period"])[SUMS].sum()).unstack()
     lines = ["| Age group | Quintile | 2015-01 to 2020-02 | Jan-Nov 2022 | Post | Post minus 2022 |", "|---|---|---|---|---|---|"]
     for (a, q), r in v.iterrows():
-        lines.append(f"| {a} | {q} | {r['pre']:{fmt}} | {r['2022']:{fmt}} | {r['post']:{fmt}} | {r['post'] - r['2022']:+{fmt}} |")
+        lines.append(f"| {a} | {q} | {r['pre']:.2f} | {r['2022']:.2f} | {r['post']:.2f} | {r['post'] - r['2022']:+.2f} |")
     return lines
 
 
-def section(head: str, fig: str, note: str, d: dict[str, pd.DataFrame], prepost: list[str], fmt: str) -> list[str]:
+def section(head: str, fig: str, note: str, d: dict[str, pd.DataFrame], prepost: list[str]) -> list[str]:
     lines = [head, "", f"Figure: `results/figures/{fig}`. {note}", "", "### Periods: 2015-01 to 2020-02, Jan-Nov 2022, post (2022-12 on)", "",
              *prepost, ""]
     for a in AGES:
         t = d[a]
         lines += [f"### Ages {a}, by bin", "", "| Bin start | " + " | ".join(t.columns) + " |", "|---" * (len(t.columns) + 1) + "|"]
-        lines += [f"| {bin_start(b):%Y-%m} | " + " | ".join(f"{x:{fmt}}" for x in r) + " |" for b, r in t.iterrows()]
+        lines += [f"| {bin_start(b):%Y-%m} | " + " | ".join(f"{x:.2f}" for x in r) + " |" for b, r in t.iterrows()]
         lines.append("")
     return lines
 
@@ -58,7 +57,7 @@ def main() -> None:
     p = p[p.main_sample]
     p["quintile"] = "Q" + p.quintile.astype(str)
 
-    d1, d2 = by_bin(p, RATE[1]), by_bin(p, HOURS[1])
+    d1, d2 = by_bin(p, RATE), by_bin(p, HOURS)
     note = "Quarterly bins; pandemic months 2020-03 to 2021-12 excluded (gap). Weighted, wage and salary, scored occupations."
     grid(d1, "d1_unemployment_rate.png", "DESCRIPTIVE. D1: unemployment rate (%) by exposure quintile, each age group",
          ref=None, pad=0.5, note=note + " Unemployed placed by last occupation.")
@@ -70,10 +69,10 @@ def main() -> None:
              "period; main-sample months. No model, no inference, no causal claim.", "",
              *section("## D1. Unemployment rate (%)", "d1_unemployment_rate.png",
                       "Unemployed (EMPSTAT 21) placed by last occupation, wage and salary last job; rate = "
-                      "unemployed / (employed + unemployed).", d1, pre_post(p, RATE[1], ".2f"), ".2f"),
+                      "unemployed / (employed + unemployed).", d1, pre_post(p, RATE)),
              *section("## D2. Mean usual weekly hours", "d2_mean_hours.png",
                       "At work (EMPSTAT 10), UHRSWORK1 1-168; 997 'hours vary' excluded, see Stage A (A3).",
-                      d2, pre_post(p, HOURS[1], ".2f"), ".2f")]
+                      d2, pre_post(p, HOURS))]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote {TABLE.relative_to(REPO_ROOT)} and two figures")
 

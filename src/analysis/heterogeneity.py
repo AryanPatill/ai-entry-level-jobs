@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from src.analysis.estimate_main import est, pct, record, verdict
+from src.analysis.estimate_main import AGES, est, holm, pct, record, verdict
 from src.analysis.robustness import fit
 from src.crosswalks.industry_sectors import SECTOR_NAMES
 from src.utils.config import REPO_ROOT, load_settings
@@ -19,29 +19,20 @@ TABLE = REPO_ROOT / "results" / "tables" / "phase10_heterogeneity.md"
 SUBGROUPS = {"Bachelor's or higher": "emp_w_ba", "Men": "emp_w_men", "Women": "emp_w_women"}
 
 
-def holm(p: dict[str, float]) -> dict[str, float]:
-    order = sorted(p, key=p.get)
-    out, run = {}, 0.0
-    for i, k in enumerate(order):
-        run = max(run, min(1.0, (len(order) - i) * p[k]))
-        out[k] = run
-    return out
-
-
 def main() -> None:
     s = load_settings()
     proc = s["paths"]["processed"]
     full = pd.read_parquet(proc / "panel_occ_age_month.parquet")
-    p = full[full.main_sample & full.age_group.isin(["22-25", "26-34", "35-49"])]
+    p = full[full.main_sample & full.age_group.isin(AGES)]
     sub = {k: fit(p, y=v) for k, v in SUBGROUPS.items()}
     adj = holm({k: r.p for k, r in sub.items()})
 
     sp = pd.read_parquet(proc / "panel_occ_sector_age_month.parquet")
-    sp = sp[sp.main_sample & sp.age_group.isin(["22-25", "26-34", "35-49"])]
+    sp = sp[sp.main_sample & sp.age_group.isin(AGES)]
     sec = {}
     for k in sorted(sp.sector.unique()):
         try:
-            sec[k] = fit(sp[sp.sector == k], fe="occ2010^age_group + occ2010^ym + age_group^ym")
+            sec[k] = fit(sp[sp.sector == k])
         except Exception as e:   # a sector may lack Q1 or Q5 occupations
             sec[k] = e
 
@@ -69,5 +60,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    assert holm({"a": 0.01, "b": 0.04, "c": 0.03}) == {"a": 0.03, "c": 0.06, "b": 0.06}
     main()

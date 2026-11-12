@@ -18,12 +18,12 @@ import math
 import pandas as pd
 import pyfixest as pf
 
+from src.analysis.estimate_main import AGES, FE, VCOV, main_terms
 from src.utils.config import REPO_ROOT, load_settings
 
 WINDOW = (201501, 202002)        # Section 5 / 16 pre-period
 FAKE_TREATMENT = 201612          # Aryan, 2026-10-04: avoids the placebo dates 2017-12 and 2018-12
 Z = 1.96 + 0.84                  # 5% two-sided, 80% power -> 2.80
-AGES = ["22-25", "26-34", "35-49"]
 REPORT_FILE = REPO_ROOT / "results" / "tables" / "mde.md"
 
 
@@ -32,16 +32,8 @@ def main() -> None:
     p = pd.read_parquet(s["paths"]["processed"] / "panel_occ_age_month.parquet",
                         columns=["occ2010", "age_group", "ym", "quintile", "emp_w"])
     p = p[p.ym.between(*WINDOW) & p.age_group.isin(AGES)].copy()
-    post = (p.ym >= FAKE_TREATMENT).astype(int)
-    terms = []
-    for q in (2, 3, 4, 5):
-        for a in ("22-25", "26-34"):
-            name = f"q{q}_a{a[:2]}"
-            p[name] = ((p.quintile == q) & (p.age_group == a)).astype(int) * post
-            terms.append(name)
-
-    fit = pf.fepois(f"emp_w ~ {' + '.join(terms)} | occ2010^age_group + occ2010^ym + age_group^ym",
-                    data=p, vcov={"CRV1": "occ2010"})
+    terms = main_terms(p, p.ym >= FAKE_TREATMENT)
+    fit = pf.fepois(f"emp_w ~ {' + '.join(terms)} | {FE}", data=p, vcov=VCOV)
     se = fit.se()   # standard errors only
     n_obs, n_clusters = fit._N, fit._G[0]
 
